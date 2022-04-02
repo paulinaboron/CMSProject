@@ -1,0 +1,21 @@
+
+body{
+    background-color: black;
+}
+
+.card{
+    background-color: rgb(48, 48, 48);
+    color: white;
+}
+
+hr{
+    color: white;
+}
+
+.featurette{
+    color: white;
+}
+
+.nav-link{
+    color: white;
+}

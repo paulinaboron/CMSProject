@@ -1,11 +1,4 @@
 
-/* #carouselExampleDark{
-    width: 1920px;
-    height: 500px;
-} */
-
-
-
 .news-div{
     margin-top: 50px;
     display: flex;
@@ -37,4 +30,12 @@ div.featurette{
     flex-direction: row;
     align-items: center;
     gap: 50px;
+}
+
+.nav-link{
+    color: black;
+}
+
+.nav-link:hover{
+    color: rgb(150, 150, 150);
 }
