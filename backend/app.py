@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_bs4 import Bootstrap
 
 app = Flask(__name__)
@@ -11,7 +11,7 @@ bootstrap = Bootstrap(app)
 def index():
     return "To jest początek tej strony, testuję tylko GITa"
 
-@app.route('/getAllUsers')
+@app.route('/getAllUsers', methods=["GET", "POST"])
 def getAllUsers():
     return {'dziala': "tak"}
 
