@@ -93,14 +93,13 @@ dbConnection.commit()
 
 # # przykładowe dane
 
-# dbCursor.execute(f"""
-#     INSERT INTO users 
-#     (`username`, `password`, `email`, `role`) 
-#     VALUES
-#     ('user2', 'password5', 'user@user.pl', 'redactor')
-# """)
-
-# dbConnection.commit()
+dbCursor.execute(f"""
+    INSERT INTO articles 
+    (`title`, `subtitle`, `content`, `image_url`, `creation_date`) 
+    VALUES
+    ('tytuł', 'podtytuł', 'treść', '', datetime('now'))
+""")
+dbConnection.commit()
 
 
 # zakończenie działania
