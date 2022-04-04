@@ -2,8 +2,9 @@
 # users
 # sliders (id, nazwa)
 # slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
-# articles (id, tytuł, podtytuł, tekst, url_obrazka
-# comments (id, id_artykułu, id_użytkownika)
+# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data)
+# ??articles_lists (id, tytuł)
+# comments (id, id_artykułu, id_użytkownika, data_dodania)
 # featurettes: (id, tytuł, tekst, url_obrazka)
 # globals (id, nazwa, wartość)
 # zmienne globalne: domyślny szablon, liczba artykułów na stronie głównej, 
@@ -19,7 +20,15 @@ dbCursor = dbConnection.cursor()
 # usunięcie tabeli
 
 dbCursor.execute("""
-    DROP TABLE IF EXISTS users
+    DROP TABLE IF EXISTS users;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS sliders;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS slides;
 """)
 
 dbConnection.commit()
@@ -36,7 +45,49 @@ dbCursor.execute("""
         `role` text
     )
 """)
+dbConnection.commit()
 
+
+# sliders (id, nazwa)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS sliders(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `name` text
+    )
+""")
+dbConnection.commit()
+
+
+# slides (id, id_slidera, kolejność, ?url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS slides(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `slider_id` integer,
+        `order` integer,
+        `title` text,
+        `subtitle` text,
+        `show_button` boolean,
+        `button_text` text,
+        `button_url` text
+    )
+""")
+dbConnection.commit()
+
+
+# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS articles(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `title` text,
+        `subtitle` text,
+        `content` text,
+        `image_url` text,
+        `creation_date` datetime
+    )
+""")
 dbConnection.commit()
 
 
