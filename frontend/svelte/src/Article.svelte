@@ -1,19 +1,20 @@
 <script>
-	let location = window.location.toString()
-	console.log(location)
+	let params = new URLSearchParams(window.location.search)
+	let id =  params.get("id")
+	console.log(id)
 
-	/*async function getArticleData(id) {
+	async function getArticleData(id) {
 		let response = await fetch(`http://localhost:5000/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
 		return responseJson;
 	}
-	let articleData = getArticleData(params.id);
+	let articleData = getArticleData(id);
 
 	$: {
-		articleData = getArticleData(params.id);
-	}*/
+		articleData = getArticleData(id);
+	}
 </script>
-<!--
+
 {#await articleData then articleData}
 	{#if articleData.error_message}
 		{articleData.error_message}
@@ -23,4 +24,4 @@
 		<h6>{articleData.creation_date}</h6>
 		<p>{articleData.content}</p>
 	{/if}
-{/await}-->
+{/await}
