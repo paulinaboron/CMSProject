@@ -19,9 +19,26 @@
 	{#if articleData.error_message}
 		{articleData.error_message}
 	{:else}
-		<h1>{articleData.title}</h1>
-		<h2>{articleData.subtitle}</h2>
 		<h6>{articleData.creation_date}</h6>
-		<p>{articleData.content}</p>
+
+		<div class="position-relative text-center">
+			<div class="col-md-5 p-lg-5 mx-auto">
+			<h1 class="display-4">{articleData.title}</h1>
+			<p class="lead">
+				{articleData.subtitle}
+			</p>
+			</div>
+		</div>
+		<div id="article-content">
+			<!-- svelte-ignore a11y-img-redundant-alt -->
+			<img src="../uploads/slider/gray3.jpg" class="article-img" alt="Article Image"/>
+			<p>
+				{articleData.content}
+			</p>
+		</div>
+
 	{/if}
 {/await}
+
+
+
