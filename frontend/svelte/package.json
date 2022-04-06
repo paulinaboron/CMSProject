@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rollup -c rollup-pages.config.js",
     "dev": "rollup -c -w rollup-pages.config.js",
-    "start": "sirv public"
+    "start": "sirv public --port 5050"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",

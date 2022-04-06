@@ -1,7 +1,8 @@
 <script>
-	export let params = {};
+	let location = window.location.toString()
+	console.log(location)
 
-	async function getArticleData(id) {
+	/*async function getArticleData(id) {
 		let response = await fetch(`http://localhost:5000/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
 		return responseJson;
@@ -10,9 +11,9 @@
 
 	$: {
 		articleData = getArticleData(params.id);
-	}
+	}*/
 </script>
-
+<!--
 {#await articleData then articleData}
 	{#if articleData.error_message}
 		{articleData.error_message}
@@ -22,4 +23,4 @@
 		<h6>{articleData.creation_date}</h6>
 		<p>{articleData.content}</p>
 	{/if}
-{/await}
+{/await}-->
