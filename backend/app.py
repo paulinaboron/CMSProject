@@ -10,6 +10,13 @@ app.config['JSON_AS_ASCII'] = False
 bootstrap = Bootstrap(app)
 CORS(app)
 
+# / - zwraca stronę główną
+# /getAllUsers - obecnie służy jako test, później może coś będzie robiło
+# /getArticleData - zwraca dane artykułu o podanym ID (?id=ID)
+# /getSliderData - zwraca dane slajdera o podanym ID (?id=ID)
+# /getFeaturetteData - zwraca dane featuretta o podanym ID (?id=ID)
+# /getLatestArticlesIDs - zwraca listę ID X danych artykyłów (gdy ?count=X) lub wszystkich artykułów (gdy ?count=0 lub bez ?count)
+
 
 
 @app.route('/')
@@ -142,6 +149,36 @@ def getFeaturetteData():
         return {
             "error_message": "Taki featurette nie istnieje"
         }
+
+
+@app.route('/getLatestArticlesIDs', methods=["GET", "POST"])
+def getLatestArticles():
+    count = request.args.get("count")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if count == None or count == 0:
+        dbCursor.execute(f"""
+            SELECT id FROM articles
+        """)
+    else:
+        dbCursor.execute(f"""
+            SELECT id FROM articles LIMIT {count}
+        """)
+    
+    fetchedArticlesIDs = dbCursor.fetchall()
+    ids = []
+
+    for id in fetchedArticlesIDs:
+        ids.append(id)
+
+    return {
+        "latestArticlesIDs": ids
+    }
+
+    
+
 
 
 @app.route("/uploads/<path:path>")
