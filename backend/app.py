@@ -10,14 +10,17 @@ app.config['JSON_AS_ASCII'] = False
 bootstrap = Bootstrap(app)
 CORS(app)
 
+
+
 @app.route('/')
 def index():
-    return "To jest początek tej strony, testuję tylko GITa"
+    return send_from_directory("../frontend/svelte/public", "index.html")
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
 def getAllUsers():
     return {'dziala': "tak"}
+
 
 @app.route('/getArticleData', methods=["GET", "POST"])
 def getArticleData():
@@ -51,6 +54,7 @@ def getArticleData():
         return {
             "error_message": "Taki artykuł nie istnieje"
         }
+
 
 @app.route('/getSliderData', methods=["GET", "POST"])
 def getSliderData():
@@ -107,9 +111,38 @@ def getSliderData():
         }
 
 
-@app.route('/flask')
-def Flask():
-    return send_from_directory("../frontend/svelte/public", "index.html")
+@app.route('/getFeaturetteData', methods=["GET", "POST"])
+def getFeaturetteData():
+    id = request.args.get("id")
+    if (id == None):
+        return {
+            "error_message": "Nie podano id featuretta"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM featurettes WHERE `id` = {id}
+    """)
+    fetchedFeaturettes = dbCursor.fetchall()
+
+    
+    if len(fetchedFeaturettes) == 1:
+        featurette = fetchedFeaturettes[0]
+        print(featurette)
+
+        return {
+            "title": featurette[1],
+            "subtitle": featurette[2],
+            "content": featurette[3],
+            "img_url": featurette[4]
+        }
+
+    else:
+        return {
+            "error_message": "Taki slider nie istnieje"
+        }
+
 
 @app.route("/uploads/<path:path>")
 def uploads(path):
@@ -119,6 +152,7 @@ def uploads(path):
 @app.route("/<path:path>")
 def home(path):
     return send_from_directory('../frontend/svelte/public', path)
+
 
 
 if __name__ == '__main__':
