@@ -6,11 +6,11 @@ import { terser } from "rollup-plugin-terser";
 
 const inputs = [
   "main", //string defaults to input: src/[name].js and output: public/build/[name].js
-  {
+  /*{
     input: "src/second.js",
     output: { file: "public/build/second.js", name: "second" },
     css: "public/build/second.css",
-  }, //object for setting more specific values for input and output of roolup configuration
+  }, //object for setting more specific values for input and output of roolup configuration*/
   "article",
   "DBTest"
 ];
