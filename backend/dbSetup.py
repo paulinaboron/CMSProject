@@ -6,6 +6,7 @@
 # ??articles_lists (id, tytuł)
 # comments (id, id_artykułu, id_użytkownika, data_dodania)
 # featurettes: (id, tytuł, podtytuł, tekst, url_obrazka)
+# nav_links: (id, link, tekst, dla (headera/stopki))
 # globals (id, nazwa, wartość)
 # zmienne globalne: domyślny szablon, liczba artykułów na stronie głównej, 
 
@@ -45,6 +46,10 @@ dbCursor.execute("""
 
 dbCursor.execute("""
     DROP TABLE IF EXISTS comments;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS nav_links;
 """)
 
 
@@ -144,6 +149,18 @@ dbCursor.execute("""
 """)
 
 
+# nav_links: (id, link, tekst, dla (headera/stopki))
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS comments(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `link` text,
+        `text` text,
+        `for_component` text
+    )
+""")
+
+
 
 dbConnection.commit()
 
@@ -205,6 +222,13 @@ dbCursor.execute(f"""
     (`article_id`, `user_id`, `creation_date`, `content`) 
     VALUES
     (1, 1, datetime("now"), "tekst komentarza")
+""")
+
+dbCursor.execute(f"""
+    INSERT INTO nav_links 
+    (`link`, `text`, `for_component`) 
+    VALUES
+    ("index.html", "Home", "header")
 """)
 
 
