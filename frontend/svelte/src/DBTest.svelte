@@ -1,5 +1,5 @@
 <script>
-    import Slider2 from "./Slider-2.svelte";
+    import Slider from "./Slider.svelte";
 </script>
 
-<Slider2 id={1}/>
+<Slider id={1}/>
