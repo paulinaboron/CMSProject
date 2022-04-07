@@ -6,7 +6,7 @@
   import Card from "./Card.svelte"
   import Featurette from "./Featurette.svelte"
 
-  console.log(name);
+  console.log("Name: ", name);
 </script>
 
 
@@ -14,11 +14,18 @@
 
   <Navigation/>
   <Slider id=1/>
-  <Card/>
+  <div id="content">
+    <div class="d-flex flex-row bd-highlight mb-3 news-div">
+      <Card id=1/>
+      <Card id=2/>
+      <Card id=3/>
+    </div>
+  
   <Featurette/>
 
   
   <Footer/>
+</div>
 
 
 </main>
