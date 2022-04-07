@@ -140,7 +140,7 @@ def getFeaturetteData():
 
     else:
         return {
-            "error_message": "Taki slider nie istnieje"
+            "error_message": "Taki featurette nie istnieje"
         }
 
 
