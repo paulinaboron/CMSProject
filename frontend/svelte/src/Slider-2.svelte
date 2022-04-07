@@ -1,6 +1,4 @@
 <script>
-import Slider from "./Slider.svelte";
-
     export let id;
     console.log(id)
 
