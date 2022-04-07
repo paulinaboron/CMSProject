@@ -21,12 +21,11 @@
 {:then cardData} 
 <div class="card" style="width: 18rem">
     <div class="card-body">
-        <h5 class="card-title">{cardData.content} {id}</h5>
+        <h5 class="card-title">{cardData.title}</h5>
         <p class="card-text">
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
+            {cardData.content}
         </p>
-        <a href="./article?id={id}" class="btn btn-secondary">Go somewhere</a>
+        <a href="./article?id={id}" class="btn btn-secondary">Go to article {id}</a>
     </div>
 </div>
 {/await}

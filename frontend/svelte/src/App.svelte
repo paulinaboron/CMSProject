@@ -21,7 +21,7 @@
       <Card id=3/>
     </div>
   
-  <Featurette/>
+  <Featurette id=1/>
 
   
   <Footer/>
