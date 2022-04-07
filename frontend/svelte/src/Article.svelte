@@ -1,7 +1,7 @@
 <script>
 	let params = new URLSearchParams(window.location.search)
 	let id =  params.get("id")
-	console.log(id)
+	console.log("Article ID: ", id)
 
 	async function getArticleData(id) {
 		let response = await fetch(`http://localhost:5000/getArticleData?id=${id}`, { method: "post" });
@@ -19,7 +19,6 @@
 	{#if articleData.error_message}
 		{articleData.error_message}
 	{:else}
-		<h6>{articleData.creation_date}</h6>
 
 		<div class="position-relative text-center">
 			<div class="col-md-5 p-lg-5 mx-auto">
@@ -35,6 +34,7 @@
 			<p>
 				{articleData.content}
 			</p>
+			<p>{articleData.creation_date}</p>
 		</div>
 
 	{/if}

@@ -2,6 +2,11 @@
   export let name;
   import Navigation from "./Navigation.svelte"
   import Slider from "./Slider.svelte"
+  import Footer from "./Footer.svelte"
+  import Card from "./Card.svelte"
+  import Featurette from "./Featurette.svelte"
+
+  console.log("Name: ", name);
 </script>
 
 
@@ -9,28 +14,22 @@
 
   <Navigation/>
   <Slider id=1/>
+  <div id="content">
+    <div class="d-flex flex-row bd-highlight mb-3 news-div">
+      <Card id=1/>
+      <Card id=2/>
+      <Card id=3/>
+    </div>
+  
+  <Featurette/>
 
-  <h1>Hello {name}!</h1>
-  <p>Main Svelte-Page</p>
+  
+  <Footer/>
+</div>
+
+
 </main>
 
 <style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
 
-  @media (min-width: 640px) {
-    main {
-      max-width: none;
-    }
-  }
 </style>
