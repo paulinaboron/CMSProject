@@ -24,6 +24,11 @@ def index():
     return send_from_directory("../frontend/svelte/public", "index.html")
 
 
+@app.route('/article')
+def article():
+    return send_from_directory("../frontend/svelte/public", "article.html")
+
+
 @app.route('/getAllUsers', methods=["GET", "POST"])
 def getAllUsers():
     return {'dziala': "tak"}
@@ -32,7 +37,7 @@ def getAllUsers():
 @app.route('/getArticleData', methods=["GET", "POST"])
 def getArticleData():
     id = request.args.get("id")
-    if (id == None):
+    if id == None or id == "null":
         return {
             "error_message": "Nie podano id artykułu"
         }

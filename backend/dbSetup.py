@@ -152,7 +152,7 @@ dbCursor.execute("""
 # nav_links: (id, link, tekst, dla (headera/stopki))
 
 dbCursor.execute("""
-    CREATE TABLE IF NOT EXISTS comments(
+    CREATE TABLE IF NOT EXISTS nav_links(
         `id` integer PRIMARY KEY AUTOINCREMENT,
         `link` text,
         `text` text,
@@ -213,7 +213,7 @@ dbCursor.execute(f"""
     INSERT INTO featurettes 
     (`title`, `subtitle`, `content`, `image_url`) 
     VALUES
-    ("First featurette heading.", "It'll blow your mind.", "Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.", "500.png")
+    ("First featurette heading.", "It'll blow your mind.", "Donec ullamcorper nulla non metus auctor fringilla.&#13;Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.", "500.png")
 """)
 
 
