@@ -17,8 +17,8 @@
   <div id="content">
     <div class="d-flex flex-row bd-highlight mb-3 news-div">
       <Card id=1/>
-      <Card id=2/>
-      <Card id=3/>
+      <Card id=1/>
+      <Card id=1/>
     </div>
   
   <Featurette id=1/>

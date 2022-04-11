@@ -17,7 +17,7 @@
 </script>
 
 {#await cardData}
-    <h1>Oczekiwanie na dane slidera</h1>
+    <h1>Oczekiwanie na dane atykułu</h1>
 {:then cardData} 
 <div class="card" style="width: 18rem">
     <div class="card-body">
