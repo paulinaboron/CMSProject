@@ -2,11 +2,13 @@
 # users (role: admin, redactor, user)
 # sliders (id, nazwa)
 # slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
-# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data)
-# ??articles_lists (id, tytuł)
+# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, połączone)
+# niezaimplementowane! / articles_lists (id, tytuł)
 # comments (id, id_artykułu, id_użytkownika, data_dodania)
 # featurettes: (id, tytuł, podtytuł, tekst, url_obrazka)
-# nav_links: (id, link, tekst, dla (headera/stopki))
+# nav_links: (id, link, tekst, dla (headera/stopki), kolejność)
+# galleries: (id, nazwa)
+# galleries_photos: (id, url obrazka, opis?)
 # globals (id, nazwa, wartość)
 # zmienne globalne: domyślny szablon, liczba artykułów na stronie głównej, 
 
@@ -162,6 +164,28 @@ dbCursor.execute("""
 """)
 
 
+# galleries: (id, nazwa)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS galleries(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `name` text
+    )
+""")
+
+
+# galleries_photos: (id, id galerii, url obrazka, opis?)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS galleries_photos(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `gallery_id` integer,
+        `img_url` text,
+        `description` text
+    )
+""")
+
+
 
 dbConnection.commit()
 
@@ -225,6 +249,7 @@ dbCursor.execute(f"""
     (1, 1, datetime("now"), "tekst komentarza")
 """)
 
+
 dbCursor.execute(f"""
     INSERT INTO nav_links 
     (`link`, `text`, `for_component`, `order`) 
@@ -236,6 +261,22 @@ dbCursor.execute(f"""
     ("/", "Pricing", "footer", 3),
     ("/", "FAQs", "footer", 4),
     ("/", "About", "footer", 5)
+""")
+
+
+dbCursor.execute(f"""
+    INSERT INTO galleries 
+    (`name`) 
+    VALUES
+    ("galeria1")
+""")
+
+
+dbCursor.execute(f"""
+    INSERT INTO galleries_photos 
+    (`gallery_id`, `img_url`, `description`) 
+    VALUES
+    (1, "image1.jpg", "opis")
 """)
 
 
