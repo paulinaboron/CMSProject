@@ -16,6 +16,8 @@ CORS(app)
 # /getSliderData - zwraca dane slajdera o podanym ID (?id=ID)
 # /getFeaturetteData - zwraca dane featuretta o podanym ID (?id=ID)
 # /getLatestArticlesIDs - zwraca listę ID X danych artykyłów (gdy ?count=X) lub wszystkich artykułów (gdy ?count=0 lub bez ?count)
+# /getLinks - zwraca dane linków dla podanego komponentu
+# (?component=header lub ?component=footer)
 
 
 
@@ -176,12 +178,42 @@ def getLatestArticles():
     ids = []
 
     for id in fetchedArticlesIDs:
-        ids.append(id)
+        ids.append(id[0])
 
     return {
         "latestArticlesIDs": ids
     }
 
+
+@app.route('/getLinks')
+def getLinks():
+    component = request.args.get("component")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if component == None:
+        return {"error_message": "brak sprecyzowanego komponentu"}
+    else:
+        dbCursor.execute(f"""
+            SELECT * FROM nav_links WHERE `for_component` = "{component}" ORDER BY `order`
+        """)
+
+    fetchedLinks = dbCursor.fetchall()
+    dbConnection.close()
+
+    links = []
+
+    for link in fetchedLinks:
+        links.append({
+            "url": link[1],
+            "text": link[2]
+        })
+
+    print(links)
+
+    
+    return jsonify(links)
     
 
 

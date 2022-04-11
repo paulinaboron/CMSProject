@@ -156,7 +156,8 @@ dbCursor.execute("""
         `id` integer PRIMARY KEY AUTOINCREMENT,
         `link` text,
         `text` text,
-        `for_component` text
+        `for_component` text,
+        `order` integer
     )
 """)
 
@@ -226,9 +227,15 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO nav_links 
-    (`link`, `text`, `for_component`) 
+    (`link`, `text`, `for_component`, `order`) 
     VALUES
-    ("index.html", "Home", "header")
+    ("/", "Home", "header", 1),
+    ("/", "Link", "header", 2),
+    ("/", "Home", "footer", 1),
+    ("/", "Features", "footer", 2),
+    ("/", "Pricing", "footer", 3),
+    ("/", "FAQs", "footer", 4),
+    ("/", "About", "footer", 5)
 """)
 
 
