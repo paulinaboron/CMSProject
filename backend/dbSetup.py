@@ -2,7 +2,7 @@
 # users (role: admin, redactor, user)
 # sliders (id, nazwa)
 # slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
-# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, połączone)
+# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, powiązana galeria)
 # niezaimplementowane! / articles_lists (id, tytuł)
 # comments (id, id_artykułu, id_użytkownika, data_dodania)
 # featurettes: (id, tytuł, podtytuł, tekst, url_obrazka)
@@ -52,6 +52,14 @@ dbCursor.execute("""
 
 dbCursor.execute("""
     DROP TABLE IF EXISTS nav_links;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS galleries;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS galleries_photos;
 """)
 
 
@@ -120,7 +128,8 @@ dbCursor.execute("""
         `subtitle` text,
         `content` text,
         `image_url` text,
-        `creation_date` datetime
+        `creation_date` datetime,
+        `connected_gallery_id` integer
     )
 """)
 
@@ -210,9 +219,9 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO articles 
-    (`title`, `subtitle`, `content`, `image_url`, `creation_date`) 
+    (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`) 
     VALUES
-    ("tytuł", "podtytuł", "treść", "", datetime("now"))
+    ("tytuł", "podtytuł", "treść", "", datetime("now"), 1)
 """)
 
 

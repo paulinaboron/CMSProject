@@ -18,6 +18,7 @@ CORS(app)
 # /getLatestArticlesIDs - zwraca listę ID X danych artykyłów (gdy ?count=X) lub wszystkich artykułów (gdy ?count=0 lub bez ?count)
 # /getLinks - zwraca dane linków dla podanego komponentu
 # (?component=header lub ?component=footer)
+# /getGalleryData - zwraca dane galerii o podanym ID (?id=ID)
 
 
 
@@ -61,7 +62,8 @@ def getArticleData():
             "subtitle": articleData[2],
             "content": articleData[3],
             "image_url": articleData[4],
-            "creation_date": articleData[5]
+            "creation_date": articleData[5],
+            "connected_gallery_id": articleData[6]
         }
 
     else:
@@ -185,7 +187,7 @@ def getLatestArticles():
     }
 
 
-@app.route('/getLinks')
+@app.route('/getLinks', methods=["GET", "POST"])
 def getLinks():
     component = request.args.get("component")
 
@@ -214,7 +216,53 @@ def getLinks():
 
     
     return jsonify(links)
-    
+
+
+@app.route('/getGalleryData', methods=["GET", "POST"])
+def getGalleryData():
+    id = request.args.get("id")
+    if (id == None):
+        return {
+            "error_message": "Nie podano id galerii"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM galleries WHERE `id` = {id}
+    """)
+    fetchedGalleries = dbCursor.fetchall()
+    dbConnection.close()
+
+    if len(fetchedGalleries) > 0:
+        gallery = fetchedGalleries[0]
+
+        dbConnection = sqlite3.connect('db.sqlite')
+        dbCursor = dbConnection.cursor()
+        dbCursor.execute(f"""
+            SELECT * FROM galleries_photos WHERE `gallery_id` = {gallery[0]}
+        """)
+
+        fetchedPhotos = dbCursor.fetchall()
+        print(fetchedPhotos)
+        dbConnection.close()
+
+        photos = []
+        for photo in fetchedPhotos:
+            photos.append({
+                "img_url": photo[2],
+                "description": photo[3]
+            })
+
+        return {
+            "name": gallery[1],
+            "photos": photos
+        }
+
+    else:
+        return {
+            "error_message": "Taka galeria nie istnieje"
+        }
 
 
 
