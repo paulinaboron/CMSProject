@@ -2,29 +2,32 @@
 # users (role: admin, redactor, user)
 # sliders (id, nazwa)
 # slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
-# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, powiązana galeria)
+# articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, powiązana galeria, id kategorii)
 # niezaimplementowane! / articles_lists (id, tytuł)
 # comments (id, id_artykułu, id_użytkownika, data_dodania)
 # featurettes: (id, tytuł, podtytuł, tekst, url_obrazka)
 # nav_links: (id, link, tekst, dla (headera/stopki), kolejność)
 # galleries: (id, nazwa)
 # galleries_photos: (id, url obrazka, opis?)
+# categories: (id, nazwa)
 # globals (id, nazwa, wartość)
 # zmienne globalne: domyślny szablon, liczba artykułów na stronie głównej, 
 
 
 import sqlite3
 
+
 # połączenie z bazą danych i utworzenie kursora
 
 dbConnection = sqlite3.connect("backend/db.sqlite")
 dbCursor = dbConnection.cursor()
 
+
 # usunięcie tabeli
+
 dbCursor.execute("""
     DROP TABLE IF EXISTS globals;
 """)
-
 
 dbCursor.execute("""
     DROP TABLE IF EXISTS users;
@@ -60,6 +63,10 @@ dbCursor.execute("""
 
 dbCursor.execute("""
     DROP TABLE IF EXISTS galleries_photos;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS categories;
 """)
 
 
@@ -129,7 +136,8 @@ dbCursor.execute("""
         `content` text,
         `image_url` text,
         `creation_date` datetime,
-        `connected_gallery_id` integer
+        `connected_gallery_id` integer,
+        `category_id` integer
     )
 """)
 
@@ -195,6 +203,16 @@ dbCursor.execute("""
 """)
 
 
+# categories: (id, nazwa)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS categories(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `name` text
+    )
+""")
+
+
 
 dbConnection.commit()
 
@@ -216,14 +234,12 @@ dbCursor.execute(f"""
     ("user", "user123", "user@example.pl", "user")
 """)
 
-
 dbCursor.execute(f"""
     INSERT INTO articles 
-    (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`) 
+    (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`, `category_id`) 
     VALUES
-    ("tytuł", "podtytuł", "treść", "", datetime("now"), 1)
+    ("tytuł", "podtytuł", "treść", "", datetime("now"), 1, 1)
 """)
-
 
 dbCursor.execute(f"""
     INSERT INTO sliders 
@@ -231,7 +247,6 @@ dbCursor.execute(f"""
     VALUES
     ("slajder1")
 """)
-
 
 dbCursor.execute(f"""
     INSERT INTO slides 
@@ -242,7 +257,6 @@ dbCursor.execute(f"""
     (1, 3, "gray3.jpg", "Third slide label", "Some representative placeholder content for the third slide.", 0, "", "")
 """)
 
-
 dbCursor.execute(f"""
     INSERT INTO featurettes 
     (`title`, `subtitle`, `content`, `image_url`) 
@@ -250,14 +264,12 @@ dbCursor.execute(f"""
     ("First featurette heading.", "It'll blow your mind.", "Donec ullamcorper nulla non metus auctor fringilla.&#13;Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.", "500.png")
 """)
 
-
 dbCursor.execute(f"""
     INSERT INTO comments 
     (`article_id`, `user_id`, `creation_date`, `content`) 
     VALUES
     (1, 1, datetime("now"), "tekst komentarza")
 """)
-
 
 dbCursor.execute(f"""
     INSERT INTO nav_links 
@@ -272,7 +284,6 @@ dbCursor.execute(f"""
     ("/", "About", "footer", 5)
 """)
 
-
 dbCursor.execute(f"""
     INSERT INTO galleries 
     (`name`) 
@@ -280,12 +291,18 @@ dbCursor.execute(f"""
     ("galeria1")
 """)
 
-
 dbCursor.execute(f"""
     INSERT INTO galleries_photos 
     (`gallery_id`, `img_url`, `description`) 
     VALUES
     (1, "image1.jpg", "opis")
+""")
+
+dbCursor.execute(f"""
+    INSERT INTO categories
+    (`name`) 
+    VALUES
+    ("Przykładowa kategoria")
 """)
 
 
