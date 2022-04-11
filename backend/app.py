@@ -19,6 +19,7 @@ CORS(app)
 # /getLinks - zwraca dane linków dla podanego komponentu
 # (?component=header lub ?component=footer)
 # /getGalleryData - zwraca dane galerii o podanym ID (?id=ID)
+# /getCategoryData - zwraca dane kategorii o podanym ID (?id=ID)
 
 
 
@@ -63,7 +64,8 @@ def getArticleData():
             "content": articleData[3],
             "image_url": articleData[4],
             "creation_date": articleData[5],
-            "connected_gallery_id": articleData[6]
+            "connected_gallery_id": articleData[6],
+            "category_id": articleData[7]
         }
 
     else:
@@ -220,6 +222,52 @@ def getLinks():
 
 @app.route('/getGalleryData', methods=["GET", "POST"])
 def getGalleryData():
+    id = request.args.get("id")
+    if (id == None):
+        return {
+            "error_message": "Nie podano id galerii"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM galleries WHERE `id` = {id}
+    """)
+    fetchedGalleries = dbCursor.fetchall()
+    dbConnection.close()
+
+    if len(fetchedGalleries) > 0:
+        gallery = fetchedGalleries[0]
+
+        dbConnection = sqlite3.connect('db.sqlite')
+        dbCursor = dbConnection.cursor()
+        dbCursor.execute(f"""
+            SELECT * FROM galleries_photos WHERE `gallery_id` = {gallery[0]}
+        """)
+
+        fetchedPhotos = dbCursor.fetchall()
+        print(fetchedPhotos)
+        dbConnection.close()
+
+        photos = []
+        for photo in fetchedPhotos:
+            photos.append({
+                "img_url": photo[2],
+                "description": photo[3]
+            })
+
+        return {
+            "name": gallery[1],
+            "photos": photos
+        }
+
+    else:
+        return {
+            "error_message": "Taka galeria nie istnieje"
+        }
+
+@app.route('/getCategoryData', methods=["GET", "POST"])
+def getCategoryData():
     id = request.args.get("id")
     if (id == None):
         return {
