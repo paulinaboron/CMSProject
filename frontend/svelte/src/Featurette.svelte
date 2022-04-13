@@ -28,7 +28,6 @@
 		<div>
 			<!-- svelte-ignore a11y-img-redundant-alt -->
 			<img src={`/uploads/featurettes/${featData.img_url}`} alt="Featurette Image" />
-			<!-- src = featData.img_url -->
 		</div>
 	</div>
 	<hr class="featurette-divider" />
