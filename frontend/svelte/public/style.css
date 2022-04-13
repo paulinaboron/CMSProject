@@ -38,6 +38,7 @@ div.container-fluid{
 
 img.slider-picture{
     height: 500px;
+    width: 100%;
 }
 
 div.featurette{
@@ -54,4 +55,8 @@ div.featurette{
 
 .nav-link:hover{
     color: rgb(150, 150, 150);
+}
+
+.comment-row{
+    padding-left: 50px;
 }
