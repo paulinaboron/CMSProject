@@ -1,5 +1,7 @@
 <script>
 	import Gallery from "./Gallery.svelte"
+	import Comments from "./Comments.svelte"
+
 	let params = new URLSearchParams(window.location.search);
 	let id = params.get("id");
 	console.log("Article ID: ", id);
@@ -31,12 +33,15 @@
 				</p>
 			</div>
 		</div>
+		<Gallery/>
+		<br>
 		<div id="article-content">
-			<Gallery/>
 			<p>
 				{articleData.content}
 			</p>
 			<p>{articleData.creation_date}</p>
 		</div>
+		<Comments/>
+		<br>
 	{/if}
 {/await}

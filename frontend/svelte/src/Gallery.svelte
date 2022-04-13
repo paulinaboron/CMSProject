@@ -1,31 +1,63 @@
 <script>
-    let params = new URLSearchParams(window.location.search);
-    let id = params.get("id");
-    console.log("Article ID: ", id);
+  let params = new URLSearchParams(window.location.search);
+  let id = params.get("id");
+  console.log("Article ID: ", id);
 
-    async function getGalleryData(id) {
-        let response = await fetch(
-            `http://localhost:5000/getGalleryData?id=${id}`,
-            { method: "post" }
-        );
-        let responseJson = await response.json();
-        console.log("gallery", responseJson);
-        return responseJson;
-    }
-    let galleryData = getGalleryData(id);
+  async function getGalleryData(id) {
+    let response = await fetch(
+      `http://localhost:5000/getGalleryData?id=${id}`,
+      { method: "post" }
+    );
+    let responseJson = await response.json();
+    console.log("gallery", responseJson);
+    return responseJson;
+  }
+  let galleryData = getGalleryData(id);
 
-    $: {
-        galleryData = getGalleryData(id);
-    }
+  $: {
+    galleryData = getGalleryData(id);
+  }
 </script>
 
 {#await galleryData then galleryData}
-    {#if galleryData.error_message}
-        <p>{galleryData.error_message}</p>
-    {:else}
+  {#if galleryData.error_message}
+    <p>{galleryData.error_message}</p>
+  {:else}
+
+    <div
+      id="carouselExampleControls"
+      class="carousel slide"
+      data-ride="carousel"
+    >
+      <div class="carousel-inner">
         {#each galleryData.photos as photo}
-            <img src="/uploads/galleries/{photo.img_url}" alt="Zdjęcie z galerii" />
-            <p>{photo.description}</p>
+          <div class="carousel-item active">
+            <img
+              class="d-block w-100 slider-picture"
+              src="/uploads/galleries/{photo.img_url}"
+              alt="Zdjęcie z galerii"
+            />
+          </div>
         {/each}
-    {/if}
+      </div>
+      <a
+        class="carousel-control-prev"
+        href="#carouselExampleControls"
+        role="button"
+        data-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true" />
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next"
+        href="#carouselExampleControls"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true" />
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  {/if}
 {/await}
