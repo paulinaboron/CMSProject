@@ -24,7 +24,7 @@
         <p>{galleryData.error_message}</p>
     {:else}
         {#each galleryData.photos as photo}
-            <img src={photo.img_url} alt="Zdjęcie z galerii" />
+            <img src="/uploads/galleries/{photo.img_url}" alt="Zdjęcie z galerii" />
             <p>{photo.description}</p>
         {/each}
     {/if}
