@@ -25,7 +25,7 @@
       <ul class="nav justify-content-center border-bottom pb-3 mb-3">
         {#each footerData as item}
           <li class="nav-item">
-            <a href="{item.url}" class="nav-link px-2 text-muted">{item.text}</a>
+            <a href={item.url} class="nav-link px-2 text-muted">{item.text}</a>
           </li>
         {/each}
       </ul>

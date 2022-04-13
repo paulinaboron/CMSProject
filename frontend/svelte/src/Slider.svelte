@@ -93,5 +93,4 @@
         </button>
     </div>
 {/await}
-<!-- Slider -->
 
