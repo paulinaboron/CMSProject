@@ -267,51 +267,52 @@ def getGalleryData():
             "error_message": "Taka galeria nie istnieje"
         }
 
+
 @app.route('/getCategoryData', methods=["GET", "POST"])
 def getCategoryData():
-    id = request.args.get("id")
-    if (id == None):
+    categoryId = request.args.get("id")
+
+    if (categoryId == None):
         return {
-            "error_message": "Nie podano id galerii"
+            "error_message": "Nie podano id kategorii"
         }
 
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
     dbCursor.execute(f"""
-        SELECT * FROM galleries WHERE `id` = {id}
+        SELECT * FROM categories WHERE `id` = {categoryId}
     """)
-    fetchedGalleries = dbCursor.fetchall()
-    dbConnection.close()
 
-    if len(fetchedGalleries) > 0:
-        gallery = fetchedGalleries[0]
+    fetchedCategories = dbCursor.fetchall()
+    print(fetchedCategories)
 
-        dbConnection = sqlite3.connect('db.sqlite')
-        dbCursor = dbConnection.cursor()
+    if len(fetchedCategories) > 0:
         dbCursor.execute(f"""
-            SELECT * FROM galleries_photos WHERE `gallery_id` = {gallery[0]}
+            SELECT `id` FROM articles WHERE `category_id` = {categoryId}
         """)
+        fetchedArticles = dbCursor.fetchall()
+        print(fetchedArticles)
 
-        fetchedPhotos = dbCursor.fetchall()
-        print(fetchedPhotos)
         dbConnection.close()
+        articlesIDs = []
 
-        photos = []
-        for photo in fetchedPhotos:
-            photos.append({
-                "img_url": photo[2],
-                "description": photo[3]
-            })
+        for fetchedArticle in fetchedArticles:
+            articlesIDs.append(fetchedArticle[0])
 
         return {
-            "name": gallery[1],
-            "photos": photos
+            "name" : fetchedCategories[0][1],
+            "articles": articlesIDs
         }
-
     else:
+        dbConnection.close()
         return {
-            "error_message": "Taka galeria nie istnieje"
+            "error_message": "brak kategorii o podanym id"
         }
+        
+    
+    
+
+
 
 @app.route("/getCommentsForArticle", methods=["POST", "GET"])
 def getCommentsForArticle():
