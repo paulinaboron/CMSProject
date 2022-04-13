@@ -267,6 +267,7 @@ def getGalleryData():
             "error_message": "Taka galeria nie istnieje"
         }
 
+
 @app.route('/getCategoryData', methods=["GET", "POST"])
 def getCategoryData():
     categoryId = request.args.get("id")
