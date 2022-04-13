@@ -20,6 +20,7 @@ CORS(app)
 # (?component=header lub ?component=footer)
 # /getGalleryData - zwraca dane galerii o podanym ID (?id=ID)
 # /getCategoryData - zwraca dane kategorii o podanym ID (?id=ID)
+# /getCommentsForArticle - zwraca komentarze dla artykułu o podanym ID (?id=ID)
 
 
 
@@ -311,6 +312,49 @@ def getCategoryData():
         return {
             "error_message": "Taka galeria nie istnieje"
         }
+
+@app.route("/getCommentsForArticle", methods=["POST", "GET"])
+def getCommentsForArticle():
+    articleId = request.args.get("id")
+
+    if (articleId == None):
+        return {
+            "error_message": "Nie podano id artykułu"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM comments WHERE `article_id` = {articleId}
+    """)
+    
+    fetchedComments = dbCursor.fetchall()
+    print(fetchedComments)
+
+    comments = []
+
+    for fetchedComment in fetchedComments:
+        author = ""
+
+        dbCursor.execute(f"""
+            SELECT `username` FROM users WHERE `id` = {fetchedComment[2]}
+        """)
+        fetchedUsers = dbCursor.fetchall()
+        print(fetchedUsers)
+
+        if len(fetchedUsers) == 1:
+            author = fetchedUsers[0][0]
+
+        comments.append({
+            "author": author,
+            "creation_date": fetchedComment[3],
+            "content": fetchedComment[4]
+        })
+
+    dbConnection.close()
+
+    return jsonify(comments)
+
 
 
 
