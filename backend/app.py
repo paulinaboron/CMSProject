@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, redirect, request, send_from_directory
 from flask_bs4 import Bootstrap
 from flask_cors import CORS
 
@@ -21,6 +21,7 @@ CORS(app)
 # /getGalleryData - zwraca dane galerii o podanym ID (?id=ID)
 # /getCategoryData - zwraca dane kategorii o podanym ID (?id=ID)
 # /getCommentsForArticle - zwraca komentarze dla artykułu o podanym ID (?id=ID)
+# /loginUser - logowanie użytkownika
 
 
 
@@ -32,6 +33,10 @@ def index():
 @app.route('/article')
 def article():
     return send_from_directory("../frontend/svelte/public", "article.html")
+
+@app.route('/login')
+def login():
+    return send_from_directory("../frontend/svelte/public", "loginPage.html")
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
@@ -57,7 +62,6 @@ def getArticleData():
 
     if len(fetchedRecords) == 1:
         articleData = fetchedRecords[0]
-        print(articleData)
         return {
             "id": articleData[0],
             "title": articleData[1],
@@ -97,7 +101,6 @@ def getSliderData():
         SELECT * FROM slides WHERE `slider_id` = {id}
         """)
         fetchedSlides = dbCursor.fetchall()
-        print(fetchedSlides)
 
         slides = []
 
@@ -148,7 +151,6 @@ def getFeaturetteData():
     
     if len(fetchedFeaturettes) == 1:
         featurette = fetchedFeaturettes[0]
-        print(featurette)
 
         return {
             "title": featurette[1],
@@ -215,8 +217,6 @@ def getLinks():
             "text": link[2]
         })
 
-    print(links)
-
     
     return jsonify(links)
 
@@ -247,7 +247,6 @@ def getGalleryData():
         """)
 
         fetchedPhotos = dbCursor.fetchall()
-        print(fetchedPhotos)
         dbConnection.close()
 
         photos = []
@@ -284,14 +283,12 @@ def getCategoryData():
     """)
 
     fetchedCategories = dbCursor.fetchall()
-    print(fetchedCategories)
 
     if len(fetchedCategories) > 0:
         dbCursor.execute(f"""
             SELECT `id` FROM articles WHERE `category_id` = {categoryId}
         """)
         fetchedArticles = dbCursor.fetchall()
-        print(fetchedArticles)
 
         dbConnection.close()
         articlesIDs = []
@@ -309,10 +306,6 @@ def getCategoryData():
             "error_message": "brak kategorii o podanym id"
         }
         
-    
-    
-
-
 
 @app.route("/getCommentsForArticle", methods=["POST", "GET"])
 def getCommentsForArticle():
@@ -330,7 +323,6 @@ def getCommentsForArticle():
     """)
     
     fetchedComments = dbCursor.fetchall()
-    print(fetchedComments)
 
     comments = []
 
@@ -341,7 +333,6 @@ def getCommentsForArticle():
             SELECT `username` FROM users WHERE `id` = {fetchedComment[2]}
         """)
         fetchedUsers = dbCursor.fetchall()
-        print(fetchedUsers)
 
         if len(fetchedUsers) == 1:
             author = fetchedUsers[0][0]
@@ -356,6 +347,18 @@ def getCommentsForArticle():
 
     return jsonify(comments)
 
+
+@app.route("/loginUser", methods=["POST", "GET"])
+def loginUser():
+    login = request.form.get("firstCredential")
+    password = request.form.get("password")
+
+
+    print(f"Dane: {login}, {password}")
+    return {
+        "login": login,
+        "password": password
+    }
 
 
 

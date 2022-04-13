@@ -12,7 +12,8 @@ const inputs = [
     css: "public/build/second.css",
   }, //object for setting more specific values for input and output of roolup configuration*/
   "article",
-  "DBTest"
+  "DBTest",
+  "LoginPage"
 ];
 const production = !process.env.ROLLUP_WATCH;
 

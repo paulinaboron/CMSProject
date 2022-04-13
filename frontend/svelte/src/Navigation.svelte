@@ -33,15 +33,15 @@
                     {/each}
                 </ul>
                 <form class="d-flex">
-                    <button class="btn btn-sm btn-outline-primary"
-                        >Register</button
+                    <a href="/register" class="btn btn-sm btn-outline-primary"
+                        >Register</a
                     >
-                    <button
+                    <a href="/login"
                         class="btn btn-sm btn-outline-success"
                         id="login-btn"
                     >
                         Login
-                    </button>
+                </a>
                 </form>
             </div>
         </div>
