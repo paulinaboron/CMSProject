@@ -20,8 +20,7 @@
   </script>
 
 
-<div class="row d-flex justify-content-center mt-100 mb-100">
-    <div class="col-lg-7">
+    <div class="col-lg-7 comments-box">
         <div class="card">
             <div class="card-body text-center">
                 <h4 class="card-title">Komentarze</h4>
@@ -38,6 +37,7 @@
                         <div class="comment-footer"> <span class="text-muted float-right">{comment.creation_date}</span> </div>
                     </div>
                 </div>
+                <br>
                 {/each}
                 
                 {/await}
@@ -45,4 +45,3 @@
             </div>
         </div>
     </div>
-</div>

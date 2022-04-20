@@ -19,3 +19,8 @@ hr{
 .nav-link{
     color: white;
 }
+
+.article-top, #article-content{
+    color: white;
+}
+

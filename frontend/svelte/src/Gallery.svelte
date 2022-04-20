@@ -30,8 +30,16 @@
       data-ride="carousel"
     >
       <div class="carousel-inner">
+        
+        <div class="carousel-item active">
+          <img
+            class="d-block w-100 slider-picture"
+            src="/uploads/galleries/image1.jpg"
+            alt="Zdjęcie z galerii"
+          />
+        </div>
         {#each galleryData.photos as photo}
-          <div class="carousel-item active">
+          <div class="carousel-item">
             <img
               class="d-block w-100 slider-picture"
               src="/uploads/galleries/{photo.img_url}"
@@ -39,6 +47,8 @@
             />
           </div>
         {/each}
+
+        
       </div>
       <a
         class="carousel-control-prev"
@@ -58,6 +68,9 @@
         <span class="carousel-control-next-icon" aria-hidden="true" />
         <span class="sr-only">Next</span>
       </a>
+
+
+
     </div>
   {/if}
 {/await}
