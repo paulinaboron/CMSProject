@@ -9,11 +9,21 @@
         return responseJson;
     }
 
+    async function getLoggedUser() {
+        let response = await fetch(
+            `http://localhost:5000/getLoggedUserData`,
+            { method: "post" }
+        );
+        let responseJson = await response.json();
+        console.log("response logUser: ", responseJson);
+        return responseJson
+    }
+
+    let loggedUserData = getLoggedUser()
     let navData = getLinks();
 
-    $: {
-        navData = getLinks();
-    }
+    $: navData = getLinks();
+    $: loggedUserData = getLoggedUser()
 </script>
 
 {#await navData}
@@ -32,17 +42,32 @@
                         </li>
                     {/each}
                 </ul>
-                <form class="d-flex">
-                    <a href="/register" class="btn btn-sm btn-outline-primary"
-                        >Register</a
-                    >
-                    <a href="/login"
-                        class="btn btn-sm btn-outline-success"
-                        id="login-btn"
-                    >
-                        Login
-                </a>
-                </form>
+                
+                {#await loggedUserData}
+                    <h1>Oczekiwanie na dane użytkownika</h1>
+                {:then loggedUserData}
+                    {#if loggedUserData.error_message}
+                        <form class="d-flex">
+                            <a href="/register" class="btn btn-sm btn-outline-primary"
+                                >Register</a
+                            >
+                            <a href="/login"
+                                class="btn btn-sm btn-outline-success"
+                                id="login-btn"
+                            >
+                                Login
+                            </a>
+                        </form>
+                    {:else}
+                        <span class="px-3">
+                            Zalogowany jako: <strong>{loggedUserData.userName}</strong>
+                        </span>
+                        
+                        <a href="/logoutUser"
+                            >Wyloguj</a
+                        >
+                    {/if}
+                {/await}
             </div>
         </div>
     </nav>

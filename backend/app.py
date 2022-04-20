@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, redirect, request, send_from_directory
+from flask import Flask, jsonify, redirect, request, send_from_directory, session
 from flask_bs4 import Bootstrap
 from flask_cors import CORS
 
@@ -22,6 +22,8 @@ CORS(app)
 # /getCategoryData - zwraca dane kategorii o podanym ID (?id=ID)
 # /getCommentsForArticle - zwraca komentarze dla artykułu o podanym ID (?id=ID)
 # /loginUser - logowanie użytkownika
+# /logutUser - wylogowywanie użytkownika
+# /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
 
 
 
@@ -350,16 +352,69 @@ def getCommentsForArticle():
 
 @app.route("/loginUser", methods=["POST", "GET"])
 def loginUser():
-    login = request.form.get("firstCredential")
-    password = request.form.get("password")
-
+    login = request.json.get("firstCredential")
+    password = request.json.get("password")
 
     print(f"Dane: {login}, {password}")
+
+    if login == "" or password == "":
+        return {
+            "error_message": "Uzupełnij dane logowania!"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM users WHERE `username` = "{login}" OR `email` = "{login}"
+    """)
+
+    fetchedUsers = dbCursor.fetchall()
+    dbConnection.close()
+
+    valid = False
+
+    if len(fetchedUsers) == 1:
+        if password == fetchedUsers[0][2]:
+            session["userID"] = fetchedUsers[0][0]
+            session["userName"] = fetchedUsers[0][1]
+            session["userRole"] = fetchedUsers[0][2]
+
+            return {
+                "state": "valid"
+            }
+
     return {
-        "login": login,
-        "password": password
+        "state": "error",
+        "error_message": "Nieprawidłowy, email, nazwa użytkownika lub hasło"
     }
 
+
+@app.route("/logoutUser", methods=["POST", "GET"])
+def logoutUser():
+    if "userID" in session:
+        del session["userID"]
+        del session["userName"]
+        del session["userRole"]
+
+    return redirect("/")
+
+
+@app.route("/getLoggedUserData", methods=["POST", "GET"])
+def getLoggedUserData():
+    if "userID" in session:
+        print("działa")
+        return {
+            "userID": session["userID"],
+            "userName": session["userName"],
+            "userRole": session["userRole"],
+        }
+    else:
+        return {
+            "error_message": "brak zalogowanego użytkownika"
+        }
+
+    
+    
 
 
 @app.route("/uploads/<path:path>")
