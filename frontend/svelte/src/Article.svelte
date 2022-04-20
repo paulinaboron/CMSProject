@@ -1,17 +1,19 @@
 <script>
-	import Gallery from "./Gallery.svelte"
-	import Comments from "./Comments.svelte"
+	import Gallery from "./Gallery.svelte";
+	import Comments from "./Comments.svelte";
+	import Navigation from "./Navigation.svelte";
+	import Footer from "./Footer.svelte";
 
 	let params = new URLSearchParams(window.location.search);
 	let id = params.get("id");
 	console.log("Article ID: ", id);
 
 	async function getArticleData(id) {
-		let response = await fetch(
-			`http://localhost:5000/getArticleData?id=${id}`,
-			{ method: "post" }
-		);
+		let response = await fetch(`http://localhost:5000/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
+		console.log(responseJson.content);
+		console.log(responseJson.content.replace("\u0009", "asd"));
+		console.log("Article: ", responseJson);
 		return responseJson;
 	}
 	let articleData = getArticleData(id);
@@ -20,6 +22,8 @@
 		articleData = getArticleData(id);
 	}
 </script>
+
+<Navigation />
 
 {#await articleData then articleData}
 	{#if articleData.error_message}
@@ -33,15 +37,17 @@
 				</p>
 			</div>
 		</div>
-		<Gallery/>
-		<br>
+		<Gallery />
+		<br />
 		<div id="article-content">
 			<p>
-				{articleData.content}
+				{@html articleData.content}
 			</p>
 			<p>{articleData.creation_date}</p>
 		</div>
-		<Comments/>
-		<br>
+		<Comments />
+		<br />
 	{/if}
 {/await}
+
+<Footer />

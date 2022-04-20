@@ -238,7 +238,7 @@ dbCursor.execute(f"""
     INSERT INTO articles 
     (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`, `category_id`) 
     VALUES
-    ("tytuł", "podtytuł", "treść", "", datetime("now"), 1, 1)
+    ("tytuł", "podtytuł", "&nbsp;&nbsp;&nbsp;treść dalsza </br>część treści", "", datetime("now"), 1, 1)
 """)
 
 dbCursor.execute(f"""

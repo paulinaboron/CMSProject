@@ -1,0 +1,27 @@
+Frontend:
+    - dodawanie komentarzy pod artykułami
+    - dodatkowa klasa dla stopki (przyklejona do dołu)
+        *** dodane - stopka jest fixed-bottom, jeżeli zostanie wywołana z użyciem sticky={true}
+    - poprawić marginesy w stopce
+        *** poprawione
+    - wszystkie kolory w stylach jako zmienne (:root{ --zmienna: kolor }), żeby łatwiej zmieniać na ciemny tryb i/lub tworzyć style do customowych template'ów
+    - strona kategorii
+        * użyć /getCategoryData
+    - poprawić spłaszczone obrazki na slajderach i w galeriach
+        *** poprawione
+    - wyszukiwarka (szukanie słów w artykułach)
+    - jeżeli zalogowany użytkownik jest adminem - link do CMSa w nawigacji
+    - strona zarządzania kontem dla użytkownika
+    - alternatywna nawigacja
+    - dodać responsywność do nawigacji (na mniejszych ekranach nie ma ikonki hamburgera!)
+    - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
+
+Backend:
+    - zmiana i tworzenie nowego template'u
+    - zarządzanie użytkownikami
+    - wstawianie obrazków do folderu uploads (sprawdzić czy da się to zrobić we Flasku!)
+    - możliwość zmiany stylu nawigacji
+    - dodawanie i edycja artykułów
+
+TKInter:
+    - całość (najlepiej na końcu, bo zrobienie tego potrwa +/- pół godziny)

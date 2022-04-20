@@ -363,8 +363,6 @@ def loginUser():
     login = request.json.get("firstCredential")
     password = request.json.get("password")
 
-    print(f"Dane: {login}, {password}")
-
     if login == "" or password == "":
         return {
             "error_message": "Uzupełnij dane logowania!"
@@ -408,7 +406,6 @@ def logoutUser():
 @app.route("/getLoggedUserData", methods=["POST", "GET"])
 def getLoggedUserData():
     if "userID" in session:
-        print("działa")
         return {
             "userID": session["userID"],
             "userName": session["userName"],
@@ -426,8 +423,6 @@ def registerUser():
     username = request.json.get("username")
     password = request.json.get("password")
     passwordConf = request.json.get("passwordConf")
-
-    print(f"Dane: {email}, {username}, {password}, {passwordConf}")
 
     if username == "" or password == "" or email == "":
         return {
