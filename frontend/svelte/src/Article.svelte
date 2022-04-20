@@ -25,7 +25,7 @@
 	{#if articleData.error_message}
 		<p>{articleData.error_message}</p>
 	{:else}
-		<div class="position-relative text-center">
+		<div class="position-relative text-center article-top">
 			<div class="col-md-5 p-lg-5 mx-auto">
 				<h1 class="display-4">{articleData.title}</h1>
 				<p class="lead">

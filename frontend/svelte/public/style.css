@@ -60,3 +60,11 @@ div.featurette{
 .comment-row{
     padding-left: 50px;
 }
+
+.comments-box{
+    margin: auto;
+}
+
+.comment-text{
+    padding-right: 50px;
+}
