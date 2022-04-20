@@ -377,7 +377,7 @@ def loginUser():
         if password == fetchedUsers[0][2]:
             session["userID"] = fetchedUsers[0][0]
             session["userName"] = fetchedUsers[0][1]
-            session["userRole"] = fetchedUsers[0][2]
+            session["userRole"] = fetchedUsers[0][4]
 
             return {
                 "state": "valid"
