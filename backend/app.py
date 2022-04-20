@@ -10,14 +10,12 @@ app.config['JSON_AS_ASCII'] = False
 bootstrap = Bootstrap(app)
 CORS(app)
 
-# / - zwraca stronę główną
 # /getAllUsers - obecnie służy jako test, później może coś będzie robiło
 # /getArticleData - zwraca dane artykułu o podanym ID (?id=ID)
 # /getSliderData - zwraca dane slajdera o podanym ID (?id=ID)
 # /getFeaturetteData - zwraca dane featuretta o podanym ID (?id=ID)
 # /getLatestArticlesIDs - zwraca listę ID X danych artykyłów (gdy ?count=X) lub wszystkich artykułów (gdy ?count=0 lub bez ?count)
-# /getLinks - zwraca dane linków dla podanego komponentu
-# (?component=header lub ?component=footer)
+# /getLinks - zwraca dane linków dla podanego komponentu (?component=header lub ?component=footer)
 # /getGalleryData - zwraca dane galerii o podanym ID (?id=ID)
 # /getCategoryData - zwraca dane kategorii o podanym ID (?id=ID)
 # /getCommentsForArticle - zwraca komentarze dla artykułu o podanym ID (?id=ID)
@@ -38,7 +36,17 @@ def article():
 
 @app.route('/login')
 def login():
-    return send_from_directory("../frontend/svelte/public", "loginPage.html")
+    if "userID" in session:
+        return redirect("/")
+    else:
+        return send_from_directory("../frontend/svelte/public", "loginPage.html")
+
+@app.route('/register')
+def register():
+    if "userID" in session:
+        return redirect("/")
+    else:
+        return send_from_directory("../frontend/svelte/public", "registerPage.html")
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
@@ -371,8 +379,6 @@ def loginUser():
     fetchedUsers = dbCursor.fetchall()
     dbConnection.close()
 
-    valid = False
-
     if len(fetchedUsers) == 1:
         if password == fetchedUsers[0][2]:
             session["userID"] = fetchedUsers[0][0]
@@ -411,6 +417,58 @@ def getLoggedUserData():
     else:
         return {
             "error_message": "brak zalogowanego użytkownika"
+        }
+        
+
+@app.route("/registerUser", methods=["POST", "GET"])
+def registerUser():
+    email = request.json.get("email")
+    username = request.json.get("username")
+    password = request.json.get("password")
+    passwordConf = request.json.get("passwordConf")
+
+    print(f"Dane: {email}, {username}, {password}, {passwordConf}")
+
+    if username == "" or password == "" or email == "":
+        return {
+            "error_message": "Uzupełnij wszystkie dane do rejestracji!"
+        }
+    
+    if passwordConf != password:
+        return {
+            "error_message": "Podane hasła nie są identyczne!"
+        }
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM users WHERE `username` = "{username}" OR `email` = "{email}"
+    """)
+
+    fetchedUsers = dbCursor.fetchall()
+    
+
+    if len(fetchedUsers) == 0:
+
+
+        dbCursor.execute(f"""
+               INSERT INTO users 
+                (`username`, `password`, `email`, `role`) 
+                VALUES
+                ("{username}", "{password}", "{email}", "user")
+        """)
+
+        dbConnection.commit()
+        dbConnection.close()
+
+        return {
+            "state": "valid"
+        }
+    else:
+        dbConnection.close()
+        return {
+            "state": "error",
+            "error_message": "Podana nazwa użytkownika lub email są już zajęte!"
         }
 
     

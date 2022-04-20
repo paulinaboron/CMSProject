@@ -13,7 +13,8 @@ const inputs = [
   }, //object for setting more specific values for input and output of roolup configuration*/
   "article",
   "DBTest",
-  "LoginPage"
+  "LoginPage",
+  "RegisterPage"
 ];
 const production = !process.env.ROLLUP_WATCH;
 
