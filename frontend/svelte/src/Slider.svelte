@@ -4,7 +4,7 @@
 
     async function getSliderData(id) {
         let response = await fetch(
-            `http://localhost:5000/getSliderData?id=${id}`,
+            `/getSliderData?id=${id}`,
             { method: "post" }
         );
         let responseJson = await response.json();

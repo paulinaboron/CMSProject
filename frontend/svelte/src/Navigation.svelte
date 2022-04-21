@@ -1,7 +1,7 @@
 <script>
     async function getLinks() {
         let response = await fetch(
-            `http://localhost:5000/getLinks?component=header`,
+            `/getLinks?component=header`,
             { method: "post" }
         );
         let responseJson = await response.json();
@@ -11,7 +11,7 @@
 
     async function getLoggedUser() {
         let response = await fetch(
-            `http://localhost:5000/getLoggedUserData`,
+            `/getLoggedUserData`,
             { method: "post" }
         );
         let responseJson = await response.json();

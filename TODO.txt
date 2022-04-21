@@ -5,7 +5,9 @@ Frontend:
         *** dodane - stopka jest fixed-bottom, jeżeli zostanie wywołana z użyciem sticky={true}
     - poprawić marginesy w stopce
         *** poprawione
-    - wszystkie kolory w stylach jako zmienne (:root{ --zmienna: kolor }), żeby łatwiej zmieniać na ciemny tryb i/lub tworzyć style do customowych template'ów
+    - wszystkie kolory w stylach jako zmienne (:root{ --zmienna: kolor })
+        * żeby łatwiej zmieniać na ciemny tryb i/lub tworzyć style do customowych template'ów
+        * edit: template będzie jeden, który domyślnie będzie wyglądał tak jak teraz, ale admin ma możliwość zmiany
     - strona kategorii
         * użyć /getCategoryData
     - poprawić spłaszczone obrazki na slajderach i w galeriach

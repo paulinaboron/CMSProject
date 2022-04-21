@@ -3,7 +3,7 @@
 	console.log("ID Featurette: ", id);
 
 	async function getFeaturetteData(id) {
-		let response = await fetch(`http://localhost:5000/getFeaturetteData?id=${id}`, { method: "post" });
+		let response = await fetch(`/getFeaturetteData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
 		console.log("responseJson: ", responseJson);
 		return responseJson;
