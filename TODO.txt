@@ -1,5 +1,6 @@
 Frontend:
     - dodawanie komentarzy pod artykułami
+        * sam wygląd, zajmę się dodawaniem do bazy danych (MK)
     - dodatkowa klasa dla stopki (przyklejona do dołu)
         *** dodane - stopka jest fixed-bottom, jeżeli zostanie wywołana z użyciem sticky={true}
     - poprawić marginesy w stopce
@@ -10,13 +11,19 @@ Frontend:
     - poprawić spłaszczone obrazki na slajderach i w galeriach
         *** poprawione
     - wyszukiwarka (szukanie słów w artykułach)
+        * jak komentarze - sam wygląd
     - jeżeli zalogowany użytkownik jest adminem - link do CMSa w nawigacji
+        * link do adresu "/admin"
     - strona zarządzania kontem dla użytkownika
+        * najlepiej w pasku nawigacyjnym/profilu; link do adresu "/
     - alternatywna nawigacja
+        * tylko style, reszta będzie tak samo
     - dodać responsywność do nawigacji (na mniejszych ekranach nie ma ikonki hamburgera!)
+        * poprawić z Bootstrapem
     - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
+        * dodam endpoint "/getFooterText"
 
-Backend:
+Backend: (MK)
     - zmiana i tworzenie nowego template'u
     - zarządzanie użytkownikami
     - wstawianie obrazków do folderu uploads (sprawdzić czy da się to zrobić we Flasku!)
