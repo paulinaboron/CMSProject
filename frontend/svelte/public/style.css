@@ -72,3 +72,10 @@ div.featurette-text{
 .article-content {
 	white-space: pre-wrap;
 }
+
+.comment-form {
+	display: grid;
+	grid-template-columns: auto 50px 50px;
+	align-items: start;
+	padding: 0 50px;
+}

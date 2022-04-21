@@ -1,4 +1,6 @@
 <script>
+    import Search from "./Search.svelte"
+
     async function getLinks() {
         let response = await fetch(`/getLinks?component=header`, {
             method: "post",
@@ -77,22 +79,13 @@
                                 >
                             </span>
 
-                            <a href="/logoutUser" class="ml-3">Wyloguj</a></li>
+                            <a href="/logoutUser">Wyloguj</a></li>
                         {/if}
                     {/await}
                 </ul>
             </div>
 
-            <form class="d-flex">
-                <input
-                    class="form-control me-2"
-                    type="search"
-                    placeholder="Search"
-                    aria-label="Search"
-                />
-                <button class="btn btn-outline-success" type="submit">OK</button
-                >
-            </form>
+            <Search/>
         </div>
     </nav>
 {/await}
