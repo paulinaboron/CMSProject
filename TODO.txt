@@ -27,6 +27,13 @@ Frontend:
 
 Backend: (MK)
     - zmiana i tworzenie nowego template'u
+        * edit: tylko zmiana domyślnego, nie potrzeba chyba tworzenia nowego
+        * edit 2: ew. dodanie tylko jednego customowego template'a + zostawienie domyślnego
+        * edit 3: z wytycznych do projektu: "CMS pozwala na: wybór 1 z kilku gotowych motywów (theme)"
+            * tzn. trzeba zrobić przynajmniej dwie strony główne (obecna + jakaś inna) + dwa warianty kolorystyczne (obecny szary + jakiś inny)
+            * możliwość mieszania stron główynych i motywów kolor.
+            * możliwość stworzenia jednego customowego template'a + jednego wariantu kolor.
+            * dodatkowo domyślny wariant ciemny + delikatne zmiany dla ciemnego wariantu w customowym motywie
     - zarządzanie użytkownikami
     - wstawianie obrazków do folderu uploads (sprawdzić czy da się to zrobić we Flasku!)
     - możliwość zmiany stylu nawigacji
