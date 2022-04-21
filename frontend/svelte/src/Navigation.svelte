@@ -87,7 +87,7 @@
         <!--Navbar-->
         <nav class="navbar navbar-light light-blue lighten-4">
             <!-- Navbar brand -->
-            <a class="navbar-brand" href="#">Navbar</a>
+            <a class="navbar-brand" href="/">Navbar</a>
 
             <!-- Collapse button -->
             <button

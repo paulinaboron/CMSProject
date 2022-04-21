@@ -30,10 +30,13 @@ CORS(app)
 def index():
     return send_from_directory("../frontend/svelte/public", "index.html")
 
-
 @app.route('/article')
 def article():
     return send_from_directory("../frontend/svelte/public", "article.html")
+
+@app.route('/category')
+def category():
+    return send_from_directory("../frontend/svelte/public", "category.html")
 
 @app.route('/login')
 def login():
