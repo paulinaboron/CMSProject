@@ -70,14 +70,14 @@
                                 </a></li>
                             </form>
                         {:else}
-                        <li class="nav-item nav-link">
-                            <span class="mr-2 mt-1">
+                        <li class="nav-item nav-link mt-1">
+                            <span class="mr-2">
                                 Zalogowany jako: <strong
-                                    >{loggedUserData.userName}</strong
+                                    >{loggedUserData.userName} </strong
                                 >
                             </span>
 
-                            <a href="/logoutUser">Wyloguj</a></li>
+                            <a href="/logoutUser" class="ml-3">Wyloguj</a></li>
                         {/if}
                     {/await}
                 </ul>

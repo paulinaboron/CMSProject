@@ -31,10 +31,6 @@ div.container-fluid {
 	margin: auto;
 }
 
-#login-btn {
-	margin-left: 10px;
-}
-
 img.slider-picture {
 	width: 100%;
 	position: absolute;
@@ -59,14 +55,6 @@ div.featurette {
 
 div.featurette-text{
 	width: 40%;
-}
-
-.nav-link {
-	color: black;
-}
-
-.nav-link:hover {
-	color: rgb(150, 150, 150);
 }
 
 .comment-row {
