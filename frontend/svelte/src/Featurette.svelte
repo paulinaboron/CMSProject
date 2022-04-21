@@ -16,7 +16,7 @@
 {#await featData then featData}
 	<hr class="featurette-divider" />
 	<div class="featurette">
-		<div>
+		<div class="featurette-text">
 			<h2 class="featurette-heading">
 				{featData.title}
 				<span class="text-muted">{featData.subtitle}</span>

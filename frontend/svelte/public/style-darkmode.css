@@ -1,26 +1,32 @@
+:root {
+    --bg-color: black;
+    --card-color: rgb(48, 48, 48);
+    --font-color: white;
+}
+
 
 body{
-    background-color: black;
+    background-color: var(--bg-color);
 }
 
 .card{
-    background-color: rgb(48, 48, 48);
-    color: white;
+    background-color: var(--card-color);
+    color: var(--font-color);
 }
 
 hr{
-    color: white;
+    color: var(--font-color);
 }
 
 .featurette{
-    color: white;
+    color: var(--font-color);
 }
 
 .nav-link{
-    color: white;
+    color: var(--font-color);
 }
 
 .article-top, #article-content{
-    color: white;
+    color: var(--font-color);
 }
 

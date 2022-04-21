@@ -39,6 +39,7 @@ img.slider-picture {
 	width: 100%;
 	position: absolute;
 	top: -25%;
+	height: 650px !important;
 }
 
 .carousel-item {
@@ -53,6 +54,11 @@ div.featurette {
 	flex-direction: row;
 	align-items: center;
 	gap: 50px;
+	flex-wrap: wrap;
+}
+
+div.featurette-text{
+	width: 40%;
 }
 
 .nav-link {
