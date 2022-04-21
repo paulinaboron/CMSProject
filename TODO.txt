@@ -1,7 +1,12 @@
+Poprawki CSS:
+    - na małych ekranach wyszukiwarka jest przyklejona do hamburgera
+    - data w komentarzach jest trochę za duża
+
 Frontend:
     - dodawanie komentarzy pod artykułami
         * sam wygląd, zajmę się dodawaniem do bazy danych (MK)
         *** wygląd zrobiony
+        *** skończone
     - dodatkowa klasa dla stopki (przyklejona do dołu)
         *** dodane - stopka jest fixed-bottom, jeżeli zostanie wywołana z użyciem sticky={true}
     - poprawić marginesy w stopce
@@ -12,15 +17,16 @@ Frontend:
         *** gotowe
     - strona kategorii
         * użyć /getCategoryData
+        *** zrobione
     - poprawić spłaszczone obrazki na slajderach i w galeriach
-        *** poprawione
+        *** naprawione z object-fit
     - wyszukiwarka (szukanie słów w artykułach)
         * jak komentarze - sam wygląd
         *** wygląd zrobiony
     - jeżeli zalogowany użytkownik jest adminem - link do CMSa w nawigacji
         * link do adresu "/admin"
     - strona zarządzania kontem dla użytkownika
-        * najlepiej w pasku nawigacyjnym/profilu; link do adresu "/
+        * najlepiej w pasku nawigacyjnym/profilu; link do adresu "/profile"
     - alternatywna nawigacja
         * tylko style, reszta będzie tak samo
     - dodać responsywność do nawigacji (na mniejszych ekranach nie ma ikonki hamburgera!)
@@ -28,8 +34,12 @@ Frontend:
         *** nawigacja poprawiona
     - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
         * dodam endpoint "/getFooterText"
+        * edit: tekst footera będzie częścią template'u (będzie wysyłany w "/getCurrentTemplateData")
+    - uporządkować componenty na stronie głównej 
+        * zostawić tylko componenty, bez wrapperów typu .content
+        * jeśli trzeba - wewnątrz komponentu otoczyć wszystko z użyciem .container
 
-Backend: (MK)
+Backend:
     - zmiana i tworzenie nowego template'u
         * edit: tylko zmiana domyślnego, nie potrzeba chyba tworzenia nowego
         * edit 2: ew. dodanie tylko jednego customowego template'a + zostawienie domyślnego

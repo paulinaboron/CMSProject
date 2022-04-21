@@ -23,6 +23,7 @@ CORS(app)
 # /loginUser - logowanie użytkownika
 # /logutUser - wylogowywanie użytkownika
 # /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
+# /submitComment - dodawanie komentarza do artykułu
 
 
 
@@ -473,7 +474,33 @@ def registerUser():
             "error_message": "Podana nazwa użytkownika lub email są już zajęte!"
         }
 
-    
+
+@app.route("/submitComment", methods=["POST", "GET"])
+def submitComment():
+    articleID = request.json.get("articleID")
+    commentText = request.json.get("commentText")
+
+    if "userName" in session:
+        dbConnection = sqlite3.connect('db.sqlite')
+        dbCursor = dbConnection.cursor()
+        dbCursor.execute(f"""
+            INSERT INTO comments 
+            (`article_id`, `user_id`, `creation_date`, `content`) 
+            VALUES
+            ({articleID}, {session["userID"]}, datetime("now"), "{commentText}")
+        """)
+
+        dbConnection.commit()
+        dbConnection.close()
+
+        return {
+            "state": "valid"
+        }
+    else:
+        return {
+            "error_message": "Niezalogowano"
+        }
+
     
 
 

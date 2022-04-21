@@ -32,10 +32,9 @@ div.container-fluid {
 }
 
 img.slider-picture {
+	object-fit: cover;
 	width: 100%;
-	position: absolute;
-	top: -25%;
-	height: 650px !important;
+	min-height: 100%;
 }
 
 .carousel-item {
@@ -53,7 +52,7 @@ div.featurette {
 	flex-wrap: wrap;
 }
 
-div.featurette-text{
+div.featurette-text {
 	width: 40%;
 }
 
@@ -78,4 +77,8 @@ div.featurette-text{
 	grid-template-columns: auto 50px 50px;
 	align-items: start;
 	padding: 0 50px;
+}
+
+textarea {
+	resize: none;
 }
