@@ -3,7 +3,7 @@
     console.log("ID Card: ", id);
 
     async function getArticleData(id) {
-		let response = await fetch(`http://localhost:5000/getArticleData?id=${id}`, { method: "post" });
+		let response = await fetch(`/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
         console.log("response: ", responseJson);
 		return responseJson;
@@ -23,7 +23,7 @@
     <div class="card-body">
         <h5 class="card-title">{cardData.title}</h5>
         <p class="card-text">
-            {cardData.content}
+            {@html cardData.content}
         </p>
         <a href="./article?id={id}" class="btn btn-secondary">Go to article {id}</a>
     </div>

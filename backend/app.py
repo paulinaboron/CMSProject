@@ -6,6 +6,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '$92ji21uoh98'
 app.config['JSON_AS_ASCII'] = False
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
 bootstrap = Bootstrap(app)
 CORS(app)
@@ -403,15 +404,18 @@ def logoutUser():
     return redirect("/")
 
 
-@app.route("/getLoggedUserData", methods=["POST", "GET"])
+@app.route("/getLoggedUserData", methods=["POST"])
 def getLoggedUserData():
-    if "userID" in session:
+    print(session)
+    if "userName" in session:
+        print(session)
         return {
             "userID": session["userID"],
             "userName": session["userName"],
             "userRole": session["userRole"],
         }
     else:
+        print(session)
         return {
             "error_message": "brak zalogowanego użytkownika"
         }

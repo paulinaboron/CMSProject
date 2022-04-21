@@ -1,7 +1,7 @@
 <script>
 	export let sticky = false;
 	async function getLinks() {
-		let response = await fetch(`http://localhost:5000/getLinks?component=footer`, { method: "post" });
+		let response = await fetch(`/getLinks?component=footer`, { method: "post" });
 		let responseJson = await response.json();
 		console.log("response ff: ", responseJson);
 		return responseJson;

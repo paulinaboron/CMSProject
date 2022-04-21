@@ -5,7 +5,7 @@
 
   async function getGalleryData(id) {
     let response = await fetch(
-      `http://localhost:5000/getGalleryData?id=${id}`,
+      `/getGalleryData?id=${id}`,
       { method: "post" }
     );
     let responseJson = await response.json();

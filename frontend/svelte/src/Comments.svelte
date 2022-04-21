@@ -5,7 +5,7 @@
   
     async function getComments(id) {
       let response = await fetch(
-        `http://localhost:5000/getCommentsForArticle?id=${id}`,
+        `/getCommentsForArticle?id=${id}`,
         { method: "post" }
       );
       let responseJson = await response.json();

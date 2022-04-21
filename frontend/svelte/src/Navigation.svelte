@@ -1,7 +1,7 @@
 <script>
     async function getLinks() {
         let response = await fetch(
-            `http://localhost:5000/getLinks?component=header`,
+            `/getLinks?component=header`,
             { method: "post" }
         );
         let responseJson = await response.json();
@@ -10,9 +10,10 @@
     }
 
     async function getLoggedUser() {
-        let response = await fetch(`http://localhost:5000/getLoggedUserData`, {
-            method: "post",
-        });
+        let response = await fetch(
+            `/getLoggedUserData`,
+            { method: "post" }
+        );
         let responseJson = await response.json();
         console.log("response logUser: ", responseJson);
         return responseJson;
