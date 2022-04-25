@@ -10,7 +10,7 @@
 </script>
 
 <main>
-  <Navigation />
+  <Navigation vertical="true"/>
   <Slider id="1" />
   <News />
   <Featurette id="1" />
