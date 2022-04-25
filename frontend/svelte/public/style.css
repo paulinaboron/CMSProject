@@ -44,17 +44,19 @@ img.slider-picture {
 }
 
 div.featurette {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
+	display: inline-flex;
 	align-items: center;
-	gap: 50px;
-	flex-wrap: wrap;
+	column-gap: 3%;
 }
 
-div.featurette-text {
+.featurette img{
+	max-width: 500px;
+	width: 150%;
+}
+
+/* div.featurette-text {
 	width: 40%;
-} 
+}  */
 
 .comment-row {
 	padding-left: 50px;
