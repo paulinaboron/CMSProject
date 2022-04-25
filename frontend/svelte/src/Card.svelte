@@ -23,7 +23,7 @@
     <div class="card-body">
         <h5 class="card-title">{cardData.title}</h5>
         <p class="card-text">
-            {@html cardData.content}
+            {cardData.subtitle}
         </p>
         <a href="./article?id={id}" class="btn btn-secondary">Go to article {id}</a>
     </div>

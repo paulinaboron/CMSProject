@@ -43,20 +43,11 @@ img.slider-picture {
 	position: relative;
 }
 
-div.featurette {
-	display: inline-flex;
-	align-items: center;
-	column-gap: 3%;
-}
-
 .featurette img{
 	max-width: 500px;
-	width: 150%;
+	width: 100%;
+	margin: auto;
 }
-
-/* div.featurette-text {
-	width: 40%;
-}  */
 
 .comment-row {
 	padding-left: 50px;
