@@ -24,6 +24,7 @@
 {#await categoryData}
     <p>Oczekiwanie na dane kategorii</p>
 {:then categoryData}
+<br><br>
     <h2 class="text-center">
         {categoryData.name}
     </h2>

@@ -3,35 +3,12 @@ Poprawki CSS:
     - data w komentarzach jest trochę za duża
 
 Frontend:
-    - dodawanie komentarzy pod artykułami
-        * sam wygląd, zajmę się dodawaniem do bazy danych (MK)
-        *** wygląd zrobiony
-        *** skończone
-    - dodatkowa klasa dla stopki (przyklejona do dołu)
-        *** dodane - stopka jest fixed-bottom, jeżeli zostanie wywołana z użyciem sticky={true}
-    - poprawić marginesy w stopce
-        *** poprawione
-    - wszystkie kolory w stylach jako zmienne (:root{ --zmienna: kolor })
-        * żeby łatwiej zmieniać na ciemny tryb i/lub tworzyć style do customowych template'ów
-        * edit: template będzie jeden, który domyślnie będzie wyglądał tak jak teraz, ale admin ma możliwość zmiany
-        *** gotowe
-    - strona kategorii
-        * użyć /getCategoryData
-        *** zrobione
-    - poprawić spłaszczone obrazki na slajderach i w galeriach
-        *** naprawione z object-fit
-    - wyszukiwarka (szukanie słów w artykułach)
-        * jak komentarze - sam wygląd
-        *** wygląd zrobiony
     - jeżeli zalogowany użytkownik jest adminem - link do CMSa w nawigacji
         * link do adresu "/admin"
     - strona zarządzania kontem dla użytkownika
         * najlepiej w pasku nawigacyjnym/profilu; link do adresu "/profile"
     - alternatywna nawigacja
         * tylko style, reszta będzie tak samo
-    - dodać responsywność do nawigacji (na mniejszych ekranach nie ma ikonki hamburgera!)
-        * poprawić z Bootstrapem
-        *** nawigacja poprawiona
     - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
         * dodam endpoint "/getFooterText"
         * edit: tekst footera będzie częścią template'u (będzie wysyłany w "/getCurrentTemplateData")

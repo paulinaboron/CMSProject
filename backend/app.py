@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from flask import Flask, jsonify, redirect, request, send_from_directory, session
 from flask_bs4 import Bootstrap
@@ -484,7 +485,7 @@ def submitComment():
         return {
             "state": "invalid"
         }
-        
+
     if "userName" in session:
         dbConnection = sqlite3.connect('db.sqlite')
         dbCursor = dbConnection.cursor()
@@ -506,6 +507,32 @@ def submitComment():
             "error_message": "Niezalogowano"
         }
 
+@app.route("/search", methods=["POST", "GET"])
+def search():
+    text = request.args.get("text")
+    print("text ", text)
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `id` FROM articles 
+        WHERE `title` LIKE "%{text}%" OR `subtitle` LIKE "%{text}%" OR `content` LIKE "%{text}%"
+    """)
+
+    fetchedArticles = dbCursor.fetchall()
+    dbConnection.commit()
+    dbConnection.close()
+
+    articleIDs = []
+    for fetchedArticle in fetchedArticles:
+        articleIDs.append(str(fetchedArticle[0]))
+
+    return redirect(f'/results?ids={"".join(articleIDs)}')
+
+
+@app.route("/results", methods=["POST", "GET"])
+def results():
+    return send_from_directory('../frontend/svelte/public', "results.html")
     
 
 

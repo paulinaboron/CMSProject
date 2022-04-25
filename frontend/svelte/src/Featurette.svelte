@@ -14,6 +14,7 @@
 </script>
 
 {#await featData then featData}
+<div class="content">
 	<hr class="featurette-divider" />
 	<div class="featurette">
 		<div class="featurette-text">
@@ -31,4 +32,6 @@
 		</div>
 	</div>
 	<hr class="featurette-divider" />
+</div>
+	
 {/await}

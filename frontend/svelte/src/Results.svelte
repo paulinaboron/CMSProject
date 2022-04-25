@@ -11,11 +11,14 @@
     <div class="container">
 
     </div>
-    <h1>Wyniki wyszukiwania</h1>
+    <h1 class="text-center py-3">Wyniki wyszukiwania</h1>
 
-    {#each ids as id}
-      <Card id={id}/>
-    {/each}
+    <div class="d-flex flex-row bd-highlight mb-3 news-div content">
+      {#each ids as id}
+        <Card id={id}/>
+      {/each}
+    </div>
+    
 
     <Footer sticky={true}/>
   </main>

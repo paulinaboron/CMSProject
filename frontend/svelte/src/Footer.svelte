@@ -18,6 +18,7 @@
 {#await footerData}
 	<h1>Oczekiwanie na dane stopki</h1>
 {:then footerData}
+<div class="content">
 	<div class="container" class:fixed-bottom={sticky}>
 		<footer class="pt-3 mt-4">
 			<ul class="nav justify-content-center border-bottom pb-2 mb-2">
@@ -30,4 +31,6 @@
 			<p class="text-center text-muted">© 2021 Company, Inc</p>
 		</footer>
 	</div>
+</div>
+	
 {/await}

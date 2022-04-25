@@ -9,7 +9,7 @@
 	margin-top: 15px;
 }
 
-#content {
+.content {
 	width: 70%;
 	margin: auto;
 }
@@ -54,7 +54,7 @@ div.featurette {
 
 div.featurette-text {
 	width: 40%;
-}
+} 
 
 .comment-row {
 	padding-left: 50px;
@@ -81,4 +81,52 @@ div.featurette-text {
 
 textarea {
 	resize: none;
+}
+
+
+
+:root {
+    /* --bg-color: black;
+    --card-color: rgb(48, 48, 48);
+    --font-color: white; 
+	--icon-color: rgba(255, 255, 255, 1)
+	*/
+
+	--bg-color: white;
+	--card-color: white;
+	--font-color: black;
+	--icon-color: rgba(0, 0, 0, 0.5);
+	--font: 'Segoe UI' 
+}
+
+
+body{
+    background-color: var(--bg-color);
+	font-family: var(--font) !important
+}
+
+.card{
+    background-color: var(--card-color);
+    color: var(--font-color);
+}
+
+hr{
+    color: var(--font-color);
+}
+
+.featurette{
+    color: var(--font-color);
+}
+
+.nav-link{
+    color: var(--font-color);
+}
+
+.article-top, #article-content{
+    color: var(--font-color);
+}
+
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
