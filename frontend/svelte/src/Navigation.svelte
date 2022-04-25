@@ -27,7 +27,7 @@
 {#await navData}
     <h1>Oczekiwanie na dane nawigacji</h1>
 {:then navData}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <button
                 class="navbar-toggler"

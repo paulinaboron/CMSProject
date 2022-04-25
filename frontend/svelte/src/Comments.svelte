@@ -57,7 +57,7 @@
 							<h6 class="font-medium">{comment.author}</h6>
 							<span class="m-b-15 d-block">{comment.content}</span>
 							<div class="comment-footer">
-								<span class="text-muted float-right">{comment.creation_date}</span>
+								<span class="text-muted float-right"><small>{comment.creation_date}</small></span>
 							</div>
 						</div>
 					</div>
