@@ -479,7 +479,12 @@ def registerUser():
 def submitComment():
     articleID = request.json.get("articleID")
     commentText = request.json.get("commentText")
-
+    
+    if commentText == "":
+        return {
+            "state": "invalid"
+        }
+        
     if "userName" in session:
         dbConnection = sqlite3.connect('db.sqlite')
         dbCursor = dbConnection.cursor()
