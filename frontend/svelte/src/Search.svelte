@@ -13,6 +13,7 @@
         placeholder="Search"
         aria-label="Search"
         name="text"
+        bind:value={text}
     />
     <button class="btn btn-outline-success" type="submit">OK</button
     >

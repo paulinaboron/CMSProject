@@ -1,6 +1,6 @@
 import json
 import sqlite3
-from flask import Flask, jsonify, redirect, request, send_from_directory, session
+from flask import Flask, jsonify, make_response, redirect, request, send_from_directory, session
 from flask_bs4 import Bootstrap
 from flask_cors import CORS
 
@@ -24,6 +24,7 @@ CORS(app)
 # /logutUser - wylogowywanie użytkownika
 # /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
 # /submitComment - dodawanie komentarza do artykułu
+# /switchDarkMode - zmienia cookie z ciemnym motywem
 
 # nie wszystkie endpointy są tu opisane!
 
@@ -389,7 +390,6 @@ def loginUser():
             session["userID"] = fetchedUsers[0][0]
             session["userName"] = fetchedUsers[0][1]
             session["userRole"] = fetchedUsers[0][4]
-            session["userPrefersDarkMode"] = fetchedUsers[0][5]
 
             return {
                 "state": "valid"
@@ -407,24 +407,19 @@ def logoutUser():
         del session["userID"]
         del session["userName"]
         del session["userRole"]
-        del session["userPrefersDarkMode"]
 
     return redirect("/")
 
 
 @app.route("/getLoggedUserData", methods=["POST"])
 def getLoggedUserData():
-    print(session)
     if "userName" in session:
-        print(session)
         return {
             "userID": session["userID"],
             "userName": session["userName"],
             "userRole": session["userRole"],
-            "userPrefersDarkMode": session["userPrefersDarkMode"],
         }
     else:
-        print(session)
         return {
             "error_message": "brak zalogowanego użytkownika"
         }
@@ -461,9 +456,9 @@ def registerUser():
 
         dbCursor.execute(f"""
                INSERT INTO users 
-                (`username`, `password`, `email`, `role`, `prefers_dark_mode`) 
+                (`username`, `password`, `email`, `role`) 
                 VALUES
-                ("{username}", "{password}", "{email}", "user", 0)
+                ("{username}", "{password}", "{email}", "user")
         """)
 
         dbConnection.commit()
@@ -514,7 +509,7 @@ def submitComment():
 @app.route("/search", methods=["POST", "GET"])
 def search():
     text = request.args.get("text")
-    print("text ", text)
+    print("text", text)
 
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -537,6 +532,28 @@ def search():
 @app.route("/results", methods=["POST", "GET"])
 def results():
     return send_from_directory('../frontend/svelte/public', "results.html")
+
+
+@app.route("/switchDarkMode", methods=["POST", "GET"])
+def switchDarkMode():
+    darkMode = request.cookies.get("darkMode")
+    print(darkMode)
+    if darkMode:
+        print("są cookies")
+        res = make_response({
+            "darkMode": 1
+        })
+        res.delete_cookie("darkMode")
+        return res
+    else:
+        print("nie ma")
+        res = make_response({
+            "darkMode": 0
+        })
+        res.set_cookie("darkMode", "1")
+        return res
+    
+    
     
 
 
