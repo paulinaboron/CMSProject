@@ -76,6 +76,12 @@ textarea {
 	resize: none;
 }
 
+.form-switch{
+	position: absolute;
+	top: 15px;
+	right: 5px;
+}
+
 
 
 :root {

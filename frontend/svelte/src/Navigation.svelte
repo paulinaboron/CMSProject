@@ -1,5 +1,6 @@
 <script>
   import Search from "./Search.svelte";
+  import Switch from "./Switch.svelte"
   export let vertical;
 
   async function getLinks() {
@@ -147,4 +148,6 @@
       </li>
     </ul>
   {/if}
+
+  <Switch/>
 {/await}
