@@ -28,7 +28,7 @@
 {#await navData}
   <h1>Oczekiwanie na dane nawigacji</h1>
 {:then navData}
-  {#if vertical == "false"}
+  {#if !vertical}
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <button
@@ -71,6 +71,12 @@
                   </li>
                 </form>
               {:else}
+                {#if loggedUserData.userName == "admin"}
+                  <li class="nav-item">
+                    <a class="nav-link mt-1" href="/admin">Admin</a>
+                  </li>
+                {/if}
+
                 <li class="nav-item nav-link mt-1">
                   <span class="mr-2">
                     Zalogowany jako: <strong>{loggedUserData.userName} </strong>
@@ -94,38 +100,46 @@
         </li>
       {/each}
       {#await loggedUserData}
-              <h1>Oczekiwanie na dane użytkownika</h1>
-            {:then loggedUserData}
-              {#if loggedUserData.error_message}
-                <form>
-                  <li class="nav-item nav-link">
-                    <a href="/register" class="btn btn-sm btn-outline-primary"
-                      >Register</a
-                    >
-                  </li>
-                  <li class="nav-item nav-link">
-                    <a
-                      href="/login"
-                      class="btn btn-sm btn-outline-success"
-                      id="login-btn"
-                    >
-                      Login
-                    </a>
-                  </li>
-                </form>
-              {:else}
-                <li class="nav-item nav-link">
-                  <span class="mr-2">
-                    Zalogowany jako: <strong>{loggedUserData.userName} </strong>
-                  </span>
-
-                  <a href="/logoutUser">Wyloguj</a>
-                </li>
-              {/if}
-            {/await}
+        <h1>Oczekiwanie na dane użytkownika</h1>
+      {:then loggedUserData}
+        {#if loggedUserData.error_message}
+          <form>
             <li class="nav-item nav-link">
-                <Search/>
+              <a href="/register" class="btn btn-sm btn-outline-primary"
+                >Register</a
+              >
             </li>
+            <li class="nav-item nav-link">
+              <a
+                href="/login"
+                class="btn btn-sm btn-outline-success"
+                id="login-btn"
+              >
+                Login
+              </a>
+            </li>
+          </form>
+        {:else}
+
+        {#if loggedUserData.userName == "admin"}
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
+      {/if}
+
+
+          <li class="nav-item nav-link">
+            <span class="mr-2">
+              Zalogowany jako: <strong>{loggedUserData.userName} </strong>
+            </span>
+
+            <a href="/logoutUser">Wyloguj</a>
+          </li>
+        {/if}
+      {/await}
+      <li class="nav-item nav-link" style="width: 250px;">
+        <Search />
+      </li>
     </ul>
   {/if}
 {/await}
