@@ -2,6 +2,10 @@
   import Search from "./Search.svelte";
   export let vertical;
 
+  const setRootStyle = (key, val) => {
+    document.documentElement.style.setProperty(key, val)
+  }
+
   async function getLinks() {
     let response = await fetch(`/getLinks?component=header`, {
       method: "post",
@@ -17,6 +21,24 @@
     console.log("response logUser: ", responseJson);
     return responseJson;
   }
+
+  function getDarkModeSetting(callback) {
+    fetch('/getDarkMode', {method: "POST"})
+      .then(response => response.json())
+      .then(data => callback(data.darkMode))
+  }
+
+  getDarkModeSetting((darkMode) => {
+    console.log("DarkMode: ", darkMode)
+    if(darkMode){
+      console.log("DarkMode")
+      setRootStyle("--bg-color", "black");
+      setRootStyle("--card-color", "rgb(48, 48, 48)");
+      setRootStyle("--font-color", "white");
+      setRootStyle("--icon-color", "white");
+      console.log("Zmienione")
+    }
+  })
 
   let loggedUserData = getLoggedUser();
   let navData = getLinks();

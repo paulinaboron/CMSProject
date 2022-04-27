@@ -552,6 +552,20 @@ def switchDarkMode():
         })
         res.set_cookie("darkMode", "1")
         return res
+
+
+@app.route("/getDarkMode", methods=["POST", "GET"])
+def getDarkMode():
+    darkMode = request.cookies.get("darkMode")
+    print(darkMode)
+    if darkMode:
+        return {
+            "darkMode": True
+        }
+    else:
+        return {
+            "darkMode": False
+        }
     
     
     
