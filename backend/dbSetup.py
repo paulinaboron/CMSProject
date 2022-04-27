@@ -11,7 +11,9 @@
 # galleries_photos: (id, url obrazka, opis?)
 # categories: (id, nazwa)
 # globals (id, nazwa, wartość)
-# zmienne globalne: domyślny szablon, liczba artykułów na stronie głównej, 
+# templates: (id, nazwa, domyślne kolory (tło, tekst, przyciski), tekst stopki, nawigacja ("classic"/"alt"))
+# components (id, type, dbID)
+# components_in_templates (id, templateID, componentID, order)
 
 
 import sqlite3
@@ -68,6 +70,19 @@ dbCursor.execute("""
 dbCursor.execute("""
     DROP TABLE IF EXISTS categories;
 """)
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS components;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS templates;
+""")
+
+dbCursor.execute("""
+    DROP TABLE IF EXISTS components_in_templates;
+""")
+
 
 
 dbConnection.commit()
@@ -213,6 +228,48 @@ dbCursor.execute("""
 """)
 
 
+# components (id, type, dbID)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS components(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `type` text,
+        `dbID` integer
+    )
+""")
+
+
+# templates: (id, nazwa, domyślne kolory (tło, tekst, przyciski), tekst stopki, nawigacja ("classic"/"alt"))
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS templates(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `name` text,
+        `bg_color` text,
+        `font_color` text,
+        `icon_color` text,
+        `button_color` text,
+        `footer_text` text,
+        `nav_style` text
+    )
+""")
+
+
+# components_in_templates (id, templateID, componentID, order)
+
+dbCursor.execute("""
+    CREATE TABLE IF NOT EXISTS components_in_templates(
+        `id` integer PRIMARY KEY AUTOINCREMENT,
+        `templateID` integer,
+        `componentID` integer,
+        `order` integer
+    )
+""")
+
+
+
+
+
 
 dbConnection.commit()
 
@@ -303,6 +360,13 @@ dbCursor.execute(f"""
     (`name`) 
     VALUES
     ("Przykładowa kategoria")
+""")
+
+dbCursor.execute(f"""
+    INSERT INTO templates
+    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`)
+    VALUES
+    ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "alternative")
 """)
 
 

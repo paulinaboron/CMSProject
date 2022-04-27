@@ -155,7 +155,7 @@
           {/if}
 
           <li class="nav-item">
-            <a class="nav-link" href="/profil">
+            <a class="nav-link" href="/profile">
               Zalogowany jako: <strong>{loggedUserData.userName} </strong>
             </a>
           </li>
