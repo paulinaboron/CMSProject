@@ -1,6 +1,6 @@
 Poprawki CSS:
-    - na małych ekranach wyszukiwarka jest przyklejona do hamburgera
-    - data w komentarzach jest trochę za duża
+    - alt nav: wyszukiwarka jest za duża
+
 
 Frontend:
     - jeżeli zalogowany użytkownik jest adminem - link do CMSa w nawigacji

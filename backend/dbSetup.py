@@ -94,7 +94,8 @@ dbCursor.execute("""
         `username` text,
         `password` text,
         `email` text,
-        `role` text
+        `role` text,
+        `prefers_dark_mode` bool
     )
 """)
 
@@ -228,10 +229,10 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO users 
-    (`username`, `password`, `email`, `role`) 
+    (`username`, `password`, `email`, `role`, `prefers_dark_mode`) 
     VALUES
-    ("admin", "admin123", "admin@example.pl", "admin"),
-    ("user", "user123", "user@example.pl", "user")
+    ("admin", "admin123", "admin@example.pl", "admin", 1),
+    ("user", "user123", "user@example.pl", "user", 0)
 """)
 
 dbCursor.execute(f"""

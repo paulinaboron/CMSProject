@@ -7,7 +7,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '$92ji21uoh98'
 app.config['JSON_AS_ASCII'] = False
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
 bootstrap = Bootstrap(app)
 CORS(app)
@@ -25,6 +24,8 @@ CORS(app)
 # /logutUser - wylogowywanie użytkownika
 # /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
 # /submitComment - dodawanie komentarza do artykułu
+
+# nie wszystkie endpointy są tu opisane!
 
 
 
@@ -388,6 +389,7 @@ def loginUser():
             session["userID"] = fetchedUsers[0][0]
             session["userName"] = fetchedUsers[0][1]
             session["userRole"] = fetchedUsers[0][4]
+            session["userPrefersDarkMode"] = fetchedUsers[0][5]
 
             return {
                 "state": "valid"
@@ -405,6 +407,7 @@ def logoutUser():
         del session["userID"]
         del session["userName"]
         del session["userRole"]
+        del session["userPrefersDarkMode"]
 
     return redirect("/")
 
@@ -418,6 +421,7 @@ def getLoggedUserData():
             "userID": session["userID"],
             "userName": session["userName"],
             "userRole": session["userRole"],
+            "userPrefersDarkMode": session["userPrefersDarkMode"],
         }
     else:
         print(session)
@@ -457,9 +461,9 @@ def registerUser():
 
         dbCursor.execute(f"""
                INSERT INTO users 
-                (`username`, `password`, `email`, `role`) 
+                (`username`, `password`, `email`, `role`, `prefers_dark_mode`) 
                 VALUES
-                ("{username}", "{password}", "{email}", "user")
+                ("{username}", "{password}", "{email}", "user", 0)
         """)
 
         dbConnection.commit()
