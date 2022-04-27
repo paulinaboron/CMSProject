@@ -77,12 +77,18 @@
                   </li>
                 {/if}
 
-                <li class="nav-item nav-link mt-1">
-                  <span class="mr-2">
-                    Zalogowany jako: <strong>{loggedUserData.userName} </strong>
-                  </span>
+                <li class="nav-item">
+                  <a class=" nav-link mt-1" href="/profil"
+                    >Zalogowany jako: <strong
+                      >{loggedUserData.userName}
+                    </strong></a
+                  >
+                </li>
 
-                  <a href="/logoutUser">Wyloguj</a>
+                <li class="nav-item">
+                  <a class="text-primary nav-link mt-1" href="/logoutUser"
+                    >Wyloguj</a
+                  >
                 </li>
               {/if}
             {/await}
@@ -120,20 +126,19 @@
             </li>
           </form>
         {:else}
+          {#if loggedUserData.userName == "admin"}
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Admin</a>
+            </li>
+          {/if}
 
-        {#if loggedUserData.userName == "admin"}
-        <li class="nav-item">
-          <a class="nav-link" href="/admin">Admin</a>
-        </li>
-      {/if}
-
-
-          <li class="nav-item nav-link">
-            <span class="mr-2">
+          <li class="nav-item">
+            <a class="nav-link" href="/profil">
               Zalogowany jako: <strong>{loggedUserData.userName} </strong>
-            </span>
-
-            <a href="/logoutUser">Wyloguj</a>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/logoutUser" class="nav-link text-primary">Wyloguj</a>
           </li>
         {/if}
       {/await}
