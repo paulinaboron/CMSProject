@@ -2,7 +2,7 @@
     import Navigation from "./Navigation.svelte";
     import Footer from "./Footer.svelte";
     import Card from "./Card.svelte"
-
+    
     let ids = new URLSearchParams(window.location.search).get("ids").split(',');
   </script>
   

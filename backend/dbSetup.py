@@ -250,7 +250,8 @@ dbCursor.execute("""
         `icon_color` text,
         `button_color` text,
         `footer_text` text,
-        `nav_style` text
+        `nav_style` text,
+        `gallery_time` integer
     )
 """)
 
@@ -364,7 +365,7 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO templates
-    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`)
+    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`, `)
     VALUES
     ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "alternative")
 """)

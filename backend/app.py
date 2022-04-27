@@ -526,7 +526,10 @@ def search():
     for fetchedArticle in fetchedArticles:
         articleIDs.append(str(fetchedArticle[0]))
 
-    return redirect(f'/results?ids={"".join(articleIDs)}')
+    if len(articleIDs) > 0:
+        return redirect(f'/results?ids={"".join(articleIDs)}')
+    else:
+        return redirect(f'/results')
 
 
 @app.route("/results", methods=["POST", "GET"])
