@@ -1,13 +1,12 @@
 import json
 import sqlite3
-from flask import Flask, jsonify, redirect, request, send_from_directory, session
+from flask import Flask, jsonify, make_response, redirect, request, send_from_directory, session
 from flask_bs4 import Bootstrap
 from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '$92ji21uoh98'
 app.config['JSON_AS_ASCII'] = False
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 
 bootstrap = Bootstrap(app)
 CORS(app)
@@ -25,6 +24,9 @@ CORS(app)
 # /logutUser - wylogowywanie użytkownika
 # /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
 # /submitComment - dodawanie komentarza do artykułu
+# /switchDarkMode - zmienia cookie z ciemnym motywem
+
+# nie wszystkie endpointy są tu opisane!
 
 
 
@@ -411,16 +413,13 @@ def logoutUser():
 
 @app.route("/getLoggedUserData", methods=["POST"])
 def getLoggedUserData():
-    print(session)
     if "userName" in session:
-        print(session)
         return {
             "userID": session["userID"],
             "userName": session["userName"],
             "userRole": session["userRole"],
         }
     else:
-        print(session)
         return {
             "error_message": "brak zalogowanego użytkownika"
         }
@@ -510,7 +509,7 @@ def submitComment():
 @app.route("/search", methods=["POST", "GET"])
 def search():
     text = request.args.get("text")
-    print("text ", text)
+    print("text", text)
 
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -533,6 +532,42 @@ def search():
 @app.route("/results", methods=["POST", "GET"])
 def results():
     return send_from_directory('../frontend/svelte/public', "results.html")
+
+
+@app.route("/switchDarkMode", methods=["POST", "GET"])
+def switchDarkMode():
+    darkMode = request.cookies.get("darkMode")
+    print(darkMode)
+    if darkMode:
+        print("są cookies")
+        res = make_response({
+            "darkMode": 1
+        })
+        res.delete_cookie("darkMode")
+        return res
+    else:
+        print("nie ma")
+        res = make_response({
+            "darkMode": 0
+        })
+        res.set_cookie("darkMode", "1")
+        return res
+
+
+@app.route("/getDarkMode", methods=["POST", "GET"])
+def getDarkMode():
+    darkMode = request.cookies.get("darkMode")
+    print(darkMode)
+    if darkMode:
+        return {
+            "darkMode": True
+        }
+    else:
+        return {
+            "darkMode": False
+        }
+    
+    
     
 
 
