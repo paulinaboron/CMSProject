@@ -33,7 +33,7 @@
 			</div>
 			<button type="submit" class="btn btn-primary">Zapisz zmiany</button>
 		</form>
-	</div> -->
+	</div>
 
 	<Footer sticky={true} />
 </main>
