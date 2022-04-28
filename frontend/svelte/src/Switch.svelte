@@ -9,11 +9,13 @@
 			setRootStyle("--card-color", "rgb(48, 48, 48)");
 			setRootStyle("--font-color", "white");
 			setRootStyle("--icon-color", "white");
+			setRootStyle("--button-color", "rgb(90, 90, 90)");
 		} else {
 			setRootStyle("--bg-color", colors.bg_color);
 			setRootStyle("--card-color", colors.bg_color);
 			setRootStyle("--font-color", colors.font_color);
 			setRootStyle("--icon-color", colors.icon_color);
+			setRootStyle("--button-color", colors.button_color);
 		}
 	};
 
@@ -56,8 +58,8 @@
 			on:change={switchDarkMode}
 			bind:checked={darkMode}
 		/>
-		<label class="form-check-label" for="flexSwitchCheckDefault"
-			>Darkmode</label
+		<label class="form-check-label darkmode-text" for="flexSwitchCheckDefault"
+			>Dark</label
 		>
 	</div>
 {/await}

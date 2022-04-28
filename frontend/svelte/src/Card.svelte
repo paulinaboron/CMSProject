@@ -25,7 +25,7 @@
         <p class="card-text">
             {cardData.subtitle}
         </p>
-        <a href="./article?id={id}" class="btn btn-secondary">Go to article {id}</a>
+        <a href="./article?id={id}" class="btn btn-secondary card-button">Go to article {id}</a>
     </div>
 </div>
 {/await}

@@ -1,9 +1,5 @@
-Poprawki CSS:
-    - na małych ekranach wyszukiwarka jest przyklejona do hamburgera
 
 Frontend:
-    - strona zarządzania kontem dla użytkownika
-        * najlepiej w pasku nawigacyjnym/profilu; link do adresu "/profile"
     - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
         * dodam endpoint "/getFooterText"
         * edit: tekst footera będzie częścią template'u (będzie wysyłany w "/getCurrentTemplateData")

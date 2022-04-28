@@ -88,7 +88,7 @@
 								{/if}
 
 								<li class="nav-item">
-									<a class=" nav-link mt-1" href="/profil"
+									<a class=" nav-link mt-1" href="/profile"
 										>Zalogowany jako: <strong
 											>{loggedUserData.userName}
 										</strong></a
