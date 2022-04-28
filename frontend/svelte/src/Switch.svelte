@@ -46,8 +46,17 @@
 
 
 		console.log("HSL", hue, sat * 100, light * 100)
+
+		return {
+			hue: hue,
+			saturation: sat.toFixed(2) * 100,
+			light: light.toFixed(2) * 100
+		}
 	}
 
+	const darken = ({hue, saturation, light}) => {
+		
+	}
 	const setRootStyle = (key, val) => {
 		document.documentElement.style.setProperty(key, val);
 	};
