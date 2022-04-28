@@ -10,10 +10,10 @@
 # galleries: (id, nazwa)
 # galleries_photos: (id, url obrazka, opis?)
 # categories: (id, nazwa)
-# globals (id, nazwa, wartość)
 # templates: (id, nazwa, domyślne kolory (tło, tekst, przyciski), tekst stopki, nawigacja ("classic"/"alt"))
 # components (id, type, dbID)
 # components_in_templates (id, templateID, componentID, order)
+# globals (id, nazwa, wartość)
 
 
 import sqlite3
@@ -26,10 +26,6 @@ dbCursor = dbConnection.cursor()
 
 
 # usunięcie tabeli
-
-dbCursor.execute("""
-    DROP TABLE IF EXISTS globals;
-""")
 
 dbCursor.execute("""
     DROP TABLE IF EXISTS users;
@@ -83,6 +79,9 @@ dbCursor.execute("""
     DROP TABLE IF EXISTS components_in_templates;
 """)
 
+dbCursor.execute("""
+    DROP TABLE IF EXISTS globals;
+""")
 
 
 dbConnection.commit()
@@ -281,7 +280,7 @@ dbCursor.execute(f"""
     INSERT INTO globals
     (`name`, `value`)
     VALUES
-    ("default_template", "1")
+    ("current_template", "1")
 """)
 
 dbCursor.execute(f"""
@@ -365,7 +364,7 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO templates
-    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`, `)
+    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`)
     VALUES
     ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "alternative")
 """)

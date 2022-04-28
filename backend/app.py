@@ -25,6 +25,7 @@ CORS(app)
 # /getLoggedUserData - zwraca dane zalogowanego użytkownika (lub informację o tym, że nie zalogowano)
 # /submitComment - dodawanie komentarza do artykułu
 # /switchDarkMode - zmienia cookie z ciemnym motywem
+# /getTemplateColors - zwraca kolory dla ustawionego template'u
 
 # nie wszystkie endpointy są tu opisane!
 
@@ -569,7 +570,35 @@ def getDarkMode():
         return {
             "darkMode": False
         }
-    
+
+
+@app.route("/getTemplateColors", methods=["POST", "GET"])
+def getTemplateColors():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `value` FROM globals 
+        WHERE `name` LIKE "current_template" 
+    """)
+
+    templateID = dbCursor.fetchall()[0][0]
+
+    dbCursor.execute(f"""
+        SELECT `bg_color`, `font_color`, `icon_color`, `button_color` FROM templates 
+        WHERE `id` = {templateID} 
+    """)
+
+    colors = dbCursor.fetchall()[0]
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "bg_color": colors[0],
+        "font_color": colors[1],
+        "icon_color": colors[2],
+        "button_color": colors[3]
+    }
     
     
 
