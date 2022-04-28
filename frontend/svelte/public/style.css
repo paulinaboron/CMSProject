@@ -122,7 +122,7 @@ hr{
     color: var(--font-color);
 }
 
-.nav-link{
+.nav-link, .form-label{
     color: var(--font-color);
 }
 

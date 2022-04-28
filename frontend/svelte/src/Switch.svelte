@@ -53,7 +53,7 @@
 </script>
 
 {#await darkModeFetch then darkModeFetch}
-	<div class="form-check form-switch">
+	<div class="form-check form-switch mr-3">
 		<input
 			class="form-check-input"
 			type="checkbox"

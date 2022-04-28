@@ -41,7 +41,7 @@
 			</div>
 		</div>
 	{/if}
-
+		<br/><br/>
 	<div class="container d-flex mt-3">
 		<form class="col-sm-10 col-md-8 mx-auto" method="post" on:submit|preventDefault={() => initFetch()}>
 			<div class="mb-3">
