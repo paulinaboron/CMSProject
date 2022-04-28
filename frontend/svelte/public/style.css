@@ -100,7 +100,9 @@ textarea {
 	--font-color: black;
 	--icon-color: rgba(0, 0, 0, 0.5);
 	--font: 'Segoe UI';
-	--button-color: rgb(140, 140, 140);
+	--button-color: rgb(109, 118, 126);
+	--button-color-dark: rgb(92, 99, 106);
+    --button-border-color-dark: rgb(84, 93, 99);
 }
 
 
@@ -133,8 +135,9 @@ hr{
 .card-button{
 	background-color: var(--button-color);
 }
-
+/*
 .card-button:hover{
 	background-color: var(--button-color);
 	filter: brightness(90%);
 }
+*/

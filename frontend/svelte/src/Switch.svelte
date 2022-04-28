@@ -1,4 +1,53 @@
 <script>
+	const convertToHSL = (color = "rgb(24, 25, 26)") => {
+		let colorsString = color.substring(4, color.length - 1);
+		let rgbColors = colorsString.split(", ").map((elem) => {return parseInt(elem)});
+		let rgbPrims = rgbColors.map((elem) => {return elem/255})
+
+		console.log(rgbColors, rgbPrims)
+
+		let CMax = Math.max(rgbPrims[0], rgbPrims[1], rgbPrims[2])
+		let CMin = Math.min(rgbPrims[0], rgbPrims[1], rgbPrims[2])
+
+		let delta = CMax - CMin
+
+		console.log(CMax, CMin, delta)
+
+		let hue;
+		let sat;
+		let light;
+
+		switch (true) {
+			case delta == 0:
+				hue = 0
+				break;
+			case CMax == rgbPrims[0]:
+				hue = 60 * (((rgbPrims[1] - rgbPrims[2]) / delta) % 6)
+				break;
+
+			case CMax == rgbPrims[1]:
+				hue = 60 * (((rgbPrims[2] - rgbPrims[0]) / delta) + 2)
+				break;
+
+			case CMax == rgbPrims[2]:
+				hue = 60 * (((rgbPrims[0] - rgbPrims[1]) / delta) + 4)
+				break;
+			default:
+				break;
+		}
+
+		light = (CMax + CMin) / 2
+
+		if(delta == 0){
+			sat = 0
+		}else{
+			sat = delta / (1 - Math.abs((2 * light) - 1));
+		}
+
+
+		console.log("HSL", hue, sat * 100, light * 100)
+	}
+
 	const setRootStyle = (key, val) => {
 		document.documentElement.style.setProperty(key, val);
 	};
@@ -50,6 +99,7 @@
 	let colors = {}
 
 	init();
+	convertToHSL();
 </script>
 
 {#await darkModeFetch then darkModeFetch}
