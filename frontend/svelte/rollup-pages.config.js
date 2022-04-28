@@ -15,7 +15,8 @@ const inputs = [
   "LoginPage",
   "RegisterPage",
   "Category",
-  "Results"
+  "Results",
+  "ProfilePage"
 ];
 const production = !process.env.ROLLUP_WATCH;
 
