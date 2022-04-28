@@ -19,31 +19,36 @@
 		}
 	};
 
-	const getDarkModeSettings = async () => {
+	const getDarkModeSettings = async (callback) => {
 		let response = await fetch("/getDarkMode", { method: "POST" });
 		let responseJSON = await response.json();
 		let darkModeResp = responseJSON.darkMode;
 		darkMode = darkModeResp;
-		setColors(darkMode);
+		callback()
 		return darkModeResp;
 	}
 
 	const switchDarkMode = () => {
 		fetch("/switchDarkMode", { method: "POST" }).then((resp) => {
-			getDarkModeSettings();
+			getDarkModeSettings(() => {return});
 		});
 	};
 
-	const getTemplateColors = async (callback) => {
+	const getTemplateColors = async () => {
 		let response = await fetch("/getTemplateColors")
 		let responseJSON = await response.json();
-		callback()
-		return await responseJSON
+		return responseJSON
 	}
 
+	const init = async () => {
+		colors = await getTemplateColors();
+		setColors(darkMode);
+	}
+
+	
 	let darkMode = false;
-	let darkModeFetch = getDarkModeSettings();
-	let colors = getTemplateColors();
+	let darkModeFetch = getDarkModeSettings(() => init());
+	let colors = {}
 	
 
 </script>
