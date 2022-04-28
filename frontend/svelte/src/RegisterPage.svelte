@@ -41,9 +41,9 @@
 			</div>
 		</div>
 	{/if}
-		<br/><br/>
 	<div class="container d-flex mt-3">
 		<form class="col-sm-10 col-md-8 mx-auto" method="post" on:submit|preventDefault={() => initFetch()}>
+			<br/><h2>Rejestracja</h2><br/>
 			<div class="mb-3">
 				<label for="input-first-credential" class="form-label">Login</label>
 				<input type="text" class="form-control" id="input-first-credential" name="firstCredential" bind:value={valueUsername} />

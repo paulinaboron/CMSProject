@@ -31,7 +31,7 @@
 				<label for="input-password" class="form-label">Zmień hasło</label>
 				<input type="password" class="form-control" id="input-password" name="password" bind:value={valuePassword} />
 			</div>
-			<button type="submit" class="btn btn-primary">OK</button>
+			<button type="submit" class="btn btn-primary">Zapisz zmiany</button>
 		</form>
 	</div> -->
 
