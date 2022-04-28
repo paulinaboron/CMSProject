@@ -57,9 +57,9 @@ def register():
     else:
         return send_from_directory("../frontend/svelte/public", "registerPage.html")
 
-@app.route('/profil')
-def profil():
-    return send_from_directory("../frontend/svelte/public", "profil.html")
+@app.route('/profile')
+def profile():
+    return send_from_directory("../frontend/svelte/public", "profile.html")
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
