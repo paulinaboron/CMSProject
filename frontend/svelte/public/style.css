@@ -79,7 +79,7 @@ textarea {
 .form-switch{
 	position: absolute;
 	top: 15px;
-	right: 5px;
+	right: 10px;
 }
 
 .navbar-toggler-icon {
@@ -124,7 +124,7 @@ hr{
     color: var(--font-color);
 }
 
-.nav-link{
+.nav-link, .form-label{
     color: var(--font-color);
 }
 

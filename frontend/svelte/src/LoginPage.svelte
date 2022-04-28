@@ -37,9 +37,9 @@
 			</div>
 		</div>
 	{/if}
-
 	<div class="container d-flex mt-3">
 		<form class="col-sm-10 col-md-8 mx-auto" method="post" on:submit|preventDefault={() => initFetch()}>
+			<br/><h2>Logowanie</h2><br/>
 			<div class="mb-3">
 				<label for="input-first-credential" class="form-label">Email / login</label>
 				<input
