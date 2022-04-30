@@ -164,9 +164,17 @@
 		return responseJSON;
 	};
 
+	const getTemplateFont = async () => {
+		let response = await fetch("/getTemplateFont");
+		let responseJSON = await response.json();
+		console.log(responseJSON);
+		setRootStyle("--font", responseJSON.font);
+	};
+
 	const init = async () => {
 		colors = await getTemplateColors();
 		darkModeFetch = await getDarkModeSettings();
+		getTemplateFont();
 	};
 
 	let darkMode = false;

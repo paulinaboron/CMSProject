@@ -5,7 +5,7 @@
 
 	async function getComments(id) {
 		let response = await fetch(`/getCommentsForArticle?id=${id}`, {
-			method: "post",
+			method: "post"
 		});
 		let responseJson = await response.json();
 		console.log("comments", responseJson);
@@ -25,11 +25,11 @@
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
 				articleID: id,
-				commentText,
-			}),
+				commentText
+			})
 		})
-			.then(response => response.json())
-			.then(data => {
+			.then((response) => response.json())
+			.then((data) => {
 				if (!data.error_message) {
 					console.log("działa");
 					commentsData = getComments(id);
@@ -55,9 +55,13 @@
 					<div class="d-flex flex-row comment-row m-t-0">
 						<div class="comment-text w-100">
 							<h6 class="font-medium">{comment.author}</h6>
-							<span class="m-b-15 d-block">{comment.content}</span>
+							<span class="m-b-15 d-block">{comment.content}</span
+							>
 							<div class="comment-footer">
-								<span class="text-muted float-right"><small>{comment.creation_date}</small></span>
+								<span class="text-muted float-right"
+									><small>{comment.creation_date}</small
+									></span
+								>
 							</div>
 						</div>
 					</div>
@@ -69,16 +73,27 @@
 		<div class="card-body text-center">
 			<h4 class="card-title">Dodaj komentarz</h4>
 		</div>
-		<form class="comment-form" on:submit|preventDefault={submitComment}>
+		<form
+			class="comment-form pb-4"
+			on:submit|preventDefault={submitComment}
+		>
 			<fieldset>
 				<div class="row">
 					<div class="form-group col-xs-12">
-						<textarea bind:value={commentText} class="form-control" id="message" placeholder="Your message" required="" />
+						<textarea
+							bind:value={commentText}
+							class="form-control"
+							id="message"
+							placeholder="Your message"
+							required=""
+						/>
 					</div>
 				</div>
 			</fieldset>
 			<div />
-			<button type="submit" class="btn btn-sm btn-outline-primary">OK</button>
+			<button type="submit" class="btn btn-sm btn-outline-primary"
+				>OK</button
+			>
 		</form>
 	</div>
 </div>

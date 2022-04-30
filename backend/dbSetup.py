@@ -250,7 +250,8 @@ dbCursor.execute("""
         `button_color` text,
         `footer_text` text,
         `nav_style` text,
-        `gallery_time` integer
+        `gallery_time` integer,
+        `font` text
     )
 """)
 
@@ -292,7 +293,7 @@ dbCursor.execute(f"""
 """)
 
 dbCursor.execute(f"""
-    INSERT INTO articles 
+    INSERT INTO articles
     (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`, `category_id`) 
     VALUES
     ("tytuł", "podtytuł", "&nbsp;&nbsp;&nbsp;treść dalsza </br>część treści", "", datetime("now"), 1, 1)
@@ -333,7 +334,7 @@ dbCursor.execute(f"""
     (`link`, `text`, `for_component`, `order`) 
     VALUES
     ("/", "Home", "header", 1),
-    ("/", "Link", "header", 2),
+    ("/allArticles", "Artykuły", "header", 2),
     ("/", "Home", "footer", 1),
     ("/", "Features", "footer", 2),
     ("/", "Pricing", "footer", 3),
@@ -352,7 +353,8 @@ dbCursor.execute(f"""
     INSERT INTO galleries_photos 
     (`gallery_id`, `img_url`, `description`) 
     VALUES
-    (1, "image1.jpg", "opis")
+    (1, "image1.jpg", "opis"),
+    (1, "image1.jpg", "opis2")
 """)
 
 dbCursor.execute(f"""
@@ -363,10 +365,29 @@ dbCursor.execute(f"""
 """)
 
 dbCursor.execute(f"""
-    INSERT INTO templates
-    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`)
+    INSERT INTO components
+    (`type`, `dbID`)
     VALUES
-    ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "alternative")
+    ("slider", 1),
+    ("news", 0),
+    ("featurette", 1)
+    
+""")
+
+dbCursor.execute(f"""
+    INSERT INTO templates
+    (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`, `font`)
+    VALUES
+    ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "classic", "Segoe UI")
+""")
+
+dbCursor.execute(f"""
+    INSERT INTO components_in_templates
+    (`templateID`, `componentID`, `order`)
+    VALUES
+    (1, 1, 1),
+    (1, 2, 2),
+    (1, 3, 3)
 """)
 
 

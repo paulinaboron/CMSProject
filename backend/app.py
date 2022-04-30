@@ -39,6 +39,10 @@ def index():
 def article():
     return send_from_directory("../frontend/svelte/public", "article.html")
 
+@app.route('/allArticles')
+def allArticles():
+    return send_from_directory("../frontend/svelte/public", "allArticles.html")
+
 @app.route('/category')
 def category():
     return send_from_directory("../frontend/svelte/public", "category.html")
@@ -60,6 +64,10 @@ def register():
 @app.route('/profile')
 def profile():
     return send_from_directory("../frontend/svelte/public", "profile.html")
+
+@app.route("/results", methods=["POST", "GET"])
+def results():
+    return send_from_directory('../frontend/svelte/public', "results.html")
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
@@ -402,7 +410,7 @@ def loginUser():
 
     return {
         "state": "error",
-        "error_message": "Nieprawidłowy, email, nazwa użytkownika lub hasło"
+        "error_message": "Nieprawidłowy email, nazwa użytkownika lub hasło"
     }
 
 
@@ -511,6 +519,7 @@ def submitComment():
             "error_message": "Niezalogowano"
         }
 
+
 @app.route("/search", methods=["POST", "GET"])
 def search():
     text = request.args.get("text")
@@ -537,15 +546,10 @@ def search():
         return redirect(f'/results')
 
 
-@app.route("/results", methods=["POST", "GET"])
-def results():
-    return send_from_directory('../frontend/svelte/public', "results.html")
-
-
 @app.route("/switchDarkMode", methods=["POST", "GET"])
 def switchDarkMode():
     darkMode = request.cookies.get("darkMode")
-    print(darkMode)
+
     if darkMode:
         print("są cookies")
         res = make_response({
@@ -565,7 +569,6 @@ def switchDarkMode():
 @app.route("/getDarkMode", methods=["POST", "GET"])
 def getDarkMode():
     darkMode = request.cookies.get("darkMode")
-    print(darkMode)
     if darkMode:
         return {
             "darkMode": True
@@ -603,8 +606,174 @@ def getTemplateColors():
         "icon_color": colors[2],
         "button_color": colors[3]
     }
+
+
+@app.route("/changeUserData", methods=["POST", "GET"])
+def changeUserData():
+    if not "userID" in session:
+        return {
+            "state": "invalid",
+            "error_message": "Użytkownik niezalogowany"
+        }
+
+    userID = session["userID"]
+    newEmail = request.json.get("email")
+    newPassword = request.json.get("password")
+    newPasswordConf = request.json.get("passwordConf")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if newEmail != "":
+        dbCursor.execute(f"""
+            SELECT `id` FROM users WHERE `email` = "{newEmail}"
+        """)
+        fetchedUsers = dbCursor.fetchall()
+
+        if len(fetchedUsers) > 0:
+            return {
+                "state": "invalid",
+                "error_message": "Podany adres email jest już zajęty!"
+            }
     
+    if newPassword != newPasswordConf:
+        return {
+            "state": "invalid",
+            "error_message": "Podane hasła nie są takie same!"
+        }
+
+    if newPassword != "":
+        dbCursor.execute(f"""
+            UPDATE `users`
+            SET `password` = "{newPassword}"
+            WHERE `id` = {userID}
+        """)
+        dbConnection.commit()
     
+    if newEmail != "":
+        dbCursor.execute(f"""
+            UPDATE `users`
+            SET `email` = "{newEmail}"
+            WHERE `id` = {userID}
+        """)
+        dbConnection.commit()
+
+    
+    dbConnection.close()
+    return {
+        "state": "valid"
+    }
+    
+
+@app.route("/getTemplateNavStyle", methods=["POST", "GET"])
+def getTemplateNavStyle():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `value` FROM globals 
+        WHERE `name` LIKE "current_template" 
+    """)
+
+    templateID = dbCursor.fetchall()[0][0]
+
+    dbCursor.execute(f"""
+        SELECT `nav_style` FROM templates 
+        WHERE `id` = {templateID} 
+    """)
+
+    navStyle = dbCursor.fetchall()[0][0]
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "nav_style": navStyle
+    }
+
+
+@app.route("/getTemplateFont", methods=["POST", "GET"])
+def getTemplateFont():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `value` FROM globals 
+        WHERE `name` LIKE "current_template" 
+    """)
+
+    templateID = dbCursor.fetchall()[0][0]
+
+    dbCursor.execute(f"""
+        SELECT `font` FROM templates 
+        WHERE `id` = {templateID} 
+    """)
+
+    font = dbCursor.fetchall()[0][0]
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "font": font
+    }
+
+
+@app.route("/getTemplateFooterText", methods=["POST", "GET"])
+def getTemplateFooterText():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `value` FROM globals 
+        WHERE `name` LIKE "current_template" 
+    """)
+
+    templateID = dbCursor.fetchall()[0][0]
+
+    dbCursor.execute(f"""
+        SELECT `footer_text` FROM templates 
+        WHERE `id` = {templateID} 
+    """)
+
+    footerText = dbCursor.fetchall()[0][0]
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "footer_text": footerText
+    }
+
+
+@app.route("/getComponentsInCurrentTemplate", methods=["POST", "GET"])
+def getComponentsInCurrentTemplate():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT `value` FROM globals 
+        WHERE `name` LIKE "current_template" 
+    """)
+
+    templateID = dbCursor.fetchall()[0][0]
+
+    dbCursor.execute(f"""
+        SELECT `type`, `dbID`, `order` FROM templates, components, components_in_templates
+        WHERE components_in_templates.componentID = components.id AND components_in_templates.templateID = {templateID}
+        ORDER BY `order`
+    """)
+
+    fetch = dbCursor.fetchall()
+    records = []
+
+    for record in fetch:
+        records.append({
+            "type": record[0],
+            "dbID": record[1],
+            "order": record[2],
+        })
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return jsonify(records)
 
 
 @app.route("/uploads/<path:path>")

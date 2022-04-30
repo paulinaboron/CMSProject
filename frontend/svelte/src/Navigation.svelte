@@ -1,7 +1,7 @@
 <script>
 	import Search from "./Search.svelte";
 	import Switch from "./Switch.svelte";
-	export let vertical;
+	$: vertical = true;
 
 	async function getLinks() {
 		let response = await fetch(`/getLinks?component=header`, {
@@ -19,8 +19,16 @@
 		return responseJson;
 	}
 
+	const getNavStyle = async () => {
+		let response = await fetch(`/getTemplateNavStyle`, { method: "post" });
+		let responseJson = await response.json();
+		console.log("response navstyle: ", responseJson);
+		vertical = responseJson.nav_style == "alternative" ? true : false;
+	};
+
 	let loggedUserData = getLoggedUser();
 	let navData = getLinks();
+	getNavStyle();
 
 	$: navData = getLinks();
 	$: loggedUserData = getLoggedUser();
