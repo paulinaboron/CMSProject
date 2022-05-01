@@ -1,10 +1,3 @@
-
-Frontend:
-    - dodać zmienny tekst do stopki (tzn. zamiast "Copyright 2022" lub dodać coś dalej)
-        * dodam endpoint "/getFooterText"
-        * edit: tekst footera będzie częścią template'u (będzie wysyłany w "/getCurrentTemplateData")
-
-
 Backend:
     - zmiana i tworzenie nowego template'u
         * edit: tylko zmiana domyślnego, nie potrzeba chyba tworzenia nowego

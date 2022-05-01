@@ -4,7 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 
-const inputs = ["main"];
+const inputs = ["Admin"];
 /*const inputs = [
 	"main", //string defaults to input: src/[name].js and output: public/build/[name].js
 	"article",
@@ -13,7 +13,8 @@ const inputs = ["main"];
 	"Category",
 	"Results",
 	"ProfilePage",
-	"AllArticles"
+	"AllArticles",
+	"Admin"
 ];*/
 const production = !process.env.ROLLUP_WATCH;
 

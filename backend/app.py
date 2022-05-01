@@ -1,8 +1,7 @@
-import json
 import sqlite3
-from flask import Flask, jsonify, make_response, redirect, request, send_from_directory, session
-from flask_bs4 import Bootstrap
+from flask import Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, session
 from flask_cors import CORS
+from flask_bs4 import Bootstrap
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '$92ji21uoh98'
@@ -33,7 +32,7 @@ CORS(app)
 
 @app.route('/')
 def index():
-    return send_from_directory("../frontend/svelte/public", "index.html")
+    return send_from_directory("../frontend/svelte/public", "main.html")
 
 @app.route('/article')
 def article():
@@ -65,9 +64,18 @@ def register():
 def profile():
     return send_from_directory("../frontend/svelte/public", "profile.html")
 
-@app.route("/results", methods=["POST", "GET"])
+@app.route("/results")
 def results():
     return send_from_directory('../frontend/svelte/public', "results.html")
+
+@app.route("/admin")
+def admin():
+    if "userID" in session and session["userRole"] == "admin":
+        return send_from_directory('../frontend/svelte/public', "admin.html")
+    
+    return redirect("/")
+
+
 
 
 @app.route('/getAllUsers', methods=["GET", "POST"])
@@ -774,6 +782,24 @@ def getComponentsInCurrentTemplate():
     dbConnection.close()
 
     return jsonify(records)
+
+
+
+
+@app.route("/adminGetAllFeaturettes", methods=["POST"])
+def adminGetAllFeaturettes():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM featurettes
+    """)
+
+    featurettes = dbCursor.fetchall()
+
+    return jsonify(featurettes)
+
+
+
 
 
 @app.route("/uploads/<path:path>")
