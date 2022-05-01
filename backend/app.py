@@ -796,7 +796,7 @@ def adminGetAllFeaturettes():
 
     featurettes = dbCursor.fetchall()
 
-    return jsonify(featurettes)
+    return jsonify([])
 
 
 
