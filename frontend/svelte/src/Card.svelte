@@ -1,11 +1,11 @@
 <script>
-    export let id;
-    console.log("ID Card: ", id);
+	export let id;
+	console.log("ID Card: ", id);
 
-    async function getArticleData(id) {
+	async function getArticleData(id) {
 		let response = await fetch(`/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
-        console.log("response: ", responseJson);
+		console.log("response: ", responseJson);
 		return responseJson;
 	}
 	let cardData = getArticleData(id);
@@ -13,19 +13,19 @@
 	$: {
 		cardData = getArticleData(id);
 	}
-    console.log("CardData: ", cardData);
+	console.log("CardData: ", cardData);
 </script>
 
 {#await cardData}
-    <h1>Oczekiwanie na dane atykułu</h1>
-{:then cardData} 
-<div class="card" style="width: 18rem">
-    <div class="card-body">
-        <h5 class="card-title">{cardData.title}</h5>
-        <p class="card-text">
-            {cardData.subtitle}
-        </p>
-        <a href="./article?id={id}" class="btn btn-secondary card-button">Go to article {id}</a>
-    </div>
-</div>
+	<h1>Oczekiwanie na dane atykułu</h1>
+{:then cardData}
+	<div class="card" style="width: 18rem">
+		<div class="card-body">
+			<h5 class="card-title">{cardData.title}</h5>
+			<p class="card-text">
+				{cardData.subtitle}
+			</p>
+			<a href="./article?id={id}" class="btn btn-secondary card-button">Go to article</a>
+		</div>
+	</div>
 {/await}

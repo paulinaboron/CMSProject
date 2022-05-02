@@ -909,6 +909,23 @@ def adminSaveArticle():
     }
 
 
+@app.route("/adminDeleteArticle", methods=["POST"])
+def adminDeleteArticle():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM articles WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
 
 @app.route("/adminGetAllCategories", methods=["POST"])
 def adminGetAllCategories():
@@ -921,6 +938,76 @@ def adminGetAllCategories():
     categories = dbCursor.fetchall()
 
     return jsonify(categories)
+
+
+@app.route("/adminAddCategory", methods=["POST"])
+def adminAddCategory():
+    name = request.json.get("name")
+
+    print(name)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        INSERT INTO categories
+        (`name`) 
+        VALUES
+        ("{name}")
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteCategory", methods=["POST"])
+def adminDeleteCategory():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM categories WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        UPDATE articles SET `category_id` = 0 WHERE `category_id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminSaveCategory", methods=["POST"])
+def adminSaveCategory():
+    currID = request.json.get("id")
+    name = request.json.get("newName")
+
+    print(currID, name)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE categories SET `name` = "{name}" WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
 
 
 @app.route("/adminGetAllGalleries", methods=["POST"])

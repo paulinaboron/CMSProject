@@ -96,7 +96,7 @@
 			{#await featurettesData then featurettesData}
 				<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
 					<!-- svelte-ignore a11y-no-onchange -->
-					<select class="form-select-sm col-3" bind:value={currentID} on:change={changeData}>
+					<select class="form-select-sm col-4" bind:value={currentID} on:change={changeData}>
 						{#each featurettesData as featurette, idx}
 							<option value={idx}>
 								{featurette[0] == 0 ? "*NOWY*" : featurette[0]}
