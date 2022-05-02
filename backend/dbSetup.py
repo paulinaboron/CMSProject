@@ -296,7 +296,7 @@ dbCursor.execute(f"""
     INSERT INTO articles
     (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`, `category_id`) 
     VALUES
-    ("tytuł", "podtytuł", "&nbsp;&nbsp;&nbsp;treść dalsza </br>część treści", "", datetime("now"), 1, 1)
+    ("tytuł", "podtytuł", "&nbsp;&nbsp;&nbsp;treść dalsza </br>część treści", "", datetime("now"), 1, 2)
 """)
 
 dbCursor.execute(f"""
@@ -362,7 +362,8 @@ dbCursor.execute(f"""
     INSERT INTO categories
     (`name`) 
     VALUES
-    ("Przykładowa kategoria")
+    ("Przykładowa kategoria"),
+    ("Druga kategoria")
 """)
 
 dbCursor.execute(f"""

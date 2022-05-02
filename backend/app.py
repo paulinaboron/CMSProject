@@ -268,6 +268,11 @@ def getGalleryData():
             "error_message": "Nie podano id galerii"
         }
 
+    if (id == 0):
+        return {
+            "error_message": "Galeria 0 - brak powiązanej galerii"
+        }
+
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
     dbCursor.execute(f"""
@@ -796,9 +801,139 @@ def adminGetAllFeaturettes():
 
     featurettes = dbCursor.fetchall()
 
-    return jsonify([])
+    return jsonify(featurettes)
 
 
+@app.route("/adminSaveFeaturette", methods=["POST"])
+def adminSaveFeatureatte():
+    currID = request.json.get("id")
+    title = request.json.get("title")
+    subtitle = request.json.get("subtitle")
+    content = request.json.get("content")
+    imagePath = request.json.get("imagePath")
+
+    print(currID, title, subtitle, content, imagePath)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO featurettes
+            (`title`, `subtitle`, `content`, `image_url`)
+            VALUES
+            ("{title}", "{subtitle}", "{content}", "{imagePath}")
+        """)
+    else:
+        dbCursor.execute(f"""
+            UPDATE featurettes
+            SET `title` = "{title}", `subtitle` = "{subtitle}", `content` = "{content}", `image_url` = "{imagePath}"
+            WHERE
+            `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteFeaturette", methods=["POST"])
+def adminDeleteFeaturette():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM featurettes WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminGetAllArticles", methods=["POST"])
+def adminGetAllArticles():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM articles
+    """)
+
+    articles = dbCursor.fetchall()
+
+    return jsonify(articles)
+
+
+@app.route("/adminSaveArticle", methods=["POST"])
+def adminSaveArticle():
+    currID = request.json.get("id")
+    title = request.json.get("title")
+    subtitle = request.json.get("subtitle")
+    content = request.json.get("content")
+    imagePath = request.json.get("imagePath")
+    connectedGallery = request.json.get("connectedGallery")
+    categoryID = request.json.get("categoryID")
+
+    print(currID, title, subtitle, content, imagePath, connectedGallery, categoryID)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO articles
+            (`title`, `subtitle`, `content`, `image_url`, `creation_date`, `connected_gallery_id`, `category_id`) 
+            VALUES
+            ("{title}", "{subtitle}", "{content}", "", datetime("now"), {connectedGallery}, {categoryID})
+        """)
+    else:
+        dbCursor.execute(f"""
+            UPDATE articles
+            SET `title` = "{title}", `subtitle` = "{subtitle}", `content` = "{content}", `connected_gallery_id` = {connectedGallery}, `category_id` = {categoryID}
+            WHERE
+            `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+
+@app.route("/adminGetAllCategories", methods=["POST"])
+def adminGetAllCategories():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM categories
+    """)
+
+    categories = dbCursor.fetchall()
+
+    return jsonify(categories)
+
+
+@app.route("/adminGetAllGalleries", methods=["POST"])
+def adminGetAllGalleries():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM galleries
+    """)
+
+    galleries = dbCursor.fetchall()
+
+    return jsonify(galleries)
 
 
 

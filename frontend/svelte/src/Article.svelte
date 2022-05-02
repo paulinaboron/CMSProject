@@ -37,7 +37,7 @@
 				</p>
 			</div>
 		</div>
-		<Gallery />
+		<Gallery id={articleData.connected_gallery_id} />
 		<br />
 		<div id="article-content">
 			<p>

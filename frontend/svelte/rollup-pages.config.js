@@ -4,8 +4,8 @@ import commonjs from "@rollup/plugin-commonjs";
 import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 
-const inputs = ["Admin"];
-/*const inputs = [
+// const inputs = ["Admin"];
+const inputs = [
 	"main", //string defaults to input: src/[name].js and output: public/build/[name].js
 	"article",
 	"LoginPage",
@@ -15,7 +15,7 @@ const inputs = ["Admin"];
 	"ProfilePage",
 	"AllArticles",
 	"Admin"
-];*/
+];
 const production = !process.env.ROLLUP_WATCH;
 
 //!!!
@@ -32,14 +32,10 @@ function serve() {
 	return {
 		writeBundle() {
 			if (server) return;
-			server = require("child_process").spawn(
-				"npm",
-				["run", "start", "--", "--dev"],
-				{
-					stdio: ["ignore", "inherit", "inherit"],
-					shell: true
-				}
-			);
+			server = require("child_process").spawn("npm", ["run", "start", "--", "--dev"], {
+				stdio: ["ignore", "inherit", "inherit"],
+				shell: true
+			});
 
 			process.on("SIGTERM", toExit);
 			process.on("exit", toExit);
@@ -50,18 +46,9 @@ function createPageRollupExport(inp) {
 	//nearly default config as in https://github.com/sveltejs/template
 	//TODO add possibilty for different option with different inputs and destinations.
 	const t = typeof inp;
-	const input =
-		t === "string"
-			? createPageInputByString(inp)
-			: createPageInputByObject(inp);
-	const output =
-		t === "string"
-			? createPageOutputByString(inp)
-			: createPageOutputByObject(inp);
-	const cssPath =
-		t === "string"
-			? createPageCssByString(inp)
-			: createPageCssByObject(inp);
+	const input = t === "string" ? createPageInputByString(inp) : createPageInputByObject(inp);
+	const output = t === "string" ? createPageOutputByString(inp) : createPageOutputByObject(inp);
+	const cssPath = t === "string" ? createPageCssByString(inp) : createPageCssByObject(inp);
 
 	let def = {
 		input: input,
@@ -147,10 +134,7 @@ function createPageOutputByObject(inp) {
 }
 
 function validateInputSettings(inp) {
-	return (
-		isStringNotNull(inp) ||
-		(typeof inp === "object" && inp.input && inp.output && inp.css)
-	);
+	return isStringNotNull(inp) || (typeof inp === "object" && inp.input && inp.output && inp.css);
 }
 
 function isStringNotNull(str) {
