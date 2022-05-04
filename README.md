@@ -1,7 +1,5 @@
 # CMSProject
 
-## Opis
-
 System CMS do zarządzania zawartością strony internetowej.
 
 
@@ -17,9 +15,9 @@ http://127.0.0.1:5000/
 
 
 ## Obsługa projektu
-Dane do logowania jako administrator:
-Login: admin
-Password: admin123
+Dane do logowania jako administrator:</br>
+Login: admin</br>
+Password: admin123</br>
 
 
 ## Grupa
