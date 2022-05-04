@@ -23,5 +23,5 @@ Password: admin123
 
 
 ## Grupa
-Michał Kurbiel
+Michał Kurbiel </br>
 Paulina Boroń
