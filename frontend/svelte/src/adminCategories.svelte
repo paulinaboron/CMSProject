@@ -1,5 +1,6 @@
 <script>
 	export let admArticles;
+	export let admLinks;
 
 	let getAllCategories = async () => {
 		let response = await fetch("http://localhost:5000/adminGetAllCategories", { method: "POST" });
@@ -31,6 +32,7 @@
 				if (data.state == "valid") {
 					getData();
 					admArticles.init();
+					admLinks.init();
 				}
 			});
 	};
@@ -51,6 +53,7 @@
 					currentlyEdited = 0;
 					editedName = "";
 					admArticles.init();
+					admLinks.init();
 				}
 			});
 	};
@@ -68,6 +71,7 @@
 				if (data.state == "valid") {
 					getData();
 					admArticles.init();
+					admLinks.init();
 				}
 			});
 	};

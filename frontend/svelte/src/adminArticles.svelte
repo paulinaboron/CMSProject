@@ -1,13 +1,15 @@
 <svelte:options accessors={true} />
 
 <script>
+	export let admLinks;
+
 	let getAllArticles = async () => {
 		let response = await fetch("http://localhost:5000/adminGetAllArticles", { method: "POST" });
 		let responseJSON = await response.json();
 		return await responseJSON;
 	};
 
-	export let currentID = 0;
+	let currentID = 0;
 	let articlesData = [];
 	let categories = [];
 	let galleries = [];
@@ -20,6 +22,7 @@
 	const getData = () => {
 		getAllArticles().then((data) => {
 			articlesData = data;
+			console.log(articlesData.length);
 			if (articlesData.length > 0) {
 				changeData();
 			}
@@ -43,17 +46,21 @@
 	};
 
 	const changeData = () => {
-		title = articlesData[currentID][1];
-		subtitle = articlesData[currentID][2];
-		content = articlesData[currentID][3].replace("&nbsp;&nbsp;&nbsp;", "<tab>").replace("</br>", "\n<nl>");
-		connectedGallery = articlesData[currentID][6];
-		categoryID = articlesData[currentID][7];
+		console.log(articlesData.length);
+		if (articlesData.length > 0) {
+			title = articlesData[currentID][1];
+			subtitle = articlesData[currentID][2];
+			content = articlesData[currentID][3].replace("&nbsp;&nbsp;&nbsp;", "<tab>").replace("</br>", "\n<nl>");
+			connectedGallery = articlesData[currentID][6];
+			categoryID = articlesData[currentID][7];
+		}
 	};
 
 	const addNew = () => {
 		articlesData = [...articlesData, [0, "", "", "", "", "", 0, 0]];
 		currentID = articlesData.length - 1;
 		changeData();
+		admLinks.init();
 	};
 
 	const saveRecord = () => {
@@ -73,6 +80,7 @@
 			.then((data) => {
 				if (data.state == "valid") {
 					getData();
+					admLinks.init();
 				}
 			});
 	};
@@ -98,7 +106,7 @@
 					if (data.state == "valid") {
 						getData();
 						currentID = articlesData.length - 2;
-						changeData();
+						admLinks.init();
 					}
 				});
 		}

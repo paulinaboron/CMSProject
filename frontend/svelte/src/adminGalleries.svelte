@@ -146,7 +146,7 @@
 	getData();
 </script>
 
-<div class="tab-pane active container" id="galleries">
+<div class="tab-pane container" id="galleries">
 	<p class="h1 mb-3">Galleries</p>
 	<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
 		<!-- svelte-ignore a11y-no-onchange -->

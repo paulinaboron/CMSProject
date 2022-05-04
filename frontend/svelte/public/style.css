@@ -104,6 +104,12 @@ textarea {
 	--button-shadow-color: hsla(208, 6%, 54%, 0.5);
 }
 
+h1,
+h2,
+h3 {
+	color: var(--font-color);
+}
+
 body {
 	background-color: var(--bg-color);
 	font-family: var(--font) !important;

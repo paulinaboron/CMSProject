@@ -1,6 +1,6 @@
 #potrzebne bazy danych:
-# users (role: admin, redactor, user)
-# sliders (id, nazwa)
+# users (role: admin, user)
+# sliders (id, nazwa, interval)
 # slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
 # articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, powiązana galeria, id kategorii)
 # niezaimplementowane! / articles_lists (id, tytuł)
@@ -113,12 +113,13 @@ dbCursor.execute("""
 """)
 
 
-# sliders (id, nazwa)
+# sliders (id, nazwa, interval)
 
 dbCursor.execute("""
     CREATE TABLE IF NOT EXISTS sliders(
         `id` integer PRIMARY KEY AUTOINCREMENT,
-        `name` text
+        `name` text,
+        `interval` integer
     )
 """)
 
@@ -301,9 +302,9 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO sliders 
-    (`name`) 
+    (`name`, `interval`) 
     VALUES
-    ("slajder1")
+    ("slajder1", 2000)
 """)
 
 dbCursor.execute(f"""
@@ -319,7 +320,7 @@ dbCursor.execute(f"""
     INSERT INTO featurettes 
     (`title`, `subtitle`, `content`, `image_url`) 
     VALUES
-    ("First featurette heading.", "It'll blow your mind.", "Donec ullamcorper nulla non metus auctor fringilla.Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.", "500.png"),
+    ("First featurette heading.", "It'll blow your mind.", "Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.", "500.png"),
     ("Drugi featurette.", "Podtytuł", "Treść", "500.png")
 """)
 
@@ -336,6 +337,8 @@ dbCursor.execute(f"""
     VALUES
     ("/", "Home", "header", 1),
     ("/allArticles", "Artykuły", "header", 2),
+    ("/category?id=1", "Kategoria 1", "header", 3),
+    ("/article?id=1", "Artykuł 1", "header", 4),
     ("/", "Home", "footer", 1),
     ("/", "Features", "footer", 2),
     ("/", "Pricing", "footer", 3),

@@ -163,6 +163,7 @@ def getSliderData():
         return {
             "id": slider[0],
             "name": slider[1],
+            "interval": slider[2],
             "slides": slides
         }
 
@@ -242,7 +243,7 @@ def getLinks():
         return {"error_message": "brak sprecyzowanego komponentu"}
     else:
         dbCursor.execute(f"""
-            SELECT * FROM nav_links WHERE `for_component` = "{component}" ORDER BY `order`
+            SELECT * FROM nav_links WHERE `for_component` = "{component}"
         """)
 
     fetchedLinks = dbCursor.fetchall()
@@ -918,6 +919,10 @@ def adminDeleteArticle():
     dbCursor.execute(f"""
         DELETE FROM articles WHERE `id` = {currID}
     """)
+    
+    dbCursor.execute(f"""
+        DELETE FROM `nav_links` WHERE `link` = "/article?id={currID}"
+    """)
 
     dbConnection.commit()
     dbConnection.close()
@@ -978,6 +983,10 @@ def adminDeleteCategory():
         UPDATE articles SET `category_id` = 0 WHERE `category_id` = {currID}
     """)
 
+    dbCursor.execute(f"""
+        DELETE FROM `nav_links` WHERE `link` = "/category?id={currID}"
+    """)
+
     dbConnection.commit()
     dbConnection.close()
 
@@ -1008,9 +1017,7 @@ def adminSaveCategory():
     }
 
 
-
-
-@app.route("/adminGetAllGalleries", methods=["POST"])
+@app.route("/adminGetAllGalleries", methods=["POST", "GET"])
 def adminGetAllGalleries():
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -1018,9 +1025,219 @@ def adminGetAllGalleries():
         SELECT * FROM galleries
     """)
 
-    galleries = dbCursor.fetchall()
+    galleries = list(dbCursor.fetchall())
+
+    for idx, gallery in enumerate(galleries):
+        gallery = list(gallery)
+        dbCursor.execute(f"""
+            SELECT * FROM galleries_photos WHERE `gallery_id` = {gallery[0]}
+        """)
+
+        photos = list(dbCursor.fetchall())
+
+        galleries[idx] = list(galleries[idx])
+        galleries[idx].append(photos)
+
 
     return jsonify(galleries)
+
+
+@app.route("/adminSaveGallery", methods=["POST"])
+def adminSaveGallery():
+    currID = request.json.get("id")
+    name = request.json.get("name")
+    
+        
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO galleries
+            (`name`) 
+            VALUES
+            ("{name}")
+        """)
+    else:
+        dbCursor.execute(f"""
+            UPDATE galleries
+            SET `name` = "{name}"
+            WHERE
+            `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+        
+
+@app.route("/adminDeleteGallery", methods=["POST"])
+def adminDeleteGallery():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM galleries WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        DELETE FROM galleries_photos WHERE `gallery_id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        UPDATE articles SET `connected_gallery_id` = 0 WHERE `category_id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+@app.route("/adminSavePhoto", methods=["POST"])
+def adminSavePhoto():
+    currID = request.json.get("id")
+    imgPath = request.json.get("newImagePath")
+
+    print(currID, imgPath)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE galleries_photos SET `img_url` = "{imgPath}" WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+        
+
+@app.route("/adminDeletePhoto", methods=["POST"])
+def adminDeletePhoto():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM galleries_photos WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminAddPhoto", methods=["POST"])
+def adminAddPhoto():
+    galleryID = request.json.get("galleryID")
+    imagePath = request.json.get("imagePath")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        INSERT INTO galleries_photos
+        (`gallery_id`, `img_url`) 
+        VALUES
+        ("{galleryID}", "{imagePath}")
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state" : "valid"
+    }
+
+
+@app.route("/adminGetNavLinks", methods=["POST"])
+def adminGetNavLinks():
+    component = request.json.get("component")
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM nav_links WHERE `for_component` = "{component}"
+    """)
+
+    links = list(dbCursor.fetchall())
+
+    return jsonify(links)
+
+
+@app.route("/adminDeleteNavLink", methods=["POST"])
+def adminDeleteNavLink():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM nav_links WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminSaveNavLink", methods=["POST"])
+def adminSaveNavLink():
+    currID = request.json.get("id")
+    link = request.json.get("link")
+    text = request.json.get("text")
+    component = request.json.get("component")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        UPDATE nav_links 
+        SET `link` = "{link}", `text` = "{text}", `for_component` = "{component}"
+        WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminAddNavLink", methods=["POST"])
+def adminAddNavLink():
+    link = request.json.get("link")
+    text = request.json.get("text")
+    component = request.json.get("component")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        INSERT INTO nav_links
+        (`link`, `text`, `for_component`)
+        VALUES
+        ("{link}", "{text}", "{component}")
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
 
 
 

@@ -85,7 +85,7 @@
 	getData();
 </script>
 
-<div class="tab-pane" id="featurettes">
+<div class="tab-pane container" id="featurettes">
 	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3 mx-3">
 		<a href="#featurettes-composition" class="nav-link active" data-bs-toggle="tab">Composition</a>
 		<a href="#featurettes-images" class="nav-link" data-bs-toggle="tab">Images</a>
