@@ -1,4 +1,6 @@
 <script>
+	export let admArticles;
+
 	let getAllCategories = async () => {
 		let response = await fetch("http://localhost:5000/adminGetAllCategories", { method: "POST" });
 		let responseJSON = await response.json();
@@ -28,6 +30,7 @@
 			.then((data) => {
 				if (data.state == "valid") {
 					getData();
+					admArticles.init();
 				}
 			});
 	};
@@ -47,6 +50,7 @@
 					getData();
 					currentlyEdited = 0;
 					editedName = "";
+					admArticles.init();
 				}
 			});
 	};
@@ -63,6 +67,7 @@
 			.then((data) => {
 				if (data.state == "valid") {
 					getData();
+					admArticles.init();
 				}
 			});
 	};
@@ -70,7 +75,7 @@
 	getData();
 </script>
 
-<div class="tab-pane active container" id="categories">
+<div class="tab-pane container" id="categories">
 	<p class="h1 mb-3">Categories</p>
 	<div class="container col-8">
 		<table class="table table-striped">
@@ -131,42 +136,4 @@
 			</tbody>
 		</table>
 	</div>
-	<!--<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
-		<button class="btn btn-sm btn-primary px-3" on:click={addNew}> <span class="fw-bold">+</span> </button>
-		<button class="btn btn-sm btn-outline-danger px-3" on:click={deleteRecord}> <span class="fw-bold">×</span> </button>
-	</div>
-	<div class="container col-sm-10 col-md-8 mx-auto">
-		<label for="articleTitle" class="form-label">Tytuł</label>
-		<input type="text" class="form-control" id="articleTitle" bind:value={title} />
-
-		<label for="articleSubtitle" class="form-label mt-2">Podtytuł</label>
-		<input type="text" class="form-control" id="articleSubtitle" bind:value={subtitle} />
-
-		<label for="articleContent" class="form-label mt-2">Treść (&lt;tab&gt; - wcięcie, &lt;nl&gt; - przejście do nowej linii)</label>
-		<textarea type="text" class="form-control" id="articleContent" bind:value={content} />
-
-		<label for="articleConnnectedGallery" class="form-label mt-2">Powiązana galeria</label>
-		<br />
-		<select id="articleConnnectedGallery" class="form-control form-select col-5" bind:value={connectedGallery}>
-			<option value={0}> *BRAK* </option>
-			{#each galleries as gallery}
-				<option value={gallery[0]}>
-					{gallery[0]} - {gallery[1]}
-				</option>
-			{/each}
-		</select>
-
-		<label for="articleCategoryID" class="form-label mt-2">Kategoria</label>
-		<br />
-		<select id="articleCategoryID" class="form-control form-select col-5" bind:value={categoryID}>
-			<option value={0}> *BRAK* </option>
-			{#each categories as category}
-				<option value={category[0]}>
-					{category[0]} - {category[1]}
-				</option>
-			{/each}
-		</select>
-
-		<button on:click={saveRecord} class="btn btn-primary mt-4"> Zapisz </button>
-	</div>-->
 </div>

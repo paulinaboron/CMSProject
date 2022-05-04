@@ -1,3 +1,5 @@
+<svelte:options accessors={true} />
+
 <script>
 	let getAllArticles = async () => {
 		let response = await fetch("http://localhost:5000/adminGetAllArticles", { method: "POST" });
@@ -5,7 +7,7 @@
 		return await responseJSON;
 	};
 
-	let currentID = 0;
+	export let currentID = 0;
 	let articlesData = [];
 	let categories = [];
 	let galleries = [];
@@ -102,9 +104,13 @@
 		}
 	};
 
-	getData();
-	getCategories();
-	getGalleries();
+	export const init = () => {
+		getData();
+		getCategories();
+		getGalleries();
+	};
+
+	init();
 </script>
 
 <div class="tab-pane container" id="articles">
