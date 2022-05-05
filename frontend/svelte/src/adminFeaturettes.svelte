@@ -1,4 +1,6 @@
 <script>
+	export let admTemplates;
+
 	let getAllFeaturettes = async () => {
 		let response = await fetch("http://localhost:5000/adminGetAllFeaturettes", { method: "POST" });
 		let responseJSON = await response.json();
@@ -53,6 +55,7 @@
 			.then((data) => {
 				if (data.state == "valid") {
 					getData();
+					admTemplates.getData();
 				}
 			});
 	};
@@ -79,6 +82,7 @@
 					if (data.state == "valid") {
 						getData();
 						currentID = featurettesData.length - 2;
+						admTemplates.getData();
 					}
 				});
 		}

@@ -144,20 +144,12 @@ def getSliderData():
         slides = []
 
         for slide in fetchedSlides:
-            if slide[6] == 0:
-                showButton = False
-            else:
-                showButton = True
-
             slides.append({
                 "id": slide[0],
                 "img_url": slide[2],
                 "order": slide[3],
                 "title": slide[4],
                 "subtitle": slide[5],
-                "show_button": showButton,
-                "button_text": slide[7],
-                "button_url": slide[8],
             })
 
         return {
@@ -537,7 +529,6 @@ def submitComment():
 @app.route("/search", methods=["POST", "GET"])
 def search():
     text = request.args.get("text")
-    print("text", text)
 
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -565,14 +556,12 @@ def switchDarkMode():
     darkMode = request.cookies.get("darkMode")
 
     if darkMode:
-        print("są cookies")
         res = make_response({
             "darkMode": 1
         })
         res.delete_cookie("darkMode")
         return res
     else:
-        print("nie ma")
         res = make_response({
             "darkMode": 0
         })
@@ -812,8 +801,6 @@ def adminSaveFeatureatte():
     subtitle = request.json.get("subtitle")
     content = request.json.get("content")
     imagePath = request.json.get("imagePath")
-
-    print(currID, title, subtitle, content, imagePath)
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -825,6 +812,24 @@ def adminSaveFeatureatte():
             VALUES
             ("{title}", "{subtitle}", "{content}", "{imagePath}")
         """)
+
+        dbConnection.commit()
+
+        dbCursor.execute(f"""
+            SELECT id FROM featurettes ORDER BY id DESC
+        """)
+
+        newDbID = dbCursor.fetchall()[0][0]
+        
+        dbCursor.execute(f"""
+            INSERT INTO components
+            (`type`, `dbID`)
+            VALUES
+            ("featurette", {newDbID})
+        """)
+
+        dbConnection.commit()
+
     else:
         dbCursor.execute(f"""
             UPDATE featurettes
@@ -833,7 +838,9 @@ def adminSaveFeatureatte():
             `id` = {currID}
         """)
 
-    dbConnection.commit()
+        dbConnection.commit()
+
+    
     dbConnection.close()
 
     return {
@@ -847,8 +854,13 @@ def adminDeleteFeaturette():
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
+
     dbCursor.execute(f"""
         DELETE FROM featurettes WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        DELETE FROM components WHERE `type` = "featurette" and `dbID` = {currID}
     """)
 
     dbConnection.commit()
@@ -881,8 +893,6 @@ def adminSaveArticle():
     imagePath = request.json.get("imagePath")
     connectedGallery = request.json.get("connectedGallery")
     categoryID = request.json.get("categoryID")
-
-    print(currID, title, subtitle, content, imagePath, connectedGallery, categoryID)
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -948,8 +958,6 @@ def adminGetAllCategories():
 @app.route("/adminAddCategory", methods=["POST"])
 def adminAddCategory():
     name = request.json.get("name")
-
-    print(name)
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -999,8 +1007,6 @@ def adminDeleteCategory():
 def adminSaveCategory():
     currID = request.json.get("id")
     name = request.json.get("newName")
-
-    print(currID, name)
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -1099,12 +1105,11 @@ def adminDeleteGallery():
         "state": "valid"
     }
 
+
 @app.route("/adminSavePhoto", methods=["POST"])
 def adminSavePhoto():
     currID = request.json.get("id")
     imgPath = request.json.get("newImagePath")
-
-    print(currID, imgPath)
     
     dbConnection = sqlite3.connect('db.sqlite')
     dbCursor = dbConnection.cursor()
@@ -1238,6 +1243,485 @@ def adminAddNavLink():
     return {
         "state": "valid"
     }
+
+
+@app.route("/adminGetAllSliders", methods=["POST", "GET"])
+def adminGetAllSliders():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM sliders
+    """)
+
+    sliders = list(dbCursor.fetchall())
+
+    for idx, slider in enumerate(sliders):
+        slider = list(slider)
+        dbCursor.execute(f"""
+            SELECT * FROM slides WHERE `slider_id` = {slider[0]}
+        """)
+
+        photos = list(dbCursor.fetchall())
+
+        sliders[idx] = list(sliders[idx])
+        sliders[idx].append(photos)
+
+
+    return jsonify(sliders)
+
+
+@app.route("/adminSaveSlider", methods=["POST"])
+def adminSaveSlider():
+    currID = request.json.get("id")
+    name = request.json.get("name")
+    interval = request.json.get("interval")
+        
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO sliders
+            (`name`, `interval`) 
+            VALUES
+            ("{name}", "{interval}")
+        """)
+
+        dbConnection.commit()
+
+        dbCursor.execute(f"""
+            SELECT id FROM sliders ORDER BY id DESC
+        """)
+
+        newDbID = dbCursor.fetchall()[0][0]
+        
+        dbCursor.execute(f"""
+            INSERT INTO components
+            (`type`, `dbID`)
+            VALUES
+            ("slider", {newDbID})
+        """)
+        
+        dbConnection.commit()
+
+    else:
+        dbCursor.execute(f"""
+            UPDATE sliders
+            SET `name` = "{name}", `interval` = "{interval}"
+            WHERE
+            `id` = {currID}
+        """)
+
+        dbConnection.commit()
+
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteSlider", methods=["POST"])
+def adminDeleteSlider():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM sliders WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        DELETE FROM components WHERE `type` = "slider" and `dbID` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        DELETE FROM slides WHERE `slider_id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminSaveSlide", methods=["POST"])
+def adminSaveSlide():
+    currID = request.json.get("id")
+    imgPath = request.json.get("newImagePath")
+    title = request.json.get("newTitle")
+    subtitle = request.json.get("newSubtitle")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE slides 
+        SET 
+        `img_url` = "{imgPath}", `title` = "{title}", `subtitle` = "{subtitle}"
+        WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteSlide", methods=["POST"])
+def adminDeleteSlide():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM slides WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminAddSlide", methods=["POST"])
+def adminAddSlide():
+    sliderID = request.json.get("sliderID")
+    imagePath = request.json.get("imagePath")
+    title = request.json.get("title")
+    subtitle = request.json.get("subtitle")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        INSERT INTO slides
+        (`slider_id`, `img_url`, `title`, `subtitle`) 
+        VALUES
+        ("{sliderID}", "{imagePath}", "{title}", "{subtitle}")
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state" : "valid"
+    }
+
+
+@app.route("/adminGetAllComponents", methods=["POST"])
+def adminGetAllComponents():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM components
+    """)
+
+    components = list(dbCursor.fetchall())
+
+    for idx, component in enumerate(components):
+        compType = component[1]
+        dbID = component[2]
+        components[idx] = list(components[idx])
+
+        if compType == "slider":
+            dbCursor.execute(f"""
+                SELECT name FROM sliders WHERE `id` = {dbID}
+            """)
+
+            name = list(dbCursor.fetchall()[0])[0]
+            components[idx].append(name)
+
+        if compType == "featurette":
+            dbCursor.execute(f"""
+                SELECT title FROM featurettes WHERE `id` = {dbID}
+            """)
+
+            name = list(dbCursor.fetchall()[0])[0]
+            components[idx].append(name)
+
+        if compType == "news":
+            components[idx].append("Sekcja newsów")
+
+
+    dbCursor.close()
+    dbConnection.close()
+
+    return jsonify(components)
+
+
+@app.route("/adminGetAllTemplates", methods=["POST", "GET"])
+def adminGetAllTemplates():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        SELECT * FROM templates
+    """)
+
+    templates = dbCursor.fetchall()
+
+    for idx, template in enumerate(templates):
+        templates[idx] = list(templates[idx])
+
+        dbCursor.execute(f"""
+            SELECT * FROM components_in_templates WHERE `templateID` = {template[0]} ORDER BY `order`
+        """)
+
+        compsInTemplates = list(dbCursor.fetchall())
+        comps = []
+
+        for comp in compsInTemplates:
+            
+            dbCursor.execute(f"""
+                SELECT * FROM components WHERE `id` = {comp[2]}
+            """)
+
+            data = list(dbCursor.fetchall()[0])
+            data.append(comp[3])
+            data.append(comp[4])
+        
+            if data[1] == "news":
+                data.append("Sekcja newsów")
+
+            if data[1] == "slider":
+                dbCursor.execute(f"""
+                    SELECT name FROM sliders WHERE `id` = {data[2]}
+                """)
+
+                name = list(dbCursor.fetchall()[0])[0]
+                data.append(name)
+                
+            if data[1] == "featurette":
+                dbCursor.execute(f"""
+                    SELECT title FROM featurettes WHERE `id` = {data[2]}
+                """)
+
+                name = list(dbCursor.fetchall()[0])[0]
+                data.append(name)
+
+            data.append(comp[0])
+
+            comps.append(data)
+
+
+
+
+        templates[idx].append(comps)
+
+    dbConnection.close()
+
+    return jsonify(templates)
+
+
+@app.route("/adminAddComponent", methods=["POST"])
+def adminAddComponent():
+    templateID = request.json.get("templateID")
+    componentID = request.json.get("componentID")
+    name = request.json.get("name")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        SELECT `order` FROM components_in_templates WHERE `templateID` = {templateID} ORDER BY `order` desc
+    """)
+
+    newOrder = dbCursor.fetchall()[0][0] + 1
+
+    dbCursor.execute(f"""
+        INSERT INTO components_in_templates
+        (`templateID`, `componentID`, `order`, `name`)
+        VALUES
+        ({templateID}, {componentID}, {newOrder}, "{name}")
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminSaveComponent", methods=["POST"])
+def adminSaveComponent():
+    currID = request.json.get("id")
+    templateID = request.json.get("templateID")
+    componentID = request.json.get("componentID")
+    name = request.json.get("name")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates
+        SET `templateID` = {templateID}, `componentID` = {componentID}, `name` = "{name}"
+        WHERE `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteComponent", methods=["POST"])
+def adminDeleteComponent():
+    currID = request.json.get("id")
+    order = request.json.get("order")
+    templateID = request.json.get("templateID")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        DELETE FROM components_in_templates WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates 
+        SET `order` = `order` - 1
+        WHERE `templateID` = {templateID}
+        and `order` > {order}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminComponentOrderUp", methods=["POST"])
+def adminComponentOrderUp():
+    currID = request.json.get("id")
+    order = request.json.get("order")
+    templateID = request.json.get("templateID")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates 
+        SET `order` = {order}
+        WHERE `templateID` = {templateID}
+        and `order` = {order} - 1
+    """)
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates 
+        SET `order` = `order` - 1
+        WHERE `templateID` = {templateID}
+        and `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminComponentOrderDown", methods=["POST"])
+def adminComponentOrderDown():
+    currID = request.json.get("id")
+    order = request.json.get("order")
+    templateID = request.json.get("templateID")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates 
+        SET `order` = {order} 
+        WHERE `templateID` = {templateID}
+        and `order` = {order} + 1
+    """)
+
+    dbCursor.execute(f"""
+        UPDATE components_in_templates 
+        SET `order` = `order` + 1
+        WHERE `templateID` = {templateID}
+        and `id` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminSaveTemplate", methods=["POST"])
+def adminSaveTemplate():
+    currID = request.json.get("id")
+    name = request.json.get("name")
+    bgColor = request.json.get("bgColor")
+    fontColor = request.json.get("fontColor")
+    buttonColor = request.json.get("buttonColor")
+    footerText = request.json.get("footerText")
+    navStyle = request.json.get("navStyle")
+    fontFamily = request.json.get("fontFamily")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID != 0:
+        dbCursor.execute(f"""
+            UPDATE templates
+            SET `name` = "{name}", `bg_color` = "{bgColor}", `font_color` = "{fontColor}", `button_color` = "{buttonColor}", `footer_text` = "{footerText}", `nav_style` = "{navStyle}", `font`  = "{fontFamily}"
+            WHERE `id` = {currID}
+        """)
+    else:
+        dbCursor.execute(f"""
+            INSERT INTO templates
+            (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`, `font`)
+            VALUES
+            ("{name}", "{bgColor}", "{fontColor}", "rgba(0,0,0,0.5)", "{buttonColor}", "{footerText}", "{navStyle}", "{fontFamily}")
+        """)
+
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminDeleteTemplate", methods=["POST"])
+def adminDeleteTemplate():
+    currID = request.json.get("id")
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+    dbCursor.execute(f"""
+        DELETE FROM templates WHERE `id` = {currID}
+    """)
+
+    dbCursor.execute(f"""
+        DELETE FROM components_in_templates WHERE `templateID` = {currID}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return {
+        "state": "valid"
+    }
+
+
 
 
 

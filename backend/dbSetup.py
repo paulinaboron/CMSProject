@@ -1,7 +1,7 @@
 #potrzebne bazy danych:
 # users (role: admin, user)
 # sliders (id, nazwa, interval)
-# slides (id, id_slidera, url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
+# slides (id, id_slidera, url, tytuł, podtytuł)
 # articles (id, ??id_listy, tytuł, podtytuł, tekst, url_obrazka, data, powiązana galeria, id kategorii)
 # niezaimplementowane! / articles_lists (id, tytuł)
 # comments (id, id_artykułu, id_użytkownika, data_dodania)
@@ -124,7 +124,7 @@ dbCursor.execute("""
 """)
 
 
-# slides (id, id_slidera, kolejność, ?url, tytuł, podtytuł, przycisk?, tekst_przycisku, url_przycisku)
+# slides (id, id_slidera, kolejność, ?url, tytuł, podtytuł)
 
 dbCursor.execute("""
     CREATE TABLE IF NOT EXISTS slides(
@@ -133,10 +133,7 @@ dbCursor.execute("""
         `img_url` text,
         `order` integer,
         `title` text,
-        `subtitle` text,
-        `show_button` boolean,
-        `button_text` text,
-        `button_url` text
+        `subtitle` text
     )
 """)
 
@@ -251,7 +248,6 @@ dbCursor.execute("""
         `button_color` text,
         `footer_text` text,
         `nav_style` text,
-        `gallery_time` integer,
         `font` text
     )
 """)
@@ -264,7 +260,8 @@ dbCursor.execute("""
         `id` integer PRIMARY KEY AUTOINCREMENT,
         `templateID` integer,
         `componentID` integer,
-        `order` integer
+        `order` integer,
+        `name` text
     )
 """)
 
@@ -309,11 +306,11 @@ dbCursor.execute(f"""
 
 dbCursor.execute(f"""
     INSERT INTO slides 
-    (`slider_id`, `order`, `img_url`, `title`, `subtitle`, `show_button`, `button_text`, `button_url`) 
+    (`slider_id`, `order`, `img_url`, `title`, `subtitle`) 
     VALUES
-    (1, 1, "gray1.jpg", "First slide label", "Some representative placeholder content for the first slide.", 0, "", ""),
-    (1, 2, "gray2.jpg", "Second slide label", "Some representative placeholder content for the second slide.", 0, "", ""),
-    (1, 3, "gray3.jpg", "Third slide label", "Some representative placeholder content for the third slide.", 0, "", "")
+    (1, 1, "gray1.jpg", "First slide label", "Some representative placeholder content for the first slide."),
+    (1, 2, "gray2.jpg", "Second slide label", "Some representative placeholder content for the second slide."),
+    (1, 3, "gray3.jpg", "Third slide label", "Some representative placeholder content for the third slide.")
 """)
 
 dbCursor.execute(f"""
@@ -373,26 +370,26 @@ dbCursor.execute(f"""
     INSERT INTO components
     (`type`, `dbID`)
     VALUES
-    ("slider", 1),
     ("news", 0),
-    ("featurette", 1)
-    
+    ("slider", 1),
+    ("featurette", 1),
+    ("featurette", 2)   
 """)
 
 dbCursor.execute(f"""
     INSERT INTO templates
     (`name`, `bg_color`, `font_color`, `icon_color`, `button_color`, `footer_text`, `nav_style`, `font`)
     VALUES
-    ("Domyślny wzór", "white", "black", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "classic", "Segoe UI")
+    ("Domyślny układ", "rgb(255, 255, 255)", "rgb(0, 0, 0)", "rgba(0, 0, 0, 0.5)", "rgb(108, 117, 125)", "Tekst stopki", "classic", "Segoe UI")
 """)
 
 dbCursor.execute(f"""
     INSERT INTO components_in_templates
-    (`templateID`, `componentID`, `order`)
+    (`templateID`, `componentID`, `order`, `name`)
     VALUES
-    (1, 1, 1),
-    (1, 2, 2),
-    (1, 3, 3)
+    (1, 2, 1, "Slajder - strona główna"),
+    (1, 1, 2, "Strona newsów"),
+    (1, 3, 3, "Featurette - strona główna")
 """)
 
 

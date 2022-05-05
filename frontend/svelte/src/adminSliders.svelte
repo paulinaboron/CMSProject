@@ -1,4 +1,6 @@
 <script>
+	export let admTemplates;
+
 	let slidersData = [];
 	let currentID = 0;
 	let id = 0;
@@ -43,6 +45,7 @@
 			.then((data) => {
 				if (data.state == "valid") {
 					getData();
+					admTemplates.getData();
 				}
 			});
 	};
@@ -69,6 +72,7 @@
 					if (data.state == "valid") {
 						currentID = slidersData.length - 2;
 						getData();
+						admTemplates.getData();
 					}
 				});
 		}
