@@ -22,10 +22,7 @@
 	const getData = () => {
 		getAllArticles().then((data) => {
 			articlesData = data;
-			console.log(articlesData.length);
-			if (articlesData.length > 0) {
-				changeData();
-			}
+			changeData();
 		});
 	};
 
@@ -46,13 +43,14 @@
 	};
 
 	const changeData = () => {
-		console.log(articlesData.length);
 		if (articlesData.length > 0) {
 			title = articlesData[currentID][1];
 			subtitle = articlesData[currentID][2];
 			content = articlesData[currentID][3].replace("&nbsp;&nbsp;&nbsp;", "<tab>").replace("</br>", "\n<nl>");
 			connectedGallery = articlesData[currentID][6];
 			categoryID = articlesData[currentID][7];
+		} else {
+			[title, subtitle, content, connectedGallery, categoryID] = ["", "", "", 0, 0];
 		}
 	};
 
@@ -64,6 +62,8 @@
 	};
 
 	const saveRecord = () => {
+		if (articlesData.length == 0) return;
+
 		fetch("http://localhost:5000/adminSaveArticle", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },

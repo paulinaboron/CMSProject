@@ -15,17 +15,19 @@
 	const getData = () => {
 		getAllFeaturettes().then((data) => {
 			featurettesData = data;
-			if (featurettesData.length > 0) {
-				changeData();
-			}
+			changeData();
 		});
 	};
 
 	const changeData = () => {
-		title = featurettesData[currentID][1];
-		subtitle = featurettesData[currentID][2];
-		content = featurettesData[currentID][3];
-		imagePath = featurettesData[currentID][4];
+		if (featurettesData.length > 0) {
+			title = featurettesData[currentID][1];
+			subtitle = featurettesData[currentID][2];
+			content = featurettesData[currentID][3];
+			imagePath = featurettesData[currentID][4];
+		} else {
+			[title, subtitle, content, imagePath] = ["", "", "", ""];
+		}
 	};
 
 	const addNew = () => {
@@ -35,6 +37,7 @@
 	};
 
 	const saveRecord = () => {
+		if (featurettesData.length == 0) return;
 		fetch("http://localhost:5000/adminSaveFeaturette", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
@@ -76,7 +79,6 @@
 					if (data.state == "valid") {
 						getData();
 						currentID = featurettesData.length - 2;
-						changeData();
 					}
 				});
 		}

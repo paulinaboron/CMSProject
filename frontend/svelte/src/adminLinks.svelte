@@ -145,7 +145,7 @@
 	init();
 </script>
 
-<div class="tab-pane active" id="links">
+<div class="tab-pane" id="links">
 	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3 mx-3">
 		<button
 			on:click={() => {
@@ -293,7 +293,7 @@
 						</tr>
 					{/each}
 					<tr>
-						<th scope="col" class="pt-3"> Nowa </th>
+						<th scope="col" class="pt-3"> Nowy </th>
 
 						<td class="pt-3">
 							<!-- svelte-ignore a11y-no-onchange -->

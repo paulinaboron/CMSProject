@@ -18,27 +18,37 @@
 {#await sliderData}
 	<h1>Oczekiwanie na dane slidera</h1>
 {:then sliderData}
-	<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+	<div
+		id={`carouselExampleDark${sliderData.id}`}
+		class="carousel carousel-dark slide"
+		data-bs-ride="carousel"
+		data-bs-interval={sliderData.interval}
+	>
 		<div class="carousel-indicators">
 			{#each sliderData.slides as slide, idx}
-				{#if slide.order == 1}
+				{#if idx == 0}
 					<button
 						type="button"
-						data-bs-target="#carouselExampleDark"
+						data-bs-target={`#carouselExampleDark${sliderData.id}`}
 						data-bs-slide-to={idx}
 						aria-label={"Slide " + idx}
 						class="active"
 						aria-current="true"
 					/>
 				{:else}
-					<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to={idx} aria-label={"Slide " + idx} />
+					<button
+						type="button"
+						data-bs-target={`#carouselExampleDark${sliderData.id}`}
+						data-bs-slide-to={idx}
+						aria-label={"Slide " + idx}
+					/>
 				{/if}
 			{/each}
 		</div>
 		<div class="carousel-inner">
 			{#each sliderData.slides as slide, idx}
-				{#if slide.order == 1}
-					<div class="carousel-item active" data-bs-interval={sliderData.interval}>
+				{#if idx == 0}
+					<div class="carousel-item active">
 						<img src={"/uploads/slider/" + slide.img_url} class="d-block slider-picture" alt="..." />
 						<div class="carousel-caption d-none d-md-block">
 							<h5>{slide.title}</h5>
@@ -46,7 +56,7 @@
 						</div>
 					</div>
 				{:else}
-					<div class="carousel-item" data-bs-interval={sliderData.interval}>
+					<div class="carousel-item">
 						<img src={"/uploads/slider/" + slide.img_url} class="d-block slider-picture" alt="..." />
 						<div class="carousel-caption d-none d-md-block">
 							<h5>{slide.title}</h5>
@@ -56,11 +66,11 @@
 				{/if}
 			{/each}
 		</div>
-		<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+		<button class="carousel-control-prev" type="button" data-bs-target={`#carouselExampleDark${sliderData.id}`} data-bs-slide="prev">
 			<span class="carousel-control-prev-icon" aria-hidden="true" />
 			<span class="visually-hidden">Previous</span>
 		</button>
-		<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+		<button class="carousel-control-next" type="button" data-bs-target={`#carouselExampleDark${sliderData.id}`} data-bs-slide="next">
 			<span class="carousel-control-next-icon" aria-hidden="true" />
 			<span class="visually-hidden">Next</span>
 		</button>

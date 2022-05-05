@@ -1,13 +1,5 @@
 <script>
-	export let admArticles;
-
-	let getAllGalleries = async () => {
-		let response = await fetch("http://localhost:5000/adminGetAllGalleries", { method: "POST" });
-		let responseJSON = await response.json();
-		return await responseJSON;
-	};
-
-	let galleriesData = [];
+	let templatesData = [];
 	let currentID = 0;
 	let id = 0;
 	let name = "";
@@ -17,10 +9,11 @@
 	let currentlyEdited = 0;
 
 	const getData = () => {
-		getAllGalleries().then((data) => {
-			galleriesData = data;
-			changeData();
-		});
+		fetch("http://localhost:5000/adminGetAllGalleries", { method: "POST" })
+			.then((response) => response.json())
+			.then((data) => {
+				templatesData = data;
+			});
 	};
 
 	const addGallery = () => {
@@ -143,10 +136,10 @@
 	getData();
 </script>
 
-<div class="tab-pane container" id="galleries">
-	<p class="h1 mb-3">Galleries</p>
-	<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
-		<!-- svelte-ignore a11y-no-onchange -->
+<div class="tab-pane container active" id="templates">
+	<p class="h1 mb-3">Templates</p>
+	<!--<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
+		 svelte-ignore a11y-no-onchange 
 		<select class="form-select-sm col-8" bind:value={currentID} on:change={changeData}>
 			{#each galleriesData as gallery, idx}
 				<option value={idx}>
@@ -226,5 +219,5 @@
 				</tbody>
 			</table>
 		</div>
-	{/if}
+	{/if}-->
 </div>
