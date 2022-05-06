@@ -14,7 +14,21 @@
 	let content = "";
 	let imagePath = "";
 
+	let uploadFiles = [];
+	let featuretteImages = [];
+
+	const getFeaturettesImages = () => {
+		fetch("http://localhost:5000/adminGetFeaturetteImages", {
+			method: "POST"
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				featuretteImages = data;
+			});
+	};
+
 	const getData = () => {
+		getFeaturettesImages();
 		getAllFeaturettes().then((data) => {
 			featurettesData = data;
 			changeData();
@@ -88,17 +102,37 @@
 		}
 	};
 
+	const uploadFeaturetteImages = () => {
+		if (uploadFiles.length == 0) return;
+
+		for (let file of uploadFiles) {
+			let formData = new FormData();
+			formData.append("file", file);
+
+			fetch("http://localhost:5000/adminUploadFeaturetteImages", {
+				method: "POST",
+				body: formData
+			})
+				.then((response) => response.json())
+				.then(() => {
+					getData();
+				});
+		}
+
+		uploadFiles = [];
+	};
+
 	getData();
 </script>
 
 <div class="tab-pane container" id="featurettes">
 	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3 mx-3">
-		<a href="#featurettes-composition" class="nav-link active" data-bs-toggle="tab">Composition</a>
-		<a href="#featurettes-images" class="nav-link" data-bs-toggle="tab">Images</a>
+		<a href="#featurettes-composition" class="nav-link active" data-bs-toggle="tab">Featurettes</a>
+		<a href="#featurettes-images" class="nav-link" data-bs-toggle="tab">Upload</a>
 	</nav>
 	<div class="tab-content">
 		<div class="tab-pane container active" id="featurettes-composition">
-			<p class="h1 mb-3">Featurette</p>
+			<p class="h1 mb-3">Featurettes</p>
 			{#await featurettesData then featurettesData}
 				<div class="container d-flex justify-content-start gap-2 align-items-center mb-3 col-sm-10 col-md-8 mx-auto">
 					<!-- svelte-ignore a11y-no-onchange -->
@@ -113,24 +147,54 @@
 					<button class="btn btn-sm btn-outline-danger px-3" on:click={deleteRecord}> <span class="fw-bold">×</span> </button>
 				</div>
 				<div class="container col-sm-10 col-md-8 mx-auto">
-					<label for="featuretteTitle" class="form-label mb-0">Tytuł</label>
+					<label for="featuretteTitle" class="form-label">Tytuł</label>
 					<input type="text" class="form-control" id="featuretteTitle" bind:value={title} />
 
-					<label for="featuretteSubtitle" class="form-label mt-2 mb-0">Podtytuł</label>
+					<label for="featuretteSubtitle" class="form-label mt-3">Podtytuł</label>
 					<input type="text" class="form-control" id="featuretteSubtitle" bind:value={subtitle} />
 
-					<label for="featuretteContent" class="form-label mt-2 mb-0">Treść</label>
+					<label for="featuretteContent" class="form-label mt-3">Treść</label>
 					<textarea type="text" class="form-control" id="featuretteContent" bind:value={content} />
 
-					<label for="featuretteImagePath" class="form-label mt-2 mb-0">Obrazek</label>
-					<input type="text" class="form-control" id="featuretteImagePath" bind:value={imagePath} />
+					<label for="featuretteImagePath" class="form-label mt-3">Obrazek</label>
+					<select class="form-control form-select" bind:value={imagePath}>
+						{#each featuretteImages as image}
+							<option value={image}>{image}</option>
+						{/each}
+					</select>
 
 					<button on:click={saveRecord} class="btn btn-primary mt-4"> Zapisz </button>
 				</div>
 			{/await}
 		</div>
 		<div class="tab-pane container" id="featurettes-images">
-			<p class="h1">Featurettes images</p>
+			<p class="h1">Upload</p>
+
+			<div class="container col-6">
+				<input name="file" type="file" bind:files={uploadFiles} multiple accept="image/*" class="form-control mt-4" />
+				<button on:click={uploadFeaturetteImages} type="button" class="btn btn-success mt-3">Wgraj</button>
+			</div>
+
+			<div class="container col-8 mt-4">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="text-center" scope="col">Nazwa</th>
+							<th class="text-start" scope="col">Podgląd</th>
+						</tr>
+					</thead>
+					<tbody>
+						{#each featuretteImages as image}
+							<tr>
+								<td class="text-center fw-bold">{image}</td>
+								<td class="text-start lh-1">
+									<img class="img-preview" src={`http://localhost:5000/uploads/featurettes/${image}`} alt={image} />
+								</td>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>

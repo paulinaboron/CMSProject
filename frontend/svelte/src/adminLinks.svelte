@@ -145,7 +145,7 @@
 	init();
 </script>
 
-<div class="tab-pane" id="links">
+<div class="tab-pane container" id="links">
 	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3 mx-3">
 		<button
 			on:click={() => {
@@ -171,7 +171,7 @@
 				<thead>
 					<tr>
 						<th scope="column"> ID </th>
-						<th scope="column" colspan="2"> URL </th>
+						<th scope="column" colspan="2"> Strona docelowa </th>
 						<th scope="column"> Tekst </th>
 						<th scope="column" />
 					</tr>

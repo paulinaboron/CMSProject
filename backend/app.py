@@ -2,10 +2,13 @@ import sqlite3
 from flask import Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, session
 from flask_cors import CORS
 from flask_bs4 import Bootstrap
+from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '$92ji21uoh98'
 app.config['JSON_AS_ASCII'] = False
+app.config['UPLOAD_FOLDER'] = "../frontend/uploads"
 
 bootstrap = Bootstrap(app)
 CORS(app)
@@ -890,7 +893,6 @@ def adminSaveArticle():
     title = request.json.get("title")
     subtitle = request.json.get("subtitle")
     content = request.json.get("content")
-    imagePath = request.json.get("imagePath")
     connectedGallery = request.json.get("connectedGallery")
     categoryID = request.json.get("categoryID")
     
@@ -1722,6 +1724,82 @@ def adminDeleteTemplate():
     }
 
 
+@app.route("/adminUploadFeaturetteImages", methods=["POST"])
+def adminUploadFeaturetteImages():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    savedFiles = os.listdir('../frontend/uploads/featurettes')
+
+    name = filename.split(".")
+
+    while f"{name[0]}.{name[1]}" in savedFiles:
+        name[0] += "_"
+    
+    filename = f"{name[0]}.{name[1]}"
+    
+    file.save(os.path.join(f"{app.config['UPLOAD_FOLDER']}/featurettes", filename))
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminGetFeaturetteImages", methods=["POST"])
+def adminGetFeaturetteImages():
+    savedFiles = os.listdir('../frontend/uploads/featurettes')
+
+    return jsonify(savedFiles)
+
+
+@app.route("/adminUploadGalleriesImages", methods=["POST"])
+def adminUploadGalleriesImages():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    savedFiles = os.listdir('../frontend/uploads/galleries')
+
+    name = filename.split(".")
+
+    while f"{name[0]}.{name[1]}" in savedFiles:
+        name[0] += "_"
+    
+    filename = f"{name[0]}.{name[1]}"
+    
+    file.save(os.path.join(f"{app.config['UPLOAD_FOLDER']}/galleries", filename))
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminGetGalleriesImages", methods=["POST"])
+def adminGetGalleriesImages():
+    savedFiles = os.listdir('../frontend/uploads/galleries')
+
+    return jsonify(savedFiles)
+
+
+@app.route("/adminUploadSliderImages", methods=["POST"])
+def adminUploadSlidersImages():
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    savedFiles = os.listdir('../frontend/uploads/slider')
+
+    name = filename.split(".")
+
+    while f"{name[0]}.{name[1]}" in savedFiles:
+        name[0] += "_"
+    
+    filename = f"{name[0]}.{name[1]}"
+    
+    file.save(os.path.join(f"{app.config['UPLOAD_FOLDER']}/slider", filename))
+    return {
+        "state": "valid"
+    }
+
+
+@app.route("/adminGetSliderImages", methods=["POST"])
+def adminGetSlidersImages():
+    savedFiles = os.listdir('../frontend/uploads/slider')
+
+    return jsonify(savedFiles)
 
 
 

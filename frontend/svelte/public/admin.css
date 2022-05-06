@@ -5,3 +5,7 @@ textarea {
 .m-left {
 	margin-left: 35px;
 }
+
+.img-preview {
+	max-height: 150px;
+}

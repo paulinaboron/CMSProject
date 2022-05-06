@@ -7,10 +7,7 @@
 	import AdminSliders from "./adminSliders.svelte";
 	import AdminTemplates from "./adminTemplates.svelte";
 
-	let adminFeaturettes;
 	let admArticles;
-	let admCategories;
-	let adminGalleries;
 	let admLinks;
 	let admTemplates;
 </script>
@@ -20,8 +17,8 @@
 		<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
 			<a href="#featurettes" class="nav-link" data-bs-toggle="tab">Featurettes</a>
 			<a href="#sliders" class="nav-link" data-bs-toggle="tab">Sliders</a>
-			<a href="#articles" class="nav-link" data-bs-toggle="tab">Articles</a>
 			<a href="#galleries" class="nav-link" data-bs-toggle="tab">Galleries</a>
+			<a href="#articles" class="nav-link" data-bs-toggle="tab">Articles</a>
 			<a href="#categories" class="nav-link" data-bs-toggle="tab">Categories</a>
 			<a href="#links" class="nav-link" data-bs-toggle="tab">Links</a>
 			<a href="#templates" class="nav-link active" data-bs-toggle="tab">Templates</a>
@@ -31,8 +28,8 @@
 		<div class="tab-content">
 			<AdminFeaturettes {admTemplates} />
 			<AdminSliders {admTemplates} />
-			<AdminArticles bind:this={admArticles} {admLinks} />
 			<AdminGalleries {admArticles} />
+			<AdminArticles bind:this={admArticles} {admLinks} />
 			<AdminCategories {admArticles} {admLinks} />
 			<AdminLinks bind:this={admLinks} />
 			<AdminTemplates bind:this={admTemplates} />
