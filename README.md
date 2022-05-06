@@ -43,7 +43,7 @@ System CMS do zarządzania zawartością strony internetowej.
     > npm install
     ```
 
-    > Krok ten jest opcjonalny. <br> Nie jest on wymagany do uruchomienia serwera i poprawnego działania którejkolwiek aplikacji.
+    > Krok ten jest opcjonalny. <br> Nie jest on wymagany do uruchomienia serwera i poprawnego działania którejkolwiek części aplikacji.
 
 ### Uruchomienie aplikacji
 
@@ -65,7 +65,7 @@ Do poprawnego działania aplikacji należy uruchomić serwer: **backend/app.py**
     > > npm run build
     > ```
     >
-    > Oczywiście w tym celu należy wykonać krok 3. z sekcji **Pierwsze kroki**.
+    > W tym celu należy wcześniej wykonać krok 3. z sekcji **Pierwsze kroki**.
 
 ## Zawartość strony
 
