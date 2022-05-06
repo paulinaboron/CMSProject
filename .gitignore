@@ -3,3 +3,5 @@
 TEST*.*
 .idea
 *svelte-dev
+frontend/article.html
+frontend/index.html
