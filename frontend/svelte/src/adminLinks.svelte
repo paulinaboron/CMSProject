@@ -14,7 +14,7 @@
 	let currentlyEdited = 0;
 
 	const getLinksData = async () => {
-		await fetch("http://localhost:5000/adminGetNavLinks", {
+		await fetch("/adminGetNavLinks", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -37,7 +37,7 @@
 	};
 
 	const getArticlesData = async () => {
-		fetch("http://localhost:5000/adminGetAllArticles", { method: "POST" })
+		fetch("/adminGetAllArticles", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				articlesData = data;
@@ -45,7 +45,7 @@
 	};
 
 	const getCategoriesData = async () => {
-		fetch("http://localhost:5000/adminGetAllCategories", { method: "POST" })
+		fetch("/adminGetAllCategories", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				categoriesData = data;
@@ -60,7 +60,7 @@
 			link = `${newName}?id=${newDbID}`;
 		}
 
-		fetch("http://localhost:5000/adminAddNavLink", {
+		fetch("/adminAddNavLink", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -88,7 +88,7 @@
 			link = `${editedName}?id=${editedDbID}`;
 		}
 
-		fetch("http://localhost:5000/adminSaveNavLink", {
+		fetch("/adminSaveNavLink", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -111,7 +111,7 @@
 	};
 
 	const deleteLink = (id) => {
-		fetch("http://localhost:5000/adminDeleteNavLink", {
+		fetch("/adminDeleteNavLink", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({

@@ -8,21 +8,18 @@
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("response nav: ", responseJson);
 		return responseJson;
 	}
 
 	async function getLoggedUser() {
 		let response = await fetch(`/getLoggedUserData`, { method: "post" });
 		let responseJson = await response.json();
-		console.log("response logUser: ", responseJson);
 		return responseJson;
 	}
 
 	const getNavStyle = async () => {
 		let response = await fetch(`/getTemplateNavStyle`, { method: "post" });
 		let responseJson = await response.json();
-		console.log("response navstyle: ", responseJson);
 		vertical = responseJson.nav_style == "alternative" ? true : false;
 	};
 
@@ -87,7 +84,7 @@
 									</li>
 								</form>
 							{:else}
-								{#if loggedUserData.userName == "admin"}
+								{#if loggedUserData.userRole == "admin"}
 									<li class="nav-item">
 										<a class="nav-link mt-1" href="/admin"
 											>Admin</a
@@ -147,7 +144,7 @@
 						</li>
 					</form>
 				{:else}
-					{#if loggedUserData.userName == "admin"}
+					{#if loggedUserData.userRole == "admin"}
 						<li class="nav-item">
 							<a class="nav-link" href="/admin">Admin</a>
 						</li>

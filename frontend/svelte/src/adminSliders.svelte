@@ -18,7 +18,7 @@
 	let sliderImages = [];
 
 	const getData = () => {
-		fetch("http://localhost:5000/adminGetAllSliders", { method: "POST" })
+		fetch("/adminGetAllSliders", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				slidersData = data;
@@ -28,12 +28,11 @@
 	};
 
 	const getSliderImages = () => {
-		fetch("http://localhost:5000/adminGetSliderImages", {
+		fetch("/adminGetSliderImages", {
 			method: "POST"
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				sliderImages = data;
 			});
 	};
@@ -46,7 +45,7 @@
 
 	const saveSlider = () => {
 		if (slidersData.length == 0) return;
-		fetch("http://localhost:5000/adminSaveSlider", {
+		fetch("/adminSaveSlider", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -74,7 +73,7 @@
 			currentID = slidersData.length - 1;
 			changeData();
 		} else {
-			fetch("http://localhost:5000/adminDeleteSlider", {
+			fetch("/adminDeleteSlider", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -93,7 +92,7 @@
 	};
 
 	const saveSlide = () => {
-		fetch("http://localhost:5000/adminSaveSlide", {
+		fetch("/adminSaveSlide", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -114,7 +113,7 @@
 	};
 
 	const addSlide = () => {
-		fetch("http://localhost:5000/adminAddSlide", {
+		fetch("/adminAddSlide", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -134,7 +133,7 @@
 	};
 
 	const deleteSlide = (id) => {
-		fetch("http://localhost:5000/adminDeleteSlide", {
+		fetch("/adminDeleteSlide", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -167,7 +166,7 @@
 			let formData = new FormData();
 			formData.append("file", file);
 
-			fetch("http://localhost:5000/adminUploadSliderImages", {
+			fetch("/adminUploadSliderImages", {
 				method: "POST",
 				body: formData
 			})
@@ -338,7 +337,7 @@
 							<tr>
 								<td class="text-center fw-bold">{image}</td>
 								<td class="text-start lh-1">
-									<img class="img-preview" src={`http://localhost:5000/uploads/slider/${image}`} alt={image} />
+									<img class="img-preview" src={`/uploads/slider/${image}`} alt={image} />
 								</td>
 							</tr>
 						{/each}

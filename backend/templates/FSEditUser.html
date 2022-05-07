@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+    <div class="container mt-2">
+        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+            <a href="/fastSettings" class="nav-link">Fast settings</a>
+            <a href="/FSNavigation" class="nav-link">Navigation</a>
+        </nav>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">{{ title }}</p>
+        <a href="/FSUsers" class="btn btn-sm btn-outline-danger mb-2">Anuluj i wróć</a>
+
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning mt-3" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <div class="container col-10">
+            {{ wtf.quick_form(form, action='/FSSaveUser') }}
+        </div>
+    </div>
+{% endblock %}

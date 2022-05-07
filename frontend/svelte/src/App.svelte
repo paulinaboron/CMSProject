@@ -1,17 +1,13 @@
 <script>
-	export let name;
 	import Navigation from "./Navigation.svelte";
 	import Slider from "./Slider.svelte";
 	import Footer from "./Footer.svelte";
 	import News from "./News.svelte";
 	import Featurette from "./Featurette.svelte";
 
-	console.log("Name: ", name);
-
 	const getTemplateComponents = async () => {
 		let response = await fetch("/getComponentsInCurrentTemplate");
 		let responseJSON = await response.json();
-		console.log("Components in template", responseJSON);
 		return responseJSON;
 	};
 

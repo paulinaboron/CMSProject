@@ -8,7 +8,6 @@
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("allArticles: ", responseJson);
 		return responseJson;
 	}
 

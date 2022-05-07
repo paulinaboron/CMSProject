@@ -1,7 +1,12 @@
+from datetime import datetime
+import json
 import sqlite3
-from flask import Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, session
+from flask import Flask, jsonify, make_response, redirect, render_template, request, send_from_directory, session, flash
 from flask_cors import CORS
 from flask_bs4 import Bootstrap
+from flask_wtf import FlaskForm
+from wtforms import SelectField, StringField, SubmitField, HiddenField, TextAreaField, PasswordField, EmailField, FileField
+from wtforms.validators import DataRequired
 from werkzeug.utils import secure_filename
 import os
 
@@ -30,7 +35,6 @@ CORS(app)
 # /getTemplateColors - zwraca kolory dla ustawionego template'u
 
 # nie wszystkie endpointy są tu opisane!
-
 
 
 @app.route('/')
@@ -79,11 +83,6 @@ def admin():
     return redirect("/")
 
 
-
-
-@app.route('/getAllUsers', methods=["GET", "POST"])
-def getAllUsers():
-    return {'dziala': "tak"}
 
 
 @app.route('/getArticleData', methods=["GET", "POST"])
@@ -762,7 +761,7 @@ def getComponentsInCurrentTemplate():
 
     dbCursor.execute(f"""
         SELECT `type`, `dbID`, `order` FROM templates, components, components_in_templates
-        WHERE components_in_templates.componentID = components.id AND components_in_templates.templateID = {templateID}
+        WHERE components_in_templates.componentID = components.id AND components_in_templates.templateID = {templateID} and templates.id = {templateID}
         ORDER BY `order`
     """)
 
@@ -1800,6 +1799,623 @@ def adminGetSlidersImages():
     savedFiles = os.listdir('../frontend/uploads/slider')
 
     return jsonify(savedFiles)
+
+
+
+def getComponentsForFSLinks():
+    links = []
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        SELECT * FROM articles
+    """)
+    articles = dbCursor.fetchall()
+
+    dbCursor.execute(f"""
+        SELECT * FROM categories
+    """)
+    categories = dbCursor.fetchall()
+
+    dbConnection.close()
+
+    links.append(["/", "Strona główna"])
+    links.append(["/allArticles", "Strona artykułów"])
+
+    for article in articles:
+        links.append((f"/article?id={article[0]}", f"{article[1]} (Artykuł, id: {article[0]})"))
+
+    for category in categories:
+        links.append([f"/category?id={category[0]}", f"{category[1]} (Kategoria, id: {category[0]})"])
+    
+    return links
+
+def getGalleriesForArticles():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        SELECT * FROM galleries
+    """)
+    fetch = dbCursor.fetchall()
+
+    galleries = []
+    galleries.append(("0", "*BRAK*"))
+
+    for record in fetch:
+        galleries.append((str(record[0]), record[1]))
+
+    return galleries
+
+def getCategoriesForArticles():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        SELECT * FROM categories
+    """)
+    fetch = dbCursor.fetchall()
+
+    categories = []
+    categories.append(("0", "*BRAK*"))
+
+    for record in fetch:
+        categories.append((str(record[0]), record[1]))
+
+    return categories
+
+def getAllTemplates():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+        SELECT * FROM templates
+    """)
+    fetch = dbCursor.fetchall()
+
+    templates = []
+
+    for record in fetch:
+        templates.append((str(record[0]), f"{record[0]} - {record[1]}"))
+
+    return templates
+
+class editLinkForm(FlaskForm):
+    url = SelectField("Strona docelowa", choices=getComponentsForFSLinks)
+    text = StringField("Tekst linku")
+    submit = SubmitField("Zapisz")
+    id = HiddenField("")
+
+class articleForm(FlaskForm):
+    title = StringField("Tytuł")
+    subtitle = StringField("Podtytuł")
+    content = TextAreaField("Treść (/tab/ - akapit, /nl/ - nowa linia)")
+    connectedGallery = SelectField("Połączona galeria", choices=getGalleriesForArticles)
+    category = SelectField("Kategoria", choices=getCategoriesForArticles)
+    submit = SubmitField("Zapisz")
+    id = HiddenField("")
+
+class userForm(FlaskForm):
+    login = StringField("Login", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired()])
+    password = PasswordField("Hasło", validators=[DataRequired()])
+    confPassword = PasswordField("Potwierdź hasło", validators=[DataRequired()])
+    role = SelectField("Rola", choices=[("user", "Użytkownik"), ("admin", "Administrator")])
+    submit = SubmitField("Zapisz")
+    id = HiddenField("")
+
+class userEditForm(FlaskForm):
+    login = StringField("Login", validators=[DataRequired()])
+    email = EmailField("Email", validators=[DataRequired()])
+    password = PasswordField("Hasło")
+    confPassword = PasswordField("Potwierdź hasło")
+    role = SelectField("Rola", choices=[("user", "Użytkownik"), ("admin", "Administrator")])
+    submit = SubmitField("Zapisz")
+    id = HiddenField("")
+
+class saveTemplate(FlaskForm):
+    template = SelectField("Wybrany układ", choices=getAllTemplates)
+    submit = SubmitField("Zapisz")
+
+
+@app.route("/fastSettings")
+def fastSettings():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT `value` FROM globals WHERE `name` = "current_template"
+        """)
+
+    currentTemplate = dbCursor.fetchone()[0]
+
+    form = saveTemplate()
+    form.template.data = currentTemplate
+
+    return render_template("fastSettings.html", title="Fast settings", form=form, currentTemplate=currentTemplate)
+    
+    
+@app.route("/FSSaveTemplate", methods=["POST", "GET"])
+def FSSaveTemplate():
+    currID = request.form.get("template")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+
+    dbCursor.execute(f"""
+            UPDATE globals SET `value` = "{currID}" WHERE `name` = "current_template"
+        """)
+
+    dbConnection.commit()
+
+
+    dbCursor.execute(f"""
+            SELECT * FROM `globals`
+        """)
+
+    dbConnection.close()
+
+    return redirect("/fastSettings")
+
+
+@app.route("/FSExportSettings", methods=["POST", "GET"])
+def FSExportSettings():
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT `value` FROM globals WHERE `name` = "current_template"
+        """)
+
+    currentTemplate = int(dbCursor.fetchone()[0])
+
+    dbCursor.execute(f"""
+            SELECT * FROM templates WHERE id = {currentTemplate}
+        """)
+
+    fetch = dbCursor.fetchone()
+
+    settings = {
+        "name": fetch[1],
+        "bgColor": fetch[2],
+        "fontColor": fetch[3],
+        "buttonColor": fetch[5],
+        "footerText": fetch[6],
+        "navStyle": fetch[7],
+        "font": fetch[8]
+    }
+
+    now = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
+    filename = f"templateSettings_{now}.json"
+
+    res = make_response(jsonify(settings))
+    res.headers['Content-Disposition'] = f'attachment;filename={filename}'
+
+    return res
+
+
+@app.route("/FSImportSettings", methods=["POST", "GET"])
+def FSImportSettings():
+    if request.files["file"].filename == "":
+        return redirect("/fastSettings")
+
+    inp = request.files["file"].read().decode("utf8")
+    parsed = json.loads(inp)
+    
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT `value` FROM globals WHERE `name` = "current_template"
+        """)
+
+    currentTemplate = int(dbCursor.fetchone()[0])
+
+    dbCursor.execute(f"""
+        UPDATE templates
+        SET `name` = "{parsed["name"]}", `bg_color` = "{parsed["bgColor"]}", `button_color` = "{parsed["buttonColor"]}", 
+        `font` = "{parsed["font"]}", `font_color` = "{parsed["fontColor"]}", `footer_text` = "{parsed["footerText"]}",
+        "nav_style" = "{parsed["navStyle"]}"
+        WHERE `id` = {currentTemplate}
+    """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+
+    return redirect("/admin")
+
+
+@app.route("/FSNavigation")
+def FSNavigation():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `nav_links` WHERE `for_component` = "header"
+        """)
+    fetch = dbCursor.fetchall()
+
+    return render_template("FSNavigation.html", title="Navigation", links=fetch, navLinkOpts=getComponentsForFSLinks())
+    
+
+@app.route("/FSFooter")
+def FSFooter():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM nav_links WHERE `for_component` = "footer"
+        """)
+    fetch = dbCursor.fetchall()
+
+    dbCursor.execute(f"""
+            SELECT value FROM globals WHERE `name` = "current_template"
+        """)
+    currTemplate = dbCursor.fetchone()[0]
+
+    dbCursor.execute(f"""
+            SELECT footer_text FROM templates WHERE `id` = {currTemplate}
+        """)
+
+    footerText = dbCursor.fetchone()[0]
+
+    return render_template("FSFooter.html", title="Footer", links=fetch, navLinkOpts=getComponentsForFSLinks(), footerText=footerText)
+
+
+@app.route("/FSFooterSaveText", methods=["POST", "GET"])
+def FSFooterSaveText():
+    newText = request.form.get("footerText")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT value FROM globals WHERE `name` = "current_template"
+        """)
+    currTemplate = dbCursor.fetchone()[0]
+
+    dbCursor.execute(f"""
+            UPDATE templates
+            SET `footer_text` = "{newText}"
+            WHERE `id` = {currTemplate}
+        """)
+    
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSFooter")
+ 
+
+@app.route("/FSEditNavLink")
+def FSEditNavLink():
+    currID = request.args.get("id")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `nav_links` WHERE `id` = {currID}
+        """)
+    
+    link = dbCursor.fetchall()[0]
+
+    form = editLinkForm()
+    form.url.data = link[1]
+    form.text.data = link[2]
+    form.id.data = link[0]
+
+    return render_template("FSNavigationEditLink.html", title="Link edition", form=form)
+
+
+@app.route("/FSSaveNavLink", methods=["POST", "GET"])
+def FSSaveNavLink():
+    currID = request.form.get("id")
+    url = request.form.get("url")
+    text = request.form.get("text")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            UPDATE `nav_links`
+            SET `link` = "{url}", `text` = "{text}"
+            WHERE `id` = {currID}
+        """)
+    
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSNavigation")
+
+
+@app.route("/FSAddNavLink", methods=["POST", "GET"])
+def FSAddNavLink():
+    url = request.form.get("linkURL")
+    text = request.form.get("linkText")
+    component = request.form.get("linkComponent")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            INSERT INTO `nav_links`
+            (`link`, `text`, `for_component`)
+            VALUES
+            ("{url}", "{text}", "{component}")
+        """)
+    
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSNavigation")
+
+
+@app.route("/FSDeleteNavLink", methods=["POST", "GET"])
+def FSDeleteNavLink():
+    currID = request.args.get("id")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            DELETE FROM `nav_links` WHERE `id` = {currID}
+        """)
+    
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSNavigation")
+
+
+@app.route("/FSArticles")
+def FSArticles():
+    articles = []
+
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `articles`
+        """)
+    fetch = dbCursor.fetchall()
+
+
+
+    for record in fetch:
+        article = []
+        article.append(record[0])
+        article.append(record[1])
+
+        if record[6] != 0:
+            dbCursor.execute(f"""
+                SELECT name FROM `galleries` WHERE `id` = {record[6]}
+            """)
+            gallery = dbCursor.fetchone()[0]
+            article.append(f"{record[6]} - {gallery}")
+        else:
+            article.append(f"{record[6]} - *BRAK*")
+
+        if record[7] != 0:
+            dbCursor.execute(f"""
+                SELECT name FROM `categories` WHERE `id` = {record[7]}
+            """)
+
+            category = dbCursor.fetchone()[0]
+            article.append(f"{record[7]} - {category}")
+        else:
+            article.append(f"{record[7]} - *BRAK*")
+
+        articles.append(article)
+
+    return render_template("FSArticles.html", title="Articles", articles=articles)
+
+
+@app.route("/FSAddArticle")
+def FSAddArticle():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    form = articleForm()
+    form.id.data = 0
+
+    return render_template("FSEditArticle.html", form=form, title="New article")
+
+
+@app.route("/FSEditArticle")
+def FSEditArticle():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    currID = request.args.get("id")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `articles` WHERE `id` = {currID}
+        """)
+    article = dbCursor.fetchone()
+
+    form = articleForm()
+    form.title.data = article[1]
+    form.subtitle.data = article[2]
+    form.content.data = article[3].replace("&nbsp;&nbsp;&nbsp;", "/tab/ ").replace("</br>", "/nl/ ")
+    form.connectedGallery.data = str(article[6])
+    form.category.data = str(article[7])
+    form.id.data = article[0]
+
+    return render_template("FSEditArticle.html", form=form, title="Edit article")
+
+
+@app.route("/FSSaveArticle", methods=["POST", "GET"])
+def FSSaveArticle():
+    currID = int(request.form.get("id"))
+    title = request.form.get("title")
+    subtitle = request.form.get("subtitle")
+    content = request.form.get("content").replace("/tab/", "&nbsp;&nbsp;&nbsp;").replace("/nl/", "</br>")
+    connectedGallery = request.form.get("connectedGallery")
+    category = int(request.form.get("category"))
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO articles
+            (`title`, `subtitle`, `content`, `connected_gallery_id`, `category_id`, `creation_date`)
+            VALUES
+            ("{title}", "{subtitle}", "{content}", "{connectedGallery}", "{category}", datetime("now"))
+        """)
+    else:
+        dbCursor.execute(f"""
+            UPDATE articles
+            SET `title` = "{title}", `subtitle` = "{subtitle}", `content` = "{content}", `connected_gallery_id` = "{connectedGallery}", `category_id` = "{category}"
+            WHERE `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSArticles")
+
+
+@app.route("/FSDeleteArticle", methods=["POST","GET"])
+def FSDeleteArticle():
+    currID = request.args.get("id")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            DELETE FROM articles WHERE `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSArticles")
+
+
+@app.route("/FSUsers")
+def FSUsers():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `users`
+        """)
+
+    fetch = dbCursor.fetchall()
+
+    dbConnection.close()
+
+    return render_template("FSUsers.html", title="Users", users=fetch)
+
+
+@app.route("/FSAddUser")
+def FSAddUser():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    form = userForm()
+    form.id.data = 0
+
+    return render_template("FSEditUser.html", form=form, title="New user")
+
+
+@app.route("/FSEditUser")
+def FSEditUser():
+    if "userID" not in session or session["userRole"] != "admin":
+        return redirect("/")
+
+    currID = request.args.get("id")
+
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * FROM `users` WHERE `id` = {currID}
+        """)
+
+    user = dbCursor.fetchone()
+
+    form = userEditForm()
+    form.login.data = user[1]
+    form.email.data = user[3]
+    form.role.data = user[4]
+    form.id.data = user[0]
+
+    return render_template("FSEditUser.html", form=form, title="Edit user")
+
+
+@app.route("/FSSaveUser", methods=["POST", "GET"])
+def FSSaveUser():
+    currID = int(request.form.get("id"))
+    login = request.form.get("login")
+    password = request.form.get("password")
+    confPassword = request.form.get("confPassword")
+    email = request.form.get("email")
+    role = request.form.get("role")
+
+    if(confPassword != password):
+        flash("Podane hasła nie są takie same")
+        return redirect(f"/FSEditUser?id={currID}")
+    dbConnection = sqlite3.connect('db.sqlite')
+    dbCursor = dbConnection.cursor()
+
+    dbCursor.execute(f"""
+            SELECT * from users WHERE `email` = "{email}" OR `username` = "{login}"
+        """)
+
+    fetch = dbCursor.fetchall()
+
+    if len(fetch) > 1 or fetch[0][0] != currID:
+        flash("Podana nazwa użytkownika lub email są już zajęte")
+        return redirect(f"/FSEditUser?id={currID}")
+
+    if currID == 0:
+        dbCursor.execute(f"""
+            INSERT INTO users
+            (`username`, `email`, `password`, `role`)
+            VALUES
+            ("{login}", "{email}", "{password}", "{role}")
+        """)
+    else:
+        dbCursor.execute(f"""
+            UPDATE users
+            SET `username` = "{login}", `email` = "{email}", `role` = "{role}"
+            WHERE `id` = {currID}
+        """)
+
+        if password != "":
+            dbCursor.execute(f"""
+            UPDATE users
+            SET `password` = "{password}"
+            WHERE `id` = {currID}
+        """)
+
+    dbConnection.commit()
+    dbConnection.close()
+
+    return redirect("/FSUsers")
 
 
 

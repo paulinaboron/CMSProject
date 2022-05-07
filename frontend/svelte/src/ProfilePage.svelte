@@ -19,7 +19,6 @@
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				if (data.error_message) {
 					alert = data.error_message;
 				} else {

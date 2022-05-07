@@ -6,14 +6,10 @@
 
 	let params = new URLSearchParams(window.location.search);
 	let id = params.get("id");
-	console.log("Article ID: ", id);
 
 	async function getArticleData(id) {
 		let response = await fetch(`/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
-		console.log(responseJson.content);
-		console.log(responseJson.content.replace("\u0009", "asd"));
-		console.log("Article: ", responseJson);
 		return responseJson;
 	}
 	let articleData = getArticleData(id);

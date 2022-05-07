@@ -4,7 +4,7 @@
 	export let admLinks;
 
 	let getAllArticles = async () => {
-		let response = await fetch("http://localhost:5000/adminGetAllArticles", { method: "POST" });
+		let response = await fetch("/adminGetAllArticles", { method: "POST" });
 		let responseJSON = await response.json();
 		return await responseJSON;
 	};
@@ -27,7 +27,7 @@
 	};
 
 	const getCategories = () => {
-		fetch("http://localhost:5000/adminGetAllCategories", { method: "POST" })
+		fetch("/adminGetAllCategories", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				categories = data;
@@ -35,7 +35,7 @@
 	};
 
 	const getGalleries = () => {
-		fetch("http://localhost:5000/adminGetAllGalleries", { method: "POST" })
+		fetch("/adminGetAllGalleries", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				galleries = data;
@@ -64,7 +64,7 @@
 	const saveRecord = () => {
 		if (articlesData.length == 0) return;
 
-		fetch("http://localhost:5000/adminSaveArticle", {
+		fetch("/adminSaveArticle", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -94,7 +94,7 @@
 			currentID = articlesData.length - 1;
 			changeData();
 		} else {
-			fetch("http://localhost:5000/adminDeleteArticle", {
+			fetch("/adminDeleteArticle", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

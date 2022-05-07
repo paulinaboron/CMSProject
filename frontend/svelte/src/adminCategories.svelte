@@ -3,7 +3,7 @@
 	export let admLinks;
 
 	let getAllCategories = async () => {
-		let response = await fetch("http://localhost:5000/adminGetAllCategories", { method: "POST" });
+		let response = await fetch("/adminGetAllCategories", { method: "POST" });
 		let responseJSON = await response.json();
 		return await responseJSON;
 	};
@@ -20,7 +20,7 @@
 	};
 
 	const addCategory = () => {
-		fetch("http://localhost:5000/adminAddCategory", {
+		fetch("/adminAddCategory", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -38,7 +38,7 @@
 	};
 
 	const saveCategory = () => {
-		fetch("http://localhost:5000/adminSaveCategory", {
+		fetch("/adminSaveCategory", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -59,7 +59,7 @@
 	};
 
 	const deleteRecord = (id) => {
-		fetch("http://localhost:5000/adminDeleteCategory", {
+		fetch("/adminDeleteCategory", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
