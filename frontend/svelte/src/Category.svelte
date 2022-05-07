@@ -5,12 +5,10 @@
 
 	let params = new URLSearchParams(window.location.search);
 	let id = params.get("id");
-	console.log("Category ID: ", id);
 
 	async function getCategoryData(id) {
 		let response = await fetch(`/getCategoryData?id=${id}`, { method: "POST" });
 		let responseJson = await response.json();
-		console.log("Category: ", responseJson);
 		return responseJson;
 	}
 

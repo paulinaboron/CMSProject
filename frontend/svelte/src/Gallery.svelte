@@ -6,7 +6,6 @@
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("gallery", responseJson);
 		return responseJson;
 	}
 	let galleryData = getGalleryData(id);

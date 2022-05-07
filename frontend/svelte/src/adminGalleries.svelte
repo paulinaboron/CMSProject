@@ -2,7 +2,7 @@
 	export let admArticles;
 
 	let getAllGalleries = async () => {
-		let response = await fetch("http://localhost:5000/adminGetAllGalleries", { method: "POST" });
+		let response = await fetch("/adminGetAllGalleries", { method: "POST" });
 		let responseJSON = await response.json();
 		return await responseJSON;
 	};
@@ -20,12 +20,11 @@
 	let currentlyEdited = 0;
 
 	const getGalleriesImages = () => {
-		fetch("http://localhost:5000/adminGetGalleriesImages", {
+		fetch("/adminGetGalleriesImages", {
 			method: "POST"
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				console.log(data);
 				galleriesImages = data;
 			});
 	};
@@ -46,7 +45,7 @@
 
 	const saveGallery = () => {
 		if (galleriesData.length == 0) return;
-		fetch("http://localhost:5000/adminSaveGallery", {
+		fetch("/adminSaveGallery", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -73,7 +72,7 @@
 			currentID = galleriesData.length - 1;
 			changeData();
 		} else {
-			fetch("http://localhost:5000/adminDeleteGallery", {
+			fetch("/adminDeleteGallery", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -92,7 +91,7 @@
 	};
 
 	const savePhoto = () => {
-		fetch("http://localhost:5000/adminSavePhoto", {
+		fetch("/adminSavePhoto", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -112,7 +111,7 @@
 	};
 
 	const addPhoto = () => {
-		fetch("http://localhost:5000/adminAddPhoto", {
+		fetch("/adminAddPhoto", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -130,7 +129,7 @@
 	};
 
 	const deletePhoto = (id) => {
-		fetch("http://localhost:5000/adminDeletePhoto", {
+		fetch("/adminDeletePhoto", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -162,7 +161,7 @@
 			let formData = new FormData();
 			formData.append("file", file);
 
-			fetch("http://localhost:5000/adminUploadGalleryImages", {
+			fetch("/adminUploadGalleryImages", {
 				method: "POST",
 				body: formData
 			})
@@ -295,7 +294,7 @@
 							<tr>
 								<td class="text-center fw-bold">{image}</td>
 								<td class="text-start lh-1">
-									<img class="img-preview" src={`http://localhost:5000/uploads/galleries/${image}`} alt={image} />
+									<img class="img-preview" src={`/uploads/galleries/${image}`} alt={image} />
 								</td>
 							</tr>
 						{/each}

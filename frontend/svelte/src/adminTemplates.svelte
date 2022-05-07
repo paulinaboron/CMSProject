@@ -43,14 +43,14 @@
 	let currentlyEdited = 0;
 
 	export const getData = () => {
-		fetch("http://localhost:5000/adminGetAllTemplates", { method: "POST" })
+		fetch("/adminGetAllTemplates", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				templatesData = data;
 				changeData();
 			});
 
-		fetch("http://localhost:5000/adminGetAllComponents", { method: "POST" })
+		fetch("/adminGetAllComponents", { method: "POST" })
 			.then((response) => response.json())
 			.then((data) => {
 				componentsData = data;
@@ -68,7 +68,7 @@
 
 	const saveTemplate = () => {
 		if (templatesData.length == 0) return;
-		fetch("http://localhost:5000/adminSaveTemplate", {
+		fetch("/adminSaveTemplate", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -106,7 +106,7 @@
 			currentID = templatesData.length - 1;
 			changeData();
 		} else {
-			fetch("http://localhost:5000/adminDeleteTemplate", {
+			fetch("/adminDeleteTemplate", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -124,7 +124,7 @@
 	};
 
 	const addComponent = () => {
-		fetch("http://localhost:5000/adminAddComponent", {
+		fetch("/adminAddComponent", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -144,7 +144,7 @@
 	};
 
 	const saveComponent = () => {
-		fetch("http://localhost:5000/adminSaveComponent", {
+		fetch("/adminSaveComponent", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -166,7 +166,7 @@
 	};
 
 	const deleteComponent = (id, order) => {
-		fetch("http://localhost:5000/adminDeleteComponent", {
+		fetch("/adminDeleteComponent", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -184,7 +184,7 @@
 	};
 
 	const orderUp = (id, order) => {
-		fetch("http://localhost:5000/adminComponentOrderUp", {
+		fetch("/adminComponentOrderUp", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -202,7 +202,7 @@
 	};
 
 	const orderDown = (id, order) => {
-		fetch("http://localhost:5000/adminComponentOrderDown", {
+		fetch("/adminComponentOrderDown", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({

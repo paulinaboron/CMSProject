@@ -1,18 +1,15 @@
 <script>
 	export let id;
-	console.log("ID Featurette: ", id);
 
 	async function getFeaturetteData(id) {
 		let response = await fetch(`/getFeaturetteData?id=${id}`, {
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("responseJson: ", responseJson);
 		return responseJson;
 	}
 
 	let featData = getFeaturetteData(id);
-	console.log("FeatData: ", featData, featData.title);
 </script>
 
 {#await featData then featData}

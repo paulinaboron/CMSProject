@@ -1,14 +1,12 @@
 <script>
 	let params = new URLSearchParams(window.location.search);
 	let id = params.get("id");
-	console.log("Article ID: ", id);
 
 	async function getComments(id) {
 		let response = await fetch(`/getCommentsForArticle?id=${id}`, {
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("comments", responseJson);
 		return responseJson;
 	}
 	let commentsData = getComments(id);
@@ -31,7 +29,6 @@
 			.then((response) => response.json())
 			.then((data) => {
 				if (!data.error_message) {
-					console.log("działa");
 					commentsData = getComments(id);
 					commentText = "";
 				} else {

@@ -167,7 +167,6 @@
 	const getTemplateFont = async () => {
 		let response = await fetch("/getTemplateFont");
 		let responseJSON = await response.json();
-		console.log(responseJSON);
 		setRootStyle("--font", responseJSON.font);
 	};
 

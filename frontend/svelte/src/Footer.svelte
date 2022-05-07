@@ -6,7 +6,6 @@
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("response ff: ", responseJson);
 		return responseJson;
 	}
 
@@ -15,7 +14,6 @@
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("response ff: ", responseJson);
 		return responseJson;
 	}
 

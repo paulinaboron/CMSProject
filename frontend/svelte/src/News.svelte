@@ -4,7 +4,6 @@
     async function getLatestArticles(count) {
 		let response = await fetch(`/getLatestArticlesIDs?count=${count}`, { method: "post" });
 		let responseJson = await response.json();
-        console.log("latestArticles: ", responseJson);
 		return responseJson;
 	}
 

@@ -1,0 +1,91 @@
+{% extends 'bootstrap/base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+    <div class="container mt-2">
+        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+            <a href="/fastSettings" class="nav-link">Fast settings</a>
+            <a href="/FSNavigation" class="nav-link">Navigation</a>
+            <a href="/FSFooter" class="nav-link active">Footer</a>
+            <a href="/FSArticles" class="nav-link">Articles</a>
+        </nav>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">Footer</p>
+        <div class="container col-10">
+            <form method="POST" action="/FSFooterSaveText">
+                <label class="form-label mt-3" for="footerText">Tekst stopki</label>
+                <input class="form-control" type="text" name="footerText" id="footerText" value="{{footerText}}"/>
+                <input class="mt-3 btn btn-success mb-4" type="submit" value="Zapisz"/>
+            </form>
+            
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Strona docelowa</th>
+                        <th scope="col">Tekst linku</th>
+                        <th scope="col">Akcje</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for link in links %}
+                        <tr>
+                            <td class="pt-3">
+                                {{ link[0] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ link[1] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ link[2] }}
+                            </td>
+
+                            <td>
+                                <a href="/FSEditNavLink?id={{link[0]}}" class="btn btn-sm btn-primary my-1">Edytuj</a>
+                                <a href="/FSDeleteNavLink?id={{link[0]}}" class="btn btn-sm btn-outline-danger ms-3 my-1">Usuń</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>
+                            Nowy
+                        </td>
+                        <form method="post" action="/FSAddNavLink">
+                            <input name="linkComponent" type="hidden" value="header"/>
+                            <td>
+                                <select name="linkURL" class="form-control form-select-sm">
+                                    {% for navLinkOpt in navLinkOpts %}
+                                        <option value="{{navLinkOpt[0]}}">
+                                            {{ navLinkOpt[1] }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="linkText" class="form-control form-control-sm"/>
+                            </td>
+                            <td>
+                                <input type="submit" value="Dodaj" class="btn btn-sm btn-success"/>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

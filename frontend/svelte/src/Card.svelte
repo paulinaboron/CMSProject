@@ -1,11 +1,9 @@
 <script>
 	export let id;
-	console.log("ID Card: ", id);
 
 	async function getArticleData(id) {
 		let response = await fetch(`/getArticleData?id=${id}`, { method: "post" });
 		let responseJson = await response.json();
-		console.log("response: ", responseJson);
 		return responseJson;
 	}
 	let cardData = getArticleData(id);
@@ -13,7 +11,7 @@
 	$: {
 		cardData = getArticleData(id);
 	}
-	console.log("CardData: ", cardData);
+
 </script>
 
 {#await cardData}

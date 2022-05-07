@@ -1,0 +1,28 @@
+{% extends 'bootstrap/base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+    <div class="container mt-2">
+        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+            <a href="/fastSettings" class="nav-link">Fast settings</a>
+            <a href="/FSNavigation" class="nav-link active">Navigation</a>
+        </nav>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">Link edition</p>
+        <div class="container col-10">
+            {{ wtf.quick_form(form, action='/FSSaveNavLink') }}
+        </div>
+    </div>
+{% endblock %}

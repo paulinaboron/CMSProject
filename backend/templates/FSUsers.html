@@ -1,0 +1,70 @@
+{% extends 'bootstrap/base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+    <div class="container mt-2">
+        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+            <a href="/fastSettings" class="nav-link">Fast settings</a>
+            <a href="/FSNavigation" class="nav-link">Navigation</a>
+            <a href="/FSFooter" class="nav-link">Footer</a>
+            <a href="/FSArticles" class="nav-link">Articles</a>
+            <a href="/FSUsers" class="nav-link active">Users</a>
+        </nav>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">Users</p>
+        <div class="container col-10">
+            <a href="/FSAddUser" class="btn btn-lg btn-primary my-4">Nowy</a>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Login</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Rola</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <th scope="row" class="pt-3">
+                                {{ user[0] }}
+                            </th>
+
+                            <td class="pt-3">
+                                {{ user[1] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ user[3] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ user[4] }}
+                            </td>
+
+                            <td>
+                                {% if user[0] != 1 %}
+                                    <a href="/FSEditUser?id={{user[0]}}" class="btn btn-sm btn-primary my-1">Edytuj</a>
+                                    <a href="/FSDeleteUser?id={{user[0]}}" class="btn btn-sm btn-outline-danger ms-3 my-1">Usuń</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'bootstrap/base.html' %} 
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+    <div class="container mt-2">
+        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+            <a href="/fastSettings" class="nav-link">Fast settings</a>
+            <a href="/FSNavigation" class="nav-link">Navigation</a>
+            <a href="/FSFooter" class="nav-link">Footer</a>
+            <a href="/FSArticles" class="nav-link active">Articles</a>
+        </nav>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">Articles</p>
+        <div class="container col-10">
+            <a href="/FSAddArticle" class="btn btn-lg btn-primary my-4">Nowy</a>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tytuł</th>
+                        <th scope="col">Połączona galeria</th>
+                        <th scope="col">Kategoria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td class="pt-3">
+                                {{ article[0] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ article[1] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ article[2] }}
+                            </td>
+
+                            <td class="pt-3">
+                                {{ article[3] }}
+                            </td>
+
+                            <td>
+                                <a href="/FSEditArticle?id={{article[0]}}" class="btn btn-sm btn-primary my-1">Edytuj</a>
+                                <a href="/FSDeleteArticle?id={{article[0]}}" class="btn btn-sm btn-outline-danger ms-3 my-1">Usuń</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

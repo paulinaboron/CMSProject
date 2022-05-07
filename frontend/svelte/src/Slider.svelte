@@ -1,18 +1,15 @@
 <script>
 	export let id;
-	console.log("ID Slidera: ", id);
 
 	async function getSliderData(id) {
 		let response = await fetch(`/getSliderData?id=${id}`, {
 			method: "post"
 		});
 		let responseJson = await response.json();
-		console.log("responseJson: ", responseJson);
 		return responseJson;
 	}
 
 	let sliderData = getSliderData(id);
-	console.log("SliderData: ", sliderData);
 </script>
 
 {#await sliderData}

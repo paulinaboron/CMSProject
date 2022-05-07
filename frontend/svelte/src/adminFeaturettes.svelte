@@ -2,7 +2,7 @@
 	export let admTemplates;
 
 	let getAllFeaturettes = async () => {
-		let response = await fetch("http://localhost:5000/adminGetAllFeaturettes", { method: "POST" });
+		let response = await fetch("/adminGetAllFeaturettes", { method: "POST" });
 		let responseJSON = await response.json();
 		return await responseJSON;
 	};
@@ -18,7 +18,7 @@
 	let featuretteImages = [];
 
 	const getFeaturettesImages = () => {
-		fetch("http://localhost:5000/adminGetFeaturetteImages", {
+		fetch("/adminGetFeaturetteImages", {
 			method: "POST"
 		})
 			.then((response) => response.json())
@@ -54,7 +54,7 @@
 
 	const saveRecord = () => {
 		if (featurettesData.length == 0) return;
-		fetch("http://localhost:5000/adminSaveFeaturette", {
+		fetch("/adminSaveFeaturette", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({
@@ -84,7 +84,7 @@
 			currentID = featurettesData.length - 1;
 			changeData();
 		} else {
-			fetch("http://localhost:5000/adminDeleteFeaturette", {
+			fetch("/adminDeleteFeaturette", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -109,7 +109,7 @@
 			let formData = new FormData();
 			formData.append("file", file);
 
-			fetch("http://localhost:5000/adminUploadFeaturetteImages", {
+			fetch("/adminUploadFeaturetteImages", {
 				method: "POST",
 				body: formData
 			})
@@ -188,7 +188,7 @@
 							<tr>
 								<td class="text-center fw-bold">{image}</td>
 								<td class="text-start lh-1">
-									<img class="img-preview" src={`http://localhost:5000/uploads/featurettes/${image}`} alt={image} />
+									<img class="img-preview" src={`/uploads/featurettes/${image}`} alt={image} />
 								</td>
 							</tr>
 						{/each}

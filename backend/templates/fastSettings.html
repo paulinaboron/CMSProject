@@ -1,0 +1,39 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %} 
+
+{% block head %} 
+    {{ super() }} 
+{% endblock %} 
+
+{% block title %}
+    {{ title }} 
+{% endblock %} 
+
+{% block navbar %}
+<div class="container mt-2">
+	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+		<a href="/admin" class="nav-link">Admin</a>
+		<a href="/fastSettings" class="nav-link active">Fast settings</a>
+		<a href="/FSNavigation" class="nav-link">Navigation</a>
+		<a href="/FSFooter" class="nav-link">Footer</a>
+        <a href="/FSArticles" class="nav-link">Articles</a>
+        <a href="/FSUsers" class="nav-link">Users</a>
+        <a href="/" class="nav-link">Powrót do strony głównej</a>
+	</nav>
+</div>
+{% endblock %} 
+
+{% block content %}
+    <div class="container">
+        <p class="h1">Fast settings</p>
+        {{ wtf.quick_form(form, action='/FSSaveTemplate') }}
+        <p class="h2 mt-4">Eksport ustawień wybranego układu</p>
+        <a class="btn btn-info" href="/FSExportSettings">Eksportuj</a>
+
+        <form class="mt-4" method="post" action="/FSImportSettings" enctype="multipart/form-data">
+            <p class="h2">Import ustawień</p>
+            <input name="file" class="form-control form-control-file" type="file" accept="application/json"/>
+            <input class="btn btn-success my-3" type="submit" value="Importuj"/>
+        </form>
+    </div>
+{% endblock %}

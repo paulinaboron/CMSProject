@@ -20,7 +20,6 @@
 				if (data.error_message) {
 					alert = data.error_message;
 				} else {
-					console.log("działa");
 					window.location.href = "/";
 				}
 			});
