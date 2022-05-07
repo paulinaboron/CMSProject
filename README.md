@@ -9,11 +9,11 @@ System CMS do zarządzania zawartością strony internetowej.
 -   **backend**:
 
     -   **app.py** - serwer
-    -   **admin.py** - aplikacja do zarządzania użytkownikami
+    -   **admin.py** - aplikacja desktopowa TKInter
     -   **db.sqlite** - baza danych
     -   **dbSetup.py** - plik ustawień fabrycznych bazy danych
 
-        > Zmiany w tym pliku mogą spowodować problemy z działaniem systemu. <br> Zalecane jest, aby nie zmieniać jego zawartości.
+        > Zmiany w tym pliku mogą spowodować problemy z działaniem systemu. <br> Zalecane jest, aby nie zmieniać jego zawartości, poza sytuacjami opisanymi niżej.
 
 -   **frontend**:
 
@@ -21,7 +21,7 @@ System CMS do zarządzania zawartością strony internetowej.
 
         > Usunięcie obrazów z podfolderów może skutkować błędami na froncie. <br> Głównie dotyczyć one mogą nieładujących się obrazów.
 
-    -   **svelte** - zawiera część frontową aplikacji oraz główną część CMSu
+    -   **svelte** - zawiera część frontową aplikacji oraz główną część CMSa
     -   **svelte/public** - zbundlowane pliki gotowe do produkcji
     -   **svelte/src** - pliki źródłowe części projektu wykonanej w Svelte
 
@@ -31,11 +31,19 @@ System CMS do zarządzania zawartością strony internetowej.
 
 1.  Po pobraniu zaleca się uruchomić plik **dbSetup.py** w celu utworzenia w bazie danych potrzebnych tabel i przypisania danych fabrycznych
 
-    > Wszystkie pliki Pythona (**.py**) najlepiej uruchamiać ze środowiska PyCharm, w którym nie występuje opisany dalej błąd. <br> Jeżeli jednak preferowanym środowiskiem jest VSCode, to przed uruchomieniem takiego pliku należy się upewnić, że otwarty jest **główny folder projektu**. <br> Uruchomienie takiego pliku z innej lokalizacji może powodować błąd, w którym interpreter usiłuje odczytać lub zapisać bazę danych w nieporządanej lokalizacji.
+    > Wszystkie pliki Pythona (**.py**) najlepiej uruchamiać ze środowiska PyCharm, w którym nie występuje opisany dalej błąd. 
+    > Jeżeli jednak preferowanym środowiskiem jest VSCode, to przed uruchomieniem takiego pliku należy się upewnić, że otwarty jest **główny folder projektu**. <br>
+    > 
+    > ```ps
+    > (.venv) PS ...\CMSProject\>
+    > > python3 "./backend/admin.py"
+    > ```
+    >
+    >Uruchomienie takiego pliku z innej lokalizacji może powodować błąd, w którym program usiłuje odczytać lub zapisać bazę danych w nieporządanej lokalizacji.
 
 2.  W celu włączenia serwera konieczna jest konfiguracja interpretera Python oraz instalacja pakietów podanych w pliku **requirements.txt** z głównego folderu aplikacji.
 
-    > Znowu, proces ten jest szybszy i bardziej intuicyjny w PyCharm. <br> Oczywiście istnieje opcja pracy w VSCode. <br> Dokładne instrukcje dot. tego zagadnienia znajdują się [TUTAJ](https://code.visualstudio.com/docs/python/tutorial-flask)
+    > Znowu, proces ten jest szybszy i bardziej intuicyjny w PyCharm. <br> Oczywiście istnieje opcja pracy w VSCode. <br> Dokładne instrukcje dot. tego zagadnienia znajdują się [TUTAJ](https://code.visualstudio.com/docs/python/tutorial-flask) <br> Z kolei wszystkie potrzebna EnvVary można ustawić poleceniem z pliku **flask.txt** z folderu **backend**.
 
 3.  Jeżeli przewidziana jest dalsza praca nad kodem źródłowym stworzonym w Svelte, należy zainstalować potrzebne moduły Node. <br> W tym celu, z głównego foldera projektu należy wykonać:
 
@@ -55,13 +63,13 @@ Do poprawnego działania aplikacji należy uruchomić serwer: **backend/app.py**
     > Routing strony został zaimplementowany całkowicie po stronie serwera.
     > Oznacza to, że nie ma możliwości uruchomienia aplikacji za pomocą polecenia
     >
-    > ```bash
+    > ```ps
     > npm run dev
     > ```
     >
     > Wszelkie zmiany w plikach źródłowych (folder **svelte/src**) muszą zostać zbundlowane poleceniem
     >
-    > ```bash
+    > ```ps
     > PS ...\CMSProject\frontend\svelte
     > > npm run build
     > ```
@@ -96,7 +104,62 @@ W zależności od wybranego układu na stronie głównej mogą występować trzy
 Slajdery oraz featuretty mogą być definiowane oraz edytowane w panelu administratora i występować mogą wielokrotnie w różnych instancjach. <br>
 Sekcja newsów z kolei nie może być zmieniona i zawsze wyświetla linki do maksymalnie trzech najnowszych artykułów (o ile zostało ich tyle napisane). Również może występować wielokrotnie na stronie głównej.
 
-> Dane do logowania jako administrator:</br>Login: admin</br>Password: admin123</br>
+>     Dane do logowania jako administrator:</br>Login: admin</br>Password: admin123</br>
+
+### Strona artykułu
+
+Większość elementów artykułu powtarza się na każdej podstronie tego typu. <br> Są to:
+- Tytuł - na samej górze
+- Podtytuł - pod tytułem
+- Treść
+- Sekcja komentarzy - pod treścią
+    - Komentarze mogą pisać tylko zalogowani użytkownicy.
+    - Próba napisania komentarza bez zalogowania odsyła do strony logowania.
+
+Jedynym opcjonalnym elementem strony artykułu jest galeria. <br> Może, choć nie musi, być przypisana do artykułu. Ta sama może również występować w wielu artykułach jednocześnie. Jednak do jednego artykułu nie może być przypisanych więcej niż jedna.
+
+### Strona kategorii
+
+Jej jedynymi elementami jest wytłuszczona nazwa oraz lista artykułów występujących w danej kategorii. Nie ma limitu co do ich liczby. <br> Strona ta wyświetla się bez listy, jeżeli do danej kategorii nie dodano żadnego artykułu.
+
+### Strona artykułów
+
+Wyświetla listę wszystkich dodanych artykułów. Podobnie jak wyżej, nie ma ograniczeń co do ich liczby.
+
+
+## CMS
+
+Po zalogowaniu przez *administratoraa*, w pasku nawigacyjnym pojawia się odnośnik ***Admin***, kierujący do podstrony */admin* - głównej części CMSa. <br> Podzielona jest ona na 7 części:
+
+- Featurette'y'
+- Slidery
+- Galerie
+  > Przypisywanie i edycja slajdów/fotografii do nowych slajderów i galerii możliwa jest po ich zapisaniu.
+
+  > Powyższe części są podzielone na dwie sekcje - główną oraz podstronę uploadu, w której można wgrywać pliki obrazów do poszczególnych bloków. <br> Uploadowane obrazy znajdują się w podfolderach folderu ***frontend/uploads***. <br> Po uploadzie nie jest konieczne odświeżenie strony - nowe obrazy natychmiastowo pojawiają się w rozwijanych listach.
+  
+- Artykuły
+  > W **treści** artykułów, poza zwykłym tekstem, można zawrzeć również wcięcie oraz przejście do nowej linii. <br> Można to osiągnąć za pomocą specjalnych znaczników. <br> Są to kolejno: ***<tab\>*** oraz ***<nl\>***.
+- Kategorie
+- Linki
+    > W nawigacji oraz stopce linki prowadzić mogą do podstron opisanych we wcześniejszym rozdziale.
+- Templates - strona edycji układu. <br> Jej funkcją jest tworzenie układów i edycja już istniejąych, poprzez zmianę ogólnych ustawień:
+    - nazwy,
+    - głównych kolorów,
+    - tekstu stopki,
+    - stylu nawigacji,
+    - fontu,
+
+    a także definiowanie i zamiana miejscami sekcji na stronie głównej.
+
+Z wysokości CMSa, poprzez nawigację, jest możliwość powrotu do strony głównej oraz przejści do strony "Fast settings". <br> Jest to część CMSa stworzona we Flasku, dzięki której zalogowany *administrator* ma możliwość:
+- Zarządzania użytkownikami
+- Zmiany wyświetlanego układu strony głównej
+- Eksportu ustawień wyświetlanego układu do pliku __.json__
+- Wczytanie tych ustawień do obecnie wybranego układu.
+- Zarządzania nawigacją i stopką
+- Tworzenia i edycji artykułów
+  > Znaczniki wcięcia i nowej linii różnią się od tych w "dużym CMSie". <br> Tutaj są to kolejno ***/tab/*** oraz ***/nl/***.
 
 ## Grupa
 
