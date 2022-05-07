@@ -10,15 +10,17 @@
 {% endblock %} 
 
 {% block navbar %}
-    <div class="container mt-2">
-        <nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
-            <a href="/fastSettings" class="nav-link">Fast settings</a>
-            <a href="/FSNavigation" class="nav-link">Navigation</a>
-            <a href="/FSFooter" class="nav-link">Footer</a>
-            <a href="/FSArticles" class="nav-link">Articles</a>
-            <a href="/FSUsers" class="nav-link active">Users</a>
-        </nav>
-    </div>
+<div class="container mt-2">
+	<nav class="nav nav-pills justify-content-start flex-column flex-md-row mb-3">
+		<a href="/admin" class="nav-link">Admin</a>
+		<a href="/fastSettings" class="nav-link">Fast settings</a>
+		<a href="/FSNavigation" class="nav-link">Navigation</a>
+		<a href="/FSFooter" class="nav-link">Footer</a>
+        <a href="/FSArticles" class="nav-link">Articles</a>
+        <a href="/FSUsers" class="nav-link active">Users</a>
+        <a href="/" class="nav-link">Powrót do strony głównej</a>
+	</nav>
+</div>
 {% endblock %} 
 
 {% block content %}

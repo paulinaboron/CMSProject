@@ -111,20 +111,14 @@
 
 	const setColors = (darkMode) => {
 		if (darkMode) {
-			setRootStyle("--bg-color", "black");
-			setRootStyle("--card-color", "rgb(48, 48, 48)");
-			setRootStyle("--font-color", "white");
-			setRootStyle("--icon-color", "white");
-			setRootStyle("--button-color", "rgb(90, 90, 90)");
-			setRootStyle("--button-color-dark", darkColor("rgb(90, 90, 90)"));
-			setRootStyle(
-				"--button-border-color-dark",
-				borderColor("rgb(90, 90, 90)")
-			);
-			setRootStyle(
-				"--button-shadow-color",
-				shadowColor("rgb(90, 90, 90)")
-			);
+			setRootStyle("--bg-color", "var(--dark-bg-color)");
+			setRootStyle("--card-color", "var(--dark-card-color)");
+			setRootStyle("--font-color", "var(--dark-font-color)");
+			setRootStyle("--icon-color", "var(--dark-icon-color)");
+			setRootStyle("--button-color", "var(--dark-button-color)");
+			setRootStyle("--button-color-dark", "var(--dark-button-color-dark)");
+			setRootStyle("--button-border-color-dark", "var(--dark-button-border-color-dark)");
+			setRootStyle("--button-shadow-color", "var(--dark-button-shadow-color)");
 		} else {
 			setRootStyle("--bg-color", colors.bg_color);
 			setRootStyle("--card-color", colors.bg_color);
@@ -132,14 +126,8 @@
 			setRootStyle("--icon-color", colors.icon_color);
 			setRootStyle("--button-color", colors.button_color);
 			setRootStyle("--button-color-dark", darkColor(colors.button_color));
-			setRootStyle(
-				"--button-border-color-dark",
-				darkColor(colors.button_color)
-			);
-			setRootStyle(
-				"--button-shadow-color",
-				shadowColor(colors.button_color)
-			);
+			setRootStyle("--button-border-color-dark", borderColor(colors.button_color));
+			setRootStyle("--button-shadow-color", shadowColor(colors.button_color));
 		}
 	};
 
@@ -193,9 +181,6 @@
 			on:change={switchDarkMode}
 			bind:checked={darkMode}
 		/>
-		<label
-			class="form-check-label darkmode-text"
-			for="flexSwitchCheckDefault">Dark</label
-		>
+		<label class="form-check-label darkmode-text" for="flexSwitchCheckDefault">Dark</label>
 	</div>
 {/await}
