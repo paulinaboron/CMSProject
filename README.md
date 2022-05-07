@@ -9,6 +9,7 @@ System CMS do zarządzania zawartością strony internetowej.
 -   **backend**:
 
     -   **app.py** - serwer
+    -   **admin.py** - aplikacja do zarządzania użytkownikami
     -   **db.sqlite** - baza danych
     -   **dbSetup.py** - plik ustawień fabrycznych bazy danych
 
