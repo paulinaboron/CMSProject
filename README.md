@@ -36,23 +36,27 @@ System CMS do zarządzania zawartością strony internetowej.
     Następnie należy uruchomić plik **dbSetup.py** w celu utworzenia w bazie danych potrzebnych tabel i przypisania danych fabrycznych
 
     > Wszystkie pliki Pythona (**.py**) najlepiej uruchamiać ze środowiska PyCharm, w którym nie występuje opisany dalej błąd.
-    > Jeżeli jednak preferowanym środowiskiem jest VSCode, to przed uruchomieniem takiego pliku należy się upewnić, że otwarty jest **główny folder projektu**. <br>
+    > Jeżeli jednak preferowanym środowiskiem jest VSCode, to przed uruchomieniem takiego pliku należy się upewnić, że otwarty jest **odpowiedni folder**. <br>
+    >
+    > Uruchomienie **_dbSetup_.py**:
     >
     > ```ps
     > (.venv) PS ...\CMSProject\>
     > > python3 "./backend/dbSetup.py"
     > ```
     >
+    > Uruchomienie **_admin.py_**
+    >
     > ```ps
-    > (.venv) PS ...\CMSProject\>
-    > > python3 "./backend/admin.py"
+    > (.venv) PS ...\CMSProject\backend>
+    > > python3 "admin.py"
     > ```
     >
     > Uruchomienie takiego pliku z innej lokalizacji może powodować błąd, w którym program usiłuje odczytać lub zapisać bazę danych w nieporządanej lokalizacji.
 
 2.  W celu włączenia serwera konieczna jest konfiguracja wirtualnego środowiska Python oraz instalacja w nim pakietów podanych w pliku **requirements.txt** z głównego folderu aplikacji.
 
-    > Znowu, proces ten jest szybszy i bardziej intuicyjny w PyCharm. <br> Oczywiście istnieje opcja pracy w VSCode. <br> Dokładne instrukcje dot. tego zagadnienia znajdują się [TUTAJ](https://code.visualstudio.com/docs/python/tutorial-flask) <br> Z kolei wszystkie potrzebna EnvVary można ustawić poleceniem z pliku **flask.txt** z folderu **backend**.
+    > Znowu, proces ten jest bardziej intuicyjny w PyCharm. <br> Oczywiście istnieje opcja pracy w VSCode. <br> Dokładne instrukcje dot. tego zagadnienia znajdują się [TUTAJ](https://code.visualstudio.com/docs/python/tutorial-flask) <br> Z kolei wszystkie potrzebna EnvVary można ustawić poleceniem z pliku **flask.txt** z folderu **backend**.
 
 3.  Jeżeli przewidziana jest dalsza praca nad kodem źródłowym stworzonym w Svelte, należy zainstalować potrzebne moduły Node. <br> W tym celu, z głównego foldera projektu należy wykonać:
 
@@ -104,16 +108,14 @@ Niezależnie od lokalizacji użytkownika na stronie, niektóre elementy się nie
 W zależności od wybranego układu na stronie głównej mogą występować trzy rodzaje elementów:
 
 -   Slajdery: <br>
-    Proste galerie paru zdjęć z podpisami,
+    Proste galerie zdjęć z podpisami oraz nawigacją,
 -   Featuretty: <br>
     Pojedyncza ramka z zawartością tekstową i dużym zdjęciem,
 -   Sekcje artykułów <br>
-    Krótka lista najnowszych artykułów
+    Krótka lista najnowszych artykułów.
 
 Slajdery oraz featuretty mogą być definiowane oraz edytowane w panelu administratora i występować mogą wielokrotnie w różnych instancjach. <br>
 Sekcja newsów z kolei nie może być zmieniona i zawsze wyświetla linki do maksymalnie trzech najnowszych artykułów (o ile zostało ich tyle napisane). Również może występować wielokrotnie na stronie głównej.
-
-> Dane do logowania jako administrator: <br> Login: admin<br>Hasło: admin123 <br> (chyba że zostało wcześniej zmienione)<br>
 
 ### Strona artykułu
 
@@ -138,9 +140,11 @@ Wyświetla listę wszystkich dodanych artykułów. Podobnie jak wyżej, nie ma o
 
 ## CMS
 
-Po zalogowaniu przez _administratoraa_, w pasku nawigacyjnym pojawia się odnośnik **_Admin_**, kierujący do podstrony _/admin_ - głównej części CMSa. <br> Podzielona jest ona na 7 części:
+> Dane do logowania jako administrator: <br> Login: admin<br>Hasło: admin123 (chyba że zostało wcześniej zmienione)<br>
 
--   Featurette'y'
+Po zalogowaniu przez _administratora_, w pasku nawigacyjnym pojawia się odnośnik **_Admin_**, kierujący do podstrony _/admin_ - głównej części CMSa. <br> Podzielona jest ona na 7 części:
+
+-   Featurette'y
 -   Slidery
 -   Galerie
 
@@ -173,17 +177,16 @@ Z wysokości CMSa, poprzez nawigację, jest możliwość powrotu do strony głó
 -   Tworzenia i edycji artykułów
     > Znaczniki wcięcia i nowej linii różnią się od tych w "dużym CMSie". <br> Tutaj są to kolejno **_/tab/_** oraz **_/nl/_**.
 
-
 ## Aplikacja TKInter
 
 Należy uruchomić plik: **backend/admin.py**<br>
 Aplikacja dostępna jest tylko dla użytkowników z uprawnieniami administratora.<br>
 Aplikacja umożliwia:
+
 -   Zarządzanie użytkownikami
 -   Zarządzanie linkami na stronie
 -   Zarządzanie artykułami
 -   Zarządzanie sliderem
-
 
 ## Grupa
 
