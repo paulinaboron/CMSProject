@@ -173,6 +173,18 @@ Z wysokości CMSa, poprzez nawigację, jest możliwość powrotu do strony głó
 -   Tworzenia i edycji artykułów
     > Znaczniki wcięcia i nowej linii różnią się od tych w "dużym CMSie". <br> Tutaj są to kolejno **_/tab/_** oraz **_/nl/_**.
 
+
+## Aplikacja TKInter
+
+Należy uruchomić plik: **backend/admin.py**<br>
+Aplikacja dostępna jest tylko dla użytkowników z uprawnieniami administratora.<br>
+Aplikacja umożliwia:
+-   Zarządzanie użytkownikami
+-   Zarządzanie linkami na stronie
+-   Zarządzanie artykułami
+-   Zarządzanie sliderem
+
+
 ## Grupa
 
 Michał Kurbiel </br>
