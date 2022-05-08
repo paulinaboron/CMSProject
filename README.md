@@ -29,7 +29,11 @@ System CMS do zarządzania zawartością strony internetowej.
 
 ### Pierwsze kroki
 
-1.  Po pobraniu zaleca się zmienić hasło **admina** w pliku **dbSetup.py**. <br> Zmiana ta polega na <br> Następnie należy uruchomić plik **dbSetup.py** w celu utworzenia w bazie danych potrzebnych tabel i przypisania danych fabrycznych
+1.  Po pobraniu zaleca się zmienić hasło domyślnego **admina** w pliku **dbSetup.py**. <br> Chodzi dokładniej o zmianę wartości _admin123_ w linijce 289 tego pliku.
+
+    > Jest to jedyny sposób na zmianę hasła konta **admin**. CMS nie przewiduje możliwości późniejszej jego zmiany. Zalecane jest zatem utworzenie nowego konta i przypisanie do niego roli administratora, a pozostawienie domyślnego jako zapasowe.
+
+    Następnie należy uruchomić plik **dbSetup.py** w celu utworzenia w bazie danych potrzebnych tabel i przypisania danych fabrycznych
 
     > Wszystkie pliki Pythona (**.py**) najlepiej uruchamiać ze środowiska PyCharm, w którym nie występuje opisany dalej błąd.
     > Jeżeli jednak preferowanym środowiskiem jest VSCode, to przed uruchomieniem takiego pliku należy się upewnić, że otwarty jest **główny folder projektu**. <br>
@@ -46,7 +50,7 @@ System CMS do zarządzania zawartością strony internetowej.
     >
     > Uruchomienie takiego pliku z innej lokalizacji może powodować błąd, w którym program usiłuje odczytać lub zapisać bazę danych w nieporządanej lokalizacji.
 
-2.  W celu włączenia serwera konieczna jest konfiguracja interpretera Python oraz instalacja pakietów podanych w pliku **requirements.txt** z głównego folderu aplikacji.
+2.  W celu włączenia serwera konieczna jest konfiguracja wirtualnego środowiska Python oraz instalacja w nim pakietów podanych w pliku **requirements.txt** z głównego folderu aplikacji.
 
     > Znowu, proces ten jest szybszy i bardziej intuicyjny w PyCharm. <br> Oczywiście istnieje opcja pracy w VSCode. <br> Dokładne instrukcje dot. tego zagadnienia znajdują się [TUTAJ](https://code.visualstudio.com/docs/python/tutorial-flask) <br> Z kolei wszystkie potrzebna EnvVary można ustawić poleceniem z pliku **flask.txt** z folderu **backend**.
 
@@ -109,7 +113,7 @@ W zależności od wybranego układu na stronie głównej mogą występować trzy
 Slajdery oraz featuretty mogą być definiowane oraz edytowane w panelu administratora i występować mogą wielokrotnie w różnych instancjach. <br>
 Sekcja newsów z kolei nie może być zmieniona i zawsze wyświetla linki do maksymalnie trzech najnowszych artykułów (o ile zostało ich tyle napisane). Również może występować wielokrotnie na stronie głównej.
 
->     Dane do logowania jako administrator:</br>Login: admin</br>Password: admin123</br>
+> Dane do logowania jako administrator: <br> Login: admin<br>Hasło: admin123 <br> (chyba że zostało wcześniej zmienione)<br>
 
 ### Strona artykułu
 
