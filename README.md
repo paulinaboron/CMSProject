@@ -99,6 +99,9 @@ Niezależnie od lokalizacji użytkownika na stronie, niektóre elementy się nie
     -   W prawej części umieszczony jest switch do zmiany motywu strony na ciemny
     -   Pasek nawigacyjny zawiera również link do strony logowania oraz rejestracji.
     -   Po zalogowaniu, użytkownik może zmienić swój email oraz hasło.
+
+        > Fabryczne dane jednego użytkownika: <br> Login: user<br>Hasło: user123
+
     -   Zalogowany _admin_ ma dostęp do **panelu administratora**
 
 -   Na dole natomiast zawarta jest stopka z paroma linkami oraz tekstem.
