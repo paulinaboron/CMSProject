@@ -36,7 +36,7 @@ def menu_window():
     window.title('CMS')
     window.geometry("1000x600")
 
-    btn_back = Button(window, text="Strona główna", command=lambda: click(main_page), width=30).grid(row=10, column=0)
+    Button(window, text="Strona główna", command=lambda: click(main_page), width=30).grid(row=10, column=0)
 
     main_page = Frame(window)
     users_page = Frame(window)
@@ -50,8 +50,8 @@ def menu_window():
     click(main_page)
 
     """Users Page"""
-    title_users = Label(users_page, text="Użytkownicy", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
-                                                                                                       sticky='e')
+    Label(users_page, text="Użytkownicy", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
+                                                                                         sticky='e')
     users_data = select_from_db("Select * from users")
 
     tab = ["lp.", 'Login', "Hasło", "email", "rola"]
@@ -66,23 +66,24 @@ def menu_window():
             e.insert(END, (users_data[i][j]))
 
     for i in range(len(users_data)):
-        b = Button(users_page, text="Edit", command=lambda temp=i: edit_users(temp, window), padx=15).grid(row=i + 2,
+        if users_data[i][1] != "admin":
+            Button(users_page, text="Edit", command=lambda temp=i: edit_users(temp, window), padx=15).grid(row=i + 2,
                                                                                                            column=10)
 
     """Main Page"""
-    label = Label(main_page, text="Zarządzanie zawartością strony", font=('Helvetica', 14), pady=50).grid(row=0,
-                                                                                                          column=0)
-    btn_users = Button(main_page, text="Użytkownicy", command=lambda: click(users_page), pady=10, width=50).grid(row=1,
-                                                                                                                 column=0)
-    btn_menu = Button(main_page, text="Menu", command=lambda: click(menu_page), pady=10, width=50).grid(row=2, column=0)
-    btn_news = Button(main_page, text="Artykuły", command=lambda: click(news_page), pady=10, width=50).grid(row=3,
-                                                                                                            column=0)
-    btn_slider = Button(main_page, text="Slider", command=lambda: click(slider_page), pady=10, width=50).grid(row=5,
-                                                                                                              column=0)
+    Label(main_page, text="Zarządzanie zawartością strony", font=('Helvetica', 14), pady=50).grid(row=0,
+                                                                                                  column=0)
+    Button(main_page, text="Użytkownicy", command=lambda: click(users_page), pady=10, width=50).grid(row=1,
+                                                                                                     column=0)
+    Button(main_page, text="Menu", command=lambda: click(menu_page), pady=10, width=50).grid(row=2, column=0)
+    Button(main_page, text="Artykuły", command=lambda: click(news_page), pady=10, width=50).grid(row=3,
+                                                                                                 column=0)
+    Button(main_page, text="Slider", command=lambda: click(slider_page), pady=10, width=50).grid(row=5,
+                                                                                                 column=0)
 
     """Slider Page"""
-    title_users = Label(slider_page, text="Slider", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
-                                                                                                   sticky='e')
+    Label(slider_page, text="Slider", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
+                                                                                     sticky='e')
     slides_data = select_from_db("Select * from slides")
 
     for i in range(len(slides_data)):
@@ -98,13 +99,13 @@ def menu_window():
         e3.grid(row=i + 2, column=2, sticky=NSEW)
         e3.insert(END, (slides_data[i][5]))
 
-        b_slider = Button(slider_page, text="Edit", command=lambda temp=i: edit_slider(temp, window), padx=15).grid(
+        Button(slider_page, text="Edit", command=lambda temp=i: edit_slider(temp, window), padx=15).grid(
             row=i + 2,
             column=10)
 
     """Menu Page"""
-    title_menu = Label(menu_page, text="Menu", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
-                                                                                                   sticky='e')
+    Label(menu_page, text="Menu", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
+                                                                                 sticky='e')
     menu_data = select_from_db("Select * from nav_links")
 
     for i in range(len(menu_data)):
@@ -116,15 +117,15 @@ def menu_window():
         e2.grid(row=i + 2, column=1, sticky=NSEW)
         e2.insert(END, (menu_data[i][2]))
 
-        b_menu = Button(menu_page, text="Edit", command=lambda temp=i: edit_menu(temp, window), padx=15).grid(
+        Button(menu_page, text="Edit", command=lambda temp=i: edit_menu(temp, window), padx=15).grid(
             row=i + 2,
             column=10)
 
-    b_add = Button(menu_page, text="Dodaj", command=lambda: add_link(window)).grid(row=1, column=12)
+    Button(menu_page, text="Dodaj", command=lambda: add_link(window)).grid(row=1, column=12)
 
     """News Page"""
-    title_news = Label(news_page, text="Artykuły", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
-                                                                                                   sticky='e')
+    Label(news_page, text="Artykuły", font=('Helvetica', 14), pady=20, padx=50).grid(row=0, column=0,
+                                                                                     sticky='e')
     news_data = select_from_db("Select * from articles")
 
     for i in range(len(news_data)):
@@ -136,7 +137,7 @@ def menu_window():
         e2.grid(row=i + 2, column=1, sticky=NSEW)
         e2.insert(END, (news_data[i][1]))
 
-        b_news = Button(news_page, text="Edit", command=lambda temp=i: edit_news(temp, window), padx=15).grid(
+        Button(news_page, text="Edit", command=lambda temp=i: edit_news(temp, window), padx=15).grid(
             row=i + 2,
             column=10)
 
@@ -168,7 +169,7 @@ def add_link(w):
     e4.grid(row=4, column=1, sticky=NSEW)
 
     for i in range(len(tab)):
-        l = Label(add_window, text=tab[i]).grid(row=i + 1, column=0)
+        Label(add_window, text=tab[i]).grid(row=i + 1, column=0)
 
     btn = Button(add_window, text="Zapisz",
                  command=lambda: save_link([e1.get(), e2.get(), e3.get(), e4.get(), add_window]))
@@ -191,7 +192,7 @@ def edit_users(_id, w):
     edit_window.title("Edytowanie")
     edit_window.geometry("600x400")
 
-    label = Label(edit_window, text="Edycja danych użytkownika").grid(row=0, column=1)
+    Label(edit_window, text="Edycja danych użytkownika").grid(row=0, column=1)
     records = select_from_db(f"Select * from users where id = '{_id + 1}'")
     data = records[0]
 
@@ -210,10 +211,10 @@ def edit_users(_id, w):
     e3.grid(row=3, column=1, sticky=NSEW)
 
     for i in range(len(tab)):
-        l = Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
+        Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
 
-    btn = Button(edit_window, text="Zapisz zmiany",
-                 command=lambda: save_users([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
+    Button(edit_window, text="Zapisz zmiany",
+           command=lambda: save_users([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
 
 
 def edit_slider(_id, w):
@@ -221,7 +222,7 @@ def edit_slider(_id, w):
     edit_window.title("Edytowanie slidera")
     edit_window.geometry("600x400")
 
-    label = Label(edit_window, text="Edycja danych slidera").grid(row=0, column=1)
+    Label(edit_window, text="Edycja danych slidera").grid(row=0, column=1)
     records = select_from_db(f"Select * from slides where id = '{_id + 1}'")
     data = records[0]
 
@@ -236,10 +237,10 @@ def edit_slider(_id, w):
     e2.grid(row=2, column=1, sticky=NSEW)
 
     for i in range(len(tab)):
-        l = Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
+        Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
 
-    btn = Button(edit_window, text="Zapisz zmiany",
-                 command=lambda: save_slider([_id + 1, e1.get(), e2.get(), edit_window])).grid(row=4, column=1)
+    Button(edit_window, text="Zapisz zmiany",
+           command=lambda: save_slider([_id + 1, e1.get(), e2.get(), edit_window])).grid(row=4, column=1)
 
 
 def edit_menu(_id, w):
@@ -247,7 +248,7 @@ def edit_menu(_id, w):
     edit_window.title("Edytowanie menu")
     edit_window.geometry("600x400")
 
-    label = Label(edit_window, text="Edycja danych menu").grid(row=0, column=1)
+    Label(edit_window, text="Edycja danych menu").grid(row=0, column=1)
     records = select_from_db(f"Select * from nav_links where id = '{_id + 1}'")
     data = records[0]
 
@@ -266,10 +267,10 @@ def edit_menu(_id, w):
     e3.grid(row=3, column=1, sticky=NSEW)
 
     for i in range(len(tab)):
-        l = Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
+        Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
 
-    btn = Button(edit_window, text="Zapisz zmiany",
-                 command=lambda: save_menu([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
+    Button(edit_window, text="Zapisz zmiany",
+           command=lambda: save_menu([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
 
 
 def edit_news(_id, w):
@@ -277,7 +278,7 @@ def edit_news(_id, w):
     edit_window.title("Edytowanie artukułów")
     edit_window.geometry("600x400")
 
-    label = Label(edit_window, text="Edycja danych artykułów").grid(row=0, column=1)
+    Label(edit_window, text="Edycja danych artykułów").grid(row=0, column=1)
     records = select_from_db(f"Select * from articles where id = '{_id + 1}'")
     data = records[0]
 
@@ -296,10 +297,10 @@ def edit_news(_id, w):
     e3.grid(row=3, column=1, sticky=NSEW)
 
     for i in range(len(tab)):
-        l = Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
+        Label(edit_window, text=tab[i]).grid(row=i + 1, column=0)
 
-    btn = Button(edit_window, text="Zapisz zmiany",
-                 command=lambda: save_news([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
+    Button(edit_window, text="Zapisz zmiany",
+           command=lambda: save_news([_id + 1, e1.get(), e2.get(), e3.get(), edit_window])).grid(row=4, column=1)
 
 
 def save_users(data):
@@ -339,8 +340,8 @@ def save_link(data):
     cursor = connection.cursor()
 
     cursor.execute(
-        f"""INSERT INTO nav_links (`link`, `text`, `for_component`, `order`) VALUES ("{data[0]}", "{data[1]}", "{data[2]}", {data[3]})"""
-        )
+        f"""INSERT INTO nav_links (`link`, `text`, `for_component`, `order`) VALUES ("{data[0]}", "{data[1]}", "{data[2]}", {data[3]}) """
+    )
     connection.commit()
 
 
