@@ -150,7 +150,8 @@ def add_link(w):
     add_window.title("Dodawanie linku")
     add_window.geometry("600x400")
 
-    label = Label(add_window, text="Dodawanie linku").grid(row=0, column=1)
+    label = Label(add_window, text="Dodawanie linku")
+    label.grid(row=0, column=1)
 
     tab = ["Link", "Tekst", "Komponent", "Kolejność"]
 
@@ -170,7 +171,8 @@ def add_link(w):
         l = Label(add_window, text=tab[i]).grid(row=i + 1, column=0)
 
     btn = Button(add_window, text="Zapisz",
-                 command=lambda: save_link([e1.get(), e2.get(), e3.get(), e4.get(), add_window])).grid(row=5, column=1)
+                 command=lambda: save_link([e1.get(), e2.get(), e3.get(), e4.get(), add_window]))
+    btn.grid(row=5, column=1)
 
 
 def select_from_db(query):
@@ -337,7 +339,8 @@ def save_link(data):
     cursor = connection.cursor()
 
     cursor.execute(
-        f"INSERT INTO nav_links (link, text, for_component, order) VALUES ({data[0], data[1], data[2], data[3]});")
+        f"""INSERT INTO nav_links (`link`, `text`, `for_component`, `order`) VALUES ("{data[0]}", "{data[1]}", "{data[2]}", {data[3]})"""
+        )
     connection.commit()
 
 
