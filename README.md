@@ -191,7 +191,7 @@ Aplikacja umożliwia:
 -   Zarządzanie artykułami
 -   Zarządzanie sliderem
 
-## Grupa
+## Autorzy
 
 Michał Kurbiel </br>
 Paulina Boroń
